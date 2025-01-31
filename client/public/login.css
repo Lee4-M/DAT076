@@ -1,0 +1,16 @@
+.left-panel{
+    background-color: whitesmoke;
+}
+
+.right-panel{
+    background-color: #419BC9;
+}
+
+.login-label{
+    color: white; 
+    text-decoration: underline;
+}
+
+.sign-in-button{
+    background-color: #FFE72F;
+}
