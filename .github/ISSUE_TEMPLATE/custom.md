@@ -7,6 +7,4 @@ assignees: ''
 
 ---
 
-## User Story X.Y:
-
 “As a [persona], I [want to], [so that].”
