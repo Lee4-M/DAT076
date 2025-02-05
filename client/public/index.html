@@ -10,80 +10,81 @@
 </head>
 
 <body>
-  <div class="container-fluid row min-vh-100">
-    <aside class="col-1 bg-light-subtle align-items-center gap-4 d-flex flex-column p-3">
-      <svg width="92" height="80" viewBox="0 0 110 103" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M107.77 100.44V42.927C106.77 7.94019 52.2695 -16.5598 21.7698 20.4271C16.2629 29.1581 16.0952 32.5626 16.2695 34.9402C22.7989 35.3506 30.1439 44.9702 25.0567 56.9402C25.0478 57.1119 25.0368 57.2856 25.0237 57.4614C24.8805 59.3719 24.4806 61.5208 23.7697 63.9271L10.2697 71.1426V100.44H107.77Z"
-          fill="#FFE72F" />
-        <path
-          d="M23.7697 63.9271C24.4806 61.5208 24.8805 59.3719 25.0237 57.4614C25.0368 57.2856 25.0478 57.1119 25.0567 56.9402C25.8328 41.9104 10.2918 42.2165 6.76953 47.9402C-2.23043 58.4402 4.26953 77.4402 4.26953 77.4402L10.2697 71.1426L23.7697 63.9271Z"
-          fill="#FF9705" />
-        <path
-          d="M25.0567 56.9402C30.1439 44.9702 22.7989 35.3506 16.2695 34.9402C11.8893 34.6648 5.56503 42.0595 6.76953 47.9402C10.2918 42.2165 25.8328 41.9104 25.0567 56.9402Z"
-          fill="#EED3EA" />
-        <path
-          d="M6.76953 47.9402C-2.23043 58.4402 4.26953 77.4402 4.26953 77.4402L10.2697 71.1426M6.76953 47.9402C5.56503 42.0595 11.8893 34.6648 16.2695 34.9402M6.76953 47.9402C10.2918 42.2165 25.8328 41.9104 25.0567 56.9402M6.76953 47.9402C10.332 42.1511 26.1895 41.9041 25.0237 57.4614M25.0567 56.9402C30.1439 44.9702 22.7989 35.3506 16.2695 34.9402M25.0567 56.9402C25.0478 57.1119 25.0368 57.2856 25.0237 57.4614M16.2695 34.9402C16.0952 32.5626 16.2629 29.1581 21.7698 20.4271C52.2695 -16.5598 106.77 7.94019 107.77 42.927V100.44H10.2697V71.1426M16.2695 34.9402C16.2851 35.1531 16.2421 34.7895 16.2695 34.9402ZM10.2697 71.1426L23.7697 63.9271C24.4806 61.5208 24.8805 59.3719 25.0237 57.4614M42.5 42.927C45.5 36.9115 47.5 30.5598 62.5 37"
-          stroke="black" stroke-width="4" stroke-linecap="round" />
-      </svg>
-      <div class="btn-group-vertical gap-2">
-        <button type="button" class="btn btn-danger">Add expense</button>
-        <button type="button" class="btn btn-warning">Edit budget</button>
-      </div>
-      <a href="login.html" class="btn btn-primary mt-auto">Sign out</a>
-    </aside>
-    <main class="col-11 bg-body-secondary d-flex justify-content-center align-items-center">
-      <div class="bg-light-subtle p-4 rounded d-flex flex-column" id="inner-container">
-        <div class="flex-grow-1 overflow-auto">
-          <table class="table table-bordered rounded table-striped text-center mb-0">
-            <thead> 
-              <tr>
-                <th class=" invisible">
-                </th>
-                <th class="pb-0">
-                  <div class="w-75 m-auto py-1">Budget</div>
-                </th>
-                <th class="pb-0">
-                  <div class="w-75 m-auto py-1">Expense</div>
-                </th>
-                <th class="pb-0">
-                  <div class="w-75 m-auto py-1">Result</div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Restaurant</td>
-                <td>2000</td>
-                <td>1200</td>
-                <td>800</td>
-              </tr>
-              <tr>
-                <td>Transportation</td>
-                <td>1500</td>
-                <td>100</td>
-                <td>300</td>
-              </tr>
-              <tr>
-                <td>Subscriptions</td>
-                <td>400</td>
-                <td>500</td>
-                <td class="text-danger">-100</td>
-              </tr>
-            </tbody>
-          </table>
+  <div class="container-fluid">
+    <div class="row min-vh-100">
+      <aside class="col-2  bg-light-subtle align-items-center gap-4 d-flex flex-column p-3">
+        <svg width="92" height="80" viewBox="0 0 110 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M107.77 100.44V42.927C106.77 7.94019 52.2695 -16.5598 21.7698 20.4271C16.2629 29.1581 16.0952 32.5626 16.2695 34.9402C22.7989 35.3506 30.1439 44.9702 25.0567 56.9402C25.0478 57.1119 25.0368 57.2856 25.0237 57.4614C24.8805 59.3719 24.4806 61.5208 23.7697 63.9271L10.2697 71.1426V100.44H107.77Z"
+            fill="#FFE72F" />
+          <path
+            d="M23.7697 63.9271C24.4806 61.5208 24.8805 59.3719 25.0237 57.4614C25.0368 57.2856 25.0478 57.1119 25.0567 56.9402C25.8328 41.9104 10.2918 42.2165 6.76953 47.9402C-2.23043 58.4402 4.26953 77.4402 4.26953 77.4402L10.2697 71.1426L23.7697 63.9271Z"
+            fill="#FF9705" />
+          <path
+            d="M25.0567 56.9402C30.1439 44.9702 22.7989 35.3506 16.2695 34.9402C11.8893 34.6648 5.56503 42.0595 6.76953 47.9402C10.2918 42.2165 25.8328 41.9104 25.0567 56.9402Z"
+            fill="#EED3EA" />
+          <path
+            d="M6.76953 47.9402C-2.23043 58.4402 4.26953 77.4402 4.26953 77.4402L10.2697 71.1426M6.76953 47.9402C5.56503 42.0595 11.8893 34.6648 16.2695 34.9402M6.76953 47.9402C10.2918 42.2165 25.8328 41.9104 25.0567 56.9402M6.76953 47.9402C10.332 42.1511 26.1895 41.9041 25.0237 57.4614M25.0567 56.9402C30.1439 44.9702 22.7989 35.3506 16.2695 34.9402M25.0567 56.9402C25.0478 57.1119 25.0368 57.2856 25.0237 57.4614M16.2695 34.9402C16.0952 32.5626 16.2629 29.1581 21.7698 20.4271C52.2695 -16.5598 106.77 7.94019 107.77 42.927V100.44H10.2697V71.1426M16.2695 34.9402C16.2851 35.1531 16.2421 34.7895 16.2695 34.9402ZM10.2697 71.1426L23.7697 63.9271C24.4806 61.5208 24.8805 59.3719 25.0237 57.4614M42.5 42.927C45.5 36.9115 47.5 30.5598 62.5 37"
+            stroke="black" stroke-width="4" stroke-linecap="round" />
+        </svg>
+        <div class="btn-group-vertical gap-2">
+          <button type="button" class="btn btn-danger">Add expense</button>
+          <button type="button" class="btn btn-warning">Edit budget</button>
         </div>
+        <a href="login.html" class="btn btn-primary mt-auto">Sign out</a>
+      </aside>
+      <main class="col-10 bg-body-secondary d-flex justify-content-center align-items-center">
+        <div class="bg-light-subtle p-4 rounded d-flex flex-column" id="inner-container">
+          <div class="flex-grow-1 overflow-auto table-responsive">
+            <table class="table table-bordered rounded table-striped text-center mb-0">
+              <thead>
+                <tr>
+                  <th class="invisible">
+                  </th>
+                  <th class="pb-0">
+                    <div class="w-75 m-auto py-2">Budget</div>
+                  </th>
+                  <th class="pb-0">
+                    <div class="w-75 m-auto py-2">Expense</div>
+                  </th>
+                  <th class="pb-0">
+                    <div class="w-75 m-auto py-2">Result</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Restaurant</td>
+                  <td>2000</td>
+                  <td>1200</td>
+                  <td>800</td>
+                </tr>
+                <tr>
+                  <td>Transportation</td>
+                  <td>1500</td>
+                  <td>100</td>
+                  <td>300</td>
+                </tr>
+                <tr>
+                  <td>Subscriptions</td>
+                  <td>400</td>
+                  <td>500</td>
+                  <td class="text-danger">-100</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div class="mt-3 p-3 rounded text-center row fw-bold" id="total-row">
+          <div class="mt-3 p-3 rounded text-center row fw-bold" id="total-row">
             <div class="col">Total</div>
             <div class="col">10400</div>
             <div class="col">8300</div>
             <div class="col">1000</div>
+          </div>
+
         </div>
-
-      </div>
-    </main>
-
+      </main>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
