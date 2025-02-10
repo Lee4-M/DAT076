@@ -7,7 +7,6 @@ const expenseService = new ExpenseService();
 export const expenseRouter = express.Router();
 
 expenseRouter.get("/", async (
-    req: Request<{}, {}, {}>,
     res: Response<Array<Expense> | String>
 ) => {
     try {
@@ -23,9 +22,11 @@ expenseRouter.post("/", async (
     res: Response<Expense | string>
 ) => {
     try {
+        const category = req.body.category;
+        const cost = req.body.cost;
         const description = req.body.description;
         if (typeof(category) !== "string") {
-            res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof(description)}`);
+            res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof(category)}`);
             return;
         }
         const newExpense = await expenseService.addExpense(category, cost, description);

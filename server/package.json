@@ -4,8 +4,8 @@
   "description": "web application project DAT076",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts"
+},
   "author": "Kevin Collins, Liam Mayor, Annelie Waithira Hansson, Philip Öhman",
   "license": "ISC",
   "dependencies": {
