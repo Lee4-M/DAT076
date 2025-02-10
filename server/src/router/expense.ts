@@ -25,7 +25,7 @@ expenseRouter.post("/", async (
         const category = req.body.category;
         const cost = req.body.cost;
         const description = req.body.description;
-        if (typeof(category) !== "string") {
+        if ((typeof(category) !== "string") || (typeof(cost) !== "number") || (typeof(description) !== "string")){
             res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof(category)}`);
             return;
         }
