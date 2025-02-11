@@ -1,0 +1,56 @@
+import { Budget } from "../model/budget.interface";
+import { Expense } from "../model/expense.interface";
+
+export class BudgetService {
+    private budgets : Budget[] = [];
+
+    async getBudgets(): Promise<Budget[]> {
+        return JSON.parse(JSON.stringify(this.budgets));
+    }
+
+    async addBudget(category: string, cost: number): Promise<Budget> {
+        // Assuming we add expenses after adding a budget row
+        const budget = {
+            category: category,
+            cost: cost,
+            expenses: [],
+            result: cost
+        }
+        this.budgets.push(budget);
+        return { ...budget };
+    }
+
+    async addBudgetExpense(expense: Expense): Promise<Budget> {
+        const budget = this.budgets.find(budget => budget.category === expense.category);
+
+        if (!budget) {
+            throw new Error("Budget not found for category: " + expense.category);
+        }
+
+        budget.expenses.push(expense);
+        budget.result -= expense.cost;
+
+        return { ...budget };
+    }
+
+    async removeBudgetExpense(id: string): Promise<Budget> {
+        const budget = this.budgets.find(budget => 
+            budget.expenses.some(expense => expense.id === id)
+        );
+    
+        if (!budget) {
+            throw new Error("Budget not found for the expense.");
+        }
+    
+        const index = budget.expenses.findIndex(e => e.id === id);
+        if (index === -1) {
+            throw new Error("Expense not found in budget.");
+        }
+    
+        const removedExpense = budget.expenses.splice(index, 1)[0];
+        budget.result += removedExpense.cost;
+    
+        return { ...budget };
+    }
+}
+
