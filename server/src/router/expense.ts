@@ -7,6 +7,7 @@ const expenseService = new ExpenseService();
 export const expenseRouter = express.Router();
 
 expenseRouter.get("/", async (
+    req: Request<{}, {}, {}>,
     res: Response<Array<Expense> | String>
 ) => {
     try {

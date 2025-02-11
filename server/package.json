@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts"
-},
+  },
   "author": "Kevin Collins, Liam Mayor, Annelie Waithira Hansson, Philip Öhman",
   "license": "ISC",
   "dependencies": {
