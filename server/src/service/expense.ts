@@ -1,7 +1,9 @@
 import { Expense } from "../model/expense.interface";
+import { BudgetService } from "./budget";
 
 export class ExpenseService {
     private expenses : Expense[] = [];
+    private budgetService : BudgetService = new BudgetService();
 
     async getExpenses(): Promise<Expense[]> {
         return JSON.parse(JSON.stringify(this.expenses));
@@ -14,6 +16,9 @@ export class ExpenseService {
             description: description
         }
         this.expenses.push(expense);
+
+        await this.budgetService.addBudgetExpense(expense);
+        
         return { ...expense };
     }
 }

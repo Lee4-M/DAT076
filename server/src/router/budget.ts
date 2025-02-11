@@ -8,7 +8,7 @@ export const budgetRouter = express.Router();
 
 budgetRouter.get("/", async (
     req: Request<{}, {}, {}>,
-    res: Response<Array<Budget> | String>
+    res: Response<Array<Budget> | string>
 ) => {
     try {
         const budgets = await budgetService.getBudgets();
