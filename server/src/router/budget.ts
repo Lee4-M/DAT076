@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { BudgetService } from "../service/budget";
 import { Budget } from "../model/budget.interface";
 
-const budgetService = new BudgetService();
+export const budgetService = new BudgetService();
 
 export const budgetRouter = express.Router();
 
@@ -35,3 +35,16 @@ budgetRouter.post("/", async (
         res.status(500).send(e.message);
     }
 })
+
+budgetRouter.delete("/expense", async (
+    req: Request<{}, {}, { id: string }>,
+    res: Response<Budget | string>
+) => {
+    try {
+        const { id } = req.body;
+        const updatedBudget = await budgetService.removeBudgetExpense(id);
+        res.status(200).send(updatedBudget);
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});

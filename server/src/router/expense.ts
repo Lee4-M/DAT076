@@ -1,8 +1,9 @@
 import express, { Request, Response } from "express";
 import { ExpenseService } from "../service/expense";
 import { Expense } from "../model/expense.interface";
+import { budgetService } from "../router/budget";
 
-const expenseService = new ExpenseService();
+const expenseService = new ExpenseService(budgetService);
 
 export const expenseRouter = express.Router();
 
@@ -36,3 +37,16 @@ expenseRouter.post("/", async (
         res.status(500).send(e.message);
     }
 })
+
+expenseRouter.delete("/", async (
+    req: Request<{}, {}, { id: string }>,
+    res: Response<string>
+) => {
+    try {
+        const { id } = req.body;
+        await expenseService.removeExpense(id);
+        res.status(200).send("Expense deleted successfully.");
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
