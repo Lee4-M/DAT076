@@ -10,10 +10,12 @@
   "author": "Kevin Collins, Liam Mayor, Annelie Waithira Hansson, Philip Öhman",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "uuid": "^11.0.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.1",
