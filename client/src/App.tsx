@@ -1,16 +1,18 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { Sidebar } from './Sidebar'
+import { HelpSettings } from './HelpSettings'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
+import { Container } from 'react-bootstrap';
 
+function App() {
   return (
-    <>
+    <Container fluid className="d-flex">
       <Sidebar />
-    </>
+
+      <HelpSettings />
+    </Container>
   )
 }
 
