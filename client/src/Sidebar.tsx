@@ -2,7 +2,7 @@ import { Col, Container, Row, Card, Image } from "react-bootstrap";
 
 export function Sidebar() {
     return (
-        <Container className="bg-light-subtle rounded-3">
+        <Container className="bg-light-subtle rounded-3 h-100">
             <Row>
                 <Image src="/images/Budgie_Logo.svg" alt="Budgie" className="img-fluid w-25 h-auto mx-auto d-block" />
             </Row>

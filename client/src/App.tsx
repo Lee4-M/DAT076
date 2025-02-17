@@ -4,19 +4,19 @@ import { Sidebar } from './Sidebar'
 import { HelpSettings } from './HelpSettings'
 import { BudgetTable } from './BudgetTable'
 
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
 
 function App() {
   return (
-    <Container fluid className="d-flex bg-body-secondary gap-3 min-vh-100 w-100">
-      <Sidebar />
-      <BudgetTable />
-      <HelpSettings />
+    <Container fluid className="bg-body-secondary h-100 w-100">
+      <Row className='h-100'>
+        <Col lg="2" className='p-3'><Sidebar /></Col>
+        <Col lg="9" className='p-3'><BudgetTable /></Col>
+        <Col lg="1" className='p-0'><HelpSettings /></Col>
+      </Row>
     </Container>
   )
-}
+}   
 
 export default App

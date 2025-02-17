@@ -1,14 +1,14 @@
-import { Container, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import './App.css'
 
 export function BudgetTable() {
     return (
-        <Container className="bg-light-subtle p-3 rounded d-flex flex-column">
+        <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
-                <Table striped bordered hover className="table-striped text-center mb-0">
+                <Table striped bordered hover className="p-2 table-striped text-center">
                     <thead>
                         <tr>
-                            <th className="invisible"></th>
+                            <th></th>
                             <th className="pb-0">
                                 <div className="w-75 m-auto py-2">Budget</div>
                             </th>
@@ -43,12 +43,12 @@ export function BudgetTable() {
                 </Table>
             </div>
 
-            <div className="mt-3 p-3 rounded text-center row fw-bold" id="total-row">
-                <div className="col">Total</div>
-                <div className="col">3900 :-</div>
-                <div className="col">1800 :-</div>
-                <div className="col">2100 :-</div>
+            <div className="p-4 m-2 rounded text-center d-flex fw-bold justify-content-between text-white" id="total-row">
+                <div className="flex-fill">Total</div>
+                <div className="flex-fill">3900 :-</div>
+                <div className="flex-fill">1800 :-</div>
+                <div className="flex-fill">2100 :-</div>
             </div>
-        </Container>
+        </section>
     )
 }
