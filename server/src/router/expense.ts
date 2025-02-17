@@ -25,7 +25,6 @@ expenseRouter.post("/", async (
 ) => {
     try {
         const category = req.body.category;
-        console.log("first line")
         const cost = req.body.cost;
         const description = req.body.description;
         if ((typeof (category) !== "string") || (typeof (cost) !== "number") || (typeof (description) !== "string")) {

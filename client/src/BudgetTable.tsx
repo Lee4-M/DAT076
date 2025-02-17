@@ -1,7 +1,13 @@
 import { Table } from "react-bootstrap";
+import { Budget } from "./api";
 import './App.css'
+import { BudgetComponent } from "./BudgetComponent";
 
-export function BudgetTable() {
+interface BudgetTableProps {
+    budgets: Budget[];
+}
+
+export function BudgetTable({ budgets }: BudgetTableProps) {
     return (
         <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
@@ -21,24 +27,9 @@ export function BudgetTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Restaurant</td>
-                            <td>2000 :-</td>
-                            <td>1200 :-</td>
-                            <td>800 :-</td>
-                        </tr>
-                        <tr>
-                            <td>Transportation</td>
-                            <td>1500 :-</td>
-                            <td>100 :-</td>
-                            <td>1400 :-</td>
-                        </tr>
-                        <tr>
-                            <td>Subscriptions</td>
-                            <td>400 :-</td>
-                            <td>500 :-</td>
-                            <td className="text-danger">-100 :-</td>
-                        </tr>
+                        {budgets.map((budget, index) => (
+                            <BudgetComponent key={index} budget={budget} />
+                        ))}
                     </tbody>
                 </Table>
             </div>

@@ -1,17 +1,25 @@
 import { Modal, Button, Form } from 'react-bootstrap';
-import useState from "react";
-import { addExpense, getExpenses, Expense } from "./api";
+import { addExpense, Expense } from "./api";
 
 
 // Define the types for the props
 interface ExpenseModalProps {
     show: boolean;
     handleClose: () => void;
+    onSave: () => void;
 }
 
-function ExpenseModal({ show, handleClose }: ExpenseModalProps) {
+function ExpenseModal({ show, handleClose, onSave}: ExpenseModalProps) {
 
-
+    async function saveExpense() {
+        const newExpense: Expense | undefined = await addExpense("test", 12, "test2");
+        if (newExpense) {
+            handleClose();
+            onSave();
+        } else {
+            alert('Failed to add expense');
+        }
+    }
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -37,11 +45,7 @@ function ExpenseModal({ show, handleClose }: ExpenseModalProps) {
                 <Button variant="secondary" onClick={() => { handleClose() }}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={async () => {
-                    console.log("bomba")
-                    const newExpense: Expense | undefined = await addExpense("test", 12, "test2");
-                    console.log(newExpense)
-                }}>Save Expense</Button>
+                <Button variant="primary" onClick={saveExpense}>Save Expense</Button>
             </Modal.Footer>
         </Modal>
     );
