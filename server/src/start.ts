@@ -6,6 +6,9 @@ import { budgetRouter } from "./router/budget";
 export const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use("/expense", expenseRouter);
-app.use("/budget", budgetRouter);
+app.use("/budget", budgetRouter);   

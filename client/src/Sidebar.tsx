@@ -1,13 +1,20 @@
+import { useState } from "react";
 import { Col, Container, Row, Card, Image } from "react-bootstrap";
+import ExpenseModal from "./ExpenseModal";
 
 export function Sidebar() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleShow = () => setShowModal(true);
+    const handleClose = () => setShowModal(false);
+
     return (
         <Container className="bg-light-subtle rounded-3 h-100">
             <Row>
                 <Image src="/images/Budgie_Logo.svg" alt="Budgie" className="img-fluid w-25 h-auto mx-auto d-block" />
             </Row>
             <Row className="p-3">
-                <button>Add expense</button>
+                <button onClick={handleShow}>Add expense</button>
             </Row>
             <Row className="p-3">
                 <button>Edit expense</button>
@@ -30,6 +37,7 @@ export function Sidebar() {
             <Row className="p-3">
                 <button>Sign out</button>
             </Row>
+            <ExpenseModal show={showModal} handleClose={() => setShowModal(false)} />
         </Container>
     )
 }
