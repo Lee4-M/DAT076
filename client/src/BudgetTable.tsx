@@ -1,6 +1,7 @@
+import './App.css'
+
 import { Table } from "react-bootstrap";
 import { Budget } from "./api";
-import './App.css'
 import { BudgetComponent } from "./BudgetComponent";
 
 interface BudgetTableProps {
@@ -8,6 +9,9 @@ interface BudgetTableProps {
 }
 
 export function BudgetTable({ budgets }: BudgetTableProps) {
+    let totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
+    let totalExpenses = budgets.reduce((total, budget) => total + budget.expenses.reduce((total, expense) => total + expense.cost, 0), 0);
+    let result = totalBudget - totalExpenses;
     return (
         <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
@@ -36,9 +40,9 @@ export function BudgetTable({ budgets }: BudgetTableProps) {
 
             <div className="p-4 m-2 rounded text-center d-flex fw-bold justify-content-between text-white" id="total-row">
                 <div className="flex-fill">Total</div>
-                <div className="flex-fill">3900 :-</div>
-                <div className="flex-fill">1800 :-</div>
-                <div className="flex-fill">2100 :-</div>
+                <div className="flex-fill">{totalBudget} :-</div>
+                <div className="flex-fill">{totalExpenses} :-</div>
+                <div className="flex-fill">{result} :-</div>
             </div>
         </section>
     )
