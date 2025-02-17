@@ -32,6 +32,7 @@ const Home: React.FC = () => {
       ) : (
         <p className="text-red-500">Not logged in</p>
       )}
+      <button></button>
     </div>
   );
 };

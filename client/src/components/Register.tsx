@@ -34,40 +34,61 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              placeholder="Username"
-            />
+    <div className="container-fluid vh-100">
+      <div className="row h-100">
+        {/* Gradient Section (Left Side) */}
+        <div
+          className="col-md-6 d-none d-md-flex align-items-center justify-content-center"
+          style={{
+            background: '#1F4AA0', 
+            color: '#fff',
+          }}
+        >
+          <div className="text-center p-5">
+            <h1 className="display-4 fw-bold">Create Account</h1>
+            <p className="lead">
+              Take take take take take. Register now!
+            </p>
           </div>
+        </div>
 
-          <div className="input-group">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Password"
-            />
+        {/* Form Section (Right Side) */}
+        <div className="col-md-6 d-flex align-items-center justify-content-center">
+          <div className="w-75 mx-auto">
+            <h2 className="text-center mb-4">Sign Up</h2>
+            {error && <div className="alert alert-danger">{error}</div>}
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary w-100 mb-3">
+                Register
+              </button>
+              <div className="text-center mb-3">
+                <span>Already have an account? </span>
+                <a href="/login" className="text-decoration-none">
+                  Login
+                </a>
+              </div>
+            </form>
           </div>
-
-          <button type="submit" className="btn-login" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-
-        {error && <div className="error-message">{error}</div>}
+        </div>
       </div>
     </div>
   );
