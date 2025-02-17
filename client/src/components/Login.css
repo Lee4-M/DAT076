@@ -1,0 +1,69 @@
+/* Styling the main login page container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  }
+  
+  /* The actual login box */
+  .login-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  /* Header of the login box */
+  .login-box h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Styling input fields */
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .input-group input:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+  }
+  
+  /* Submit button */
+  .btn-login {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #6c63ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-login:hover {
+    background-color: #5a4ef0;
+  }
+  
+  
