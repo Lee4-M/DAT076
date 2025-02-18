@@ -10,7 +10,7 @@ interface BudgetModalProps {
 }
 
 function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
-    
+
     const [category, setCategory] = useState<string>('');
     const [amount, setAmount] = useState<number | ''>('');
 
@@ -28,7 +28,7 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
     }
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal data-testid="budget-modal" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Budget Item</Modal.Title>
             </Modal.Header>
@@ -36,13 +36,13 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Budget Category</Form.Label>
-                        <Form.Control type="text" placeholder="Enter category name" value={category} 
-                        onChange={(e) => setCategory(e.target.value)} />
+                        <Form.Control type="text" placeholder="Enter category name" value={category}
+                            onChange={(e) => setCategory(e.target.value)} />
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Amount</Form.Label>
-                        <Form.Control type="number" placeholder="Enter amount" value={amount} 
-                        onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))}/>
+                        <Form.Control type="number" placeholder="Enter amount" value={amount}
+                            onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))} />
                     </Form.Group>
                 </Form>
             </Modal.Body>

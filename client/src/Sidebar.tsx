@@ -9,7 +9,7 @@ interface SidebarProps {
     loadBudgets: () => void;
 }
 
-export function Sidebar({ addBudget, loadBudgets}: SidebarProps) {
+export function Sidebar({ addBudget, loadBudgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
 
@@ -46,14 +46,14 @@ export function Sidebar({ addBudget, loadBudgets}: SidebarProps) {
                 <button>Sign out</button>
             </Row>
 
-            <ExpenseModal show={showExpenseModal} handleClose={() => setShowExpenseModal(false)} onSave = {() => { 
-                    setShowExpenseModal(false);
-                    loadBudgets();
+            <ExpenseModal show={showExpenseModal} handleClose={() => setShowExpenseModal(false)} onSave={() => {
+                setShowExpenseModal(false);
+                loadBudgets();
             }} />
-            <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave = {(newBudget) => {
-                    addBudget(newBudget);
-                    setShowBudgetModal(false);
-                }}
+            <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={(newBudget) => {
+                addBudget(newBudget);
+                setShowBudgetModal(false);
+            }}
             />
         </Container>
     )

@@ -2,33 +2,63 @@ import { render, fireEvent } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import App from './App';
 
+import axios from 'axios';
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>
+
+
+// Implement this for future test cases
+mockedAxios.get.mockResolvedValue({
+  data: [
+    {
+      category: 'Test Category',
+      cost: 100,
+      expenses: [],
+      result: 0
+    }
+  ]
+});
+
 describe('App Component', () => {
-  test('renders the heading Vite + React', () => {
+  test('renders the add expense button', () => {
     render(<App />);
-    const headingElement = screen.getByText(/Vite \+ React/i);
-    expect(headingElement).toBeInTheDocument();
+    const addExpenseButton = screen.getByRole('button', { name: "Add expense" });
+    expect(addExpenseButton).toBeInTheDocument();
   });
 
-  test('renders the initial count value of 0', () => {
+  test('opens expense modal when add expense button is clicked', () => {
     render(<App />);
-    const countButton = screen.getByRole('button', { name: /count is 0/i });
-    expect(countButton).toBeInTheDocument();
+    const addExpenseButton = screen.getByRole('button', { name: "Add expense" });
+    fireEvent.click(addExpenseButton);
+    const expenseModal = screen.getByTestId('expense-modal');
+    expect(expenseModal).toBeInTheDocument();
   });
 
-  test('increments the count when the button is clicked', () => {
+  test('renders the add budget button', () => {
     render(<App />);
-    const countButton = screen.getByRole('button', { name: /count is 0/i });
-    
-    fireEvent.click(countButton);
-    expect(countButton).toHaveTextContent('count is 1');
-    
-    fireEvent.click(countButton);
-    expect(countButton).toHaveTextContent('count is 2');
+    const addBudgetButton = screen.getByRole('button', { name: "Add budget" });
+    expect(addBudgetButton).toBeInTheDocument();
   });
 
-  test('renders the "read the docs" paragraph', () => {
+  test('opens budget modal when add budget button is clicked', () => {
     render(<App />);
-    const docsParagraph = screen.getByText(/Click on the Vite and React logos to learn more/i);
-    expect(docsParagraph).toBeInTheDocument();
+    const addBudgetButton = screen.getByRole('button', { name: "Add budget" });
+    fireEvent.click(addBudgetButton);
+    const budgetModal = screen.getByTestId('budget-modal');
+    expect(budgetModal).toBeInTheDocument();
+  });
+
+  test('renders the edit expense button', () => {
+    render(<App />);
+    const editExpenseButton = screen.getByRole('button', { name: "Edit expense" });
+    expect(editExpenseButton).toBeInTheDocument();
+  });
+
+  test('renders the sign out button', () => {
+    render(<App />);
+    const signOutButton = screen.getByRole('button', { name: "Sign out" });
+    expect(signOutButton).toBeInTheDocument();
   });
 });
+
+

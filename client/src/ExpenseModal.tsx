@@ -10,7 +10,7 @@ interface ExpenseModalProps {
     onSave: () => void;
 }
 
-function ExpenseModal({ show, handleClose, onSave}: ExpenseModalProps) {
+function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
 
     const [expenseName, setExpenseName] = useState('');
     const [cost, setCost] = useState('');
@@ -38,7 +38,7 @@ function ExpenseModal({ show, handleClose, onSave}: ExpenseModalProps) {
     }
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal data-testid="expense-modal" show={show} onHide={handleClose} >
             <Modal.Header closeButton>
                 <Modal.Title>Add Expense</Modal.Title>
             </Modal.Header>
@@ -46,8 +46,8 @@ function ExpenseModal({ show, handleClose, onSave}: ExpenseModalProps) {
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control 
-                            type="text" 
+                        <Form.Control
+                            type="text"
                             placeholder="Enter expense category"
                             value={expenseName}
                             onChange={(e) => setExpenseName(e.target.value)}
@@ -55,8 +55,8 @@ function ExpenseModal({ show, handleClose, onSave}: ExpenseModalProps) {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Cost</Form.Label>
-                        <Form.Control 
-                            type="number" 
+                        <Form.Control
+                            type="number"
                             placeholder="Enter amount"
                             value={cost}
                             onChange={(e) => setCost(e.target.value)}
@@ -64,8 +64,8 @@ function ExpenseModal({ show, handleClose, onSave}: ExpenseModalProps) {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control 
-                            type="text" 
+                        <Form.Control
+                            type="text"
                             placeholder="Enter description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -79,7 +79,7 @@ function ExpenseModal({ show, handleClose, onSave}: ExpenseModalProps) {
                 </Button>
                 <Button variant="primary" onClick={saveExpense}>Save Expense</Button>
             </Modal.Footer>
-        </Modal>
+        </Modal >
     );
 }
 
