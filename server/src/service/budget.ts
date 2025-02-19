@@ -8,14 +8,19 @@ export class BudgetService {
         return JSON.parse(JSON.stringify(this.budgets));
     }
 
-    async addBudget(category: string, cost: number): Promise<Budget> {
+    async addBudget(category: string, cost: number, expense?: Expense): Promise<Budget> {
         // Assuming we add expenses after adding a budget row
-        const budget = {
+        const budget: Budget = {
             category: category,
             cost: cost,
-            expenses: [],
+            expenses: [] as Expense[],
             result: cost
         }
+        if (typeof expense !== 'undefined') {
+            budget.expenses.push(expense);
+            budget.result -= expense.cost;
+        }
+        
         this.budgets.push(budget);
         return { ...budget };
     }
@@ -23,8 +28,8 @@ export class BudgetService {
     async addBudgetExpense(expense: Expense): Promise<Budget> {
         const budget = this.budgets.find(budget => budget.category === expense.category);
 
-        if (!budget) {
-            throw new Error("Budget not found for category: " + expense.category);
+        if (!budget) { 
+            return this.addBudget(expense.category, 0, expense);
         }
 
         budget.expenses.push(expense);
@@ -32,6 +37,7 @@ export class BudgetService {
 
         return { ...budget };
     }
+    
 
     async removeBudgetExpense(id: string): Promise<Budget> {
         const budget = this.budgets.find(budget => 
