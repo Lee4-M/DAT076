@@ -26,13 +26,16 @@ export async function logout(): Promise<void>{
 };
 
 
-export async function getSessionUser(): Promise<any|null>{
+export async function getSessionUser(): Promise<any | null> {
   try {
-    const response = await axios.get(`${BASE_URL}/session`);
+    const response = await axios.get(`${BASE_URL}/session`, {
+      withCredentials: true,
+    });
     return response.data.user;
   } catch (error: any) {
     console.error("Failed to fetch session user:", error.response?.data?.error || "Unknown error");
     return null;
   }
 };
+
 

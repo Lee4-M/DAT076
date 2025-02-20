@@ -46,7 +46,7 @@ const Login = () => {
         {/* Form Section (Right Side) */}
         <div className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="w-75 mx-auto">
-            <h2 className="text-center mb-4">Welcome Back</h2>
+            <h2 className="text-center mb-4">Welcome to Budgie</h2>
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleLogin}>
               <div className="mb-3">

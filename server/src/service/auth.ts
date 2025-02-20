@@ -1,47 +1,43 @@
 import { User } from '../model/user.interface';
 import { randomBytes, pbkdf2Sync, timingSafeEqual } from 'crypto';
-import { v4 as uuidv4 } from "uuid";
+import bcrypt from 'bcrypt';
 
-const users: User[] = []; // TODO: Replace with a real DB
+const salt = bcrypt.genSaltSync(10); 
+
 
 export class AuthService {
 
+    users: User[] = []; // TODO: Replace with a real DB
+    
+
     // Register a new user
-    static async register(username: string, password: string) {
-        const salt = randomBytes(128).toString('base64');
-        const hash = pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString('hex');
+    async register(username: string, password: string) {
+        const hash = await bcrypt.hash(password, salt);
 
-        const newUser: User = {
-            id: uuidv4(),
-            username,
-            salt,  
-            password: hash,
-        };
-
-        users.push(newUser); // TODO: replace with DB also make sure to check if user already exists
-        return { id: newUser.id, username: newUser.username };
+        if (this.users.some((u) => u.username === username)) {
+            throw new Error("Username already taken");
+        }
+        const newUser: User = { username, password: hash };
+        this.users.push(newUser); // TODO: replace with DB also make sure to check if user already exists
+        return { username: newUser.username };
     }
 
     // Log in user
-    static async login(username: string, password: string, session: any) {
-        const user = users.find((u) => u.username === username);
+    async login(username: string, password: string, session: any) {
+        const user = this.users.find((u) => u.username == username);
         if (!user) throw new Error("User not found");
-
-        const hashedAttempt = pbkdf2Sync(password, user.salt, 10000, 512, 'sha512');
-        const storedHashBuffer = Buffer.from(user.password, 'hex');
-
-        if (hashedAttempt.length !== storedHashBuffer.length || !timingSafeEqual(hashedAttempt, storedHashBuffer)) {
-            throw new Error("Invalid password");
-        }
-
-        session.user = { id: user.id, username: user.username };
+        
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) throw new Error("Invalid password");
+        
+        session.user = { username: user.username};
         return session.user;
     }
 
     // Logout a user
     static logout(session: any) {
         session.destroy(() => { });
-        
+
         return { message: "Logged out successfully" };
     }
 

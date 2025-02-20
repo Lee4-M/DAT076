@@ -9,6 +9,7 @@ const Home: React.FC = () => {
     const fetchSession = async () => {
       try {
         const sessionUser = await getSessionUser();
+        console.log("apaapapap" + sessionUser)
         setUser(sessionUser);
       } catch (error) {
         console.error("Error fetching session:", error);
