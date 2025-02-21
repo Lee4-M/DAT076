@@ -12,7 +12,6 @@ interface SidebarProps {
 export function Sidebar({ addBudget, loadBudgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
-
     return (
         <Container className="bg-light-subtle rounded-3 h-100">
             <Row>

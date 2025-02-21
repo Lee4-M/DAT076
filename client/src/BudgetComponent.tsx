@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { Budget } from './api';
 
+
 export function BudgetComponent({ budget }: { budget: Budget }) {
+        const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
     return (
-        <tr>
+        <tr onClick={() => setShowExpenseAccordion(true)}>
             <td>{budget.category}</td>
             <td>{budget.cost} :-</td>
             <td>
@@ -10,6 +13,6 @@ export function BudgetComponent({ budget }: { budget: Budget }) {
             </td>
             <td>{budget.result} :-</td>
         </tr>
+
     )
 }
-
