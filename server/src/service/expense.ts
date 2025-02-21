@@ -3,7 +3,7 @@ import { Expense } from "../model/expense.interface";
 import { BudgetService } from "./budget";
 
 export class ExpenseService {
-    private expenses : Expense[] = [];
+    private expenses: Expense[] = [];
     private budgetService: BudgetService;
 
     constructor(budgetService: BudgetService) {
@@ -25,7 +25,7 @@ export class ExpenseService {
         this.expenses.push(expense);
 
         await this.budgetService.addBudgetExpense(expense);
-        
+
         return { ...expense };
     }
 
@@ -34,9 +34,9 @@ export class ExpenseService {
         if (index === -1) {
             throw new Error("Expense not found");
         }
-    
+
         this.expenses.splice(index, 1);
-    
+
         await this.budgetService.removeBudgetExpense(id);
     }
 }
