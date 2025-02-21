@@ -13,9 +13,6 @@ export const app = express();
 
 app.use(express.json());
 
-app.use(express.json());
-
-
 
 dotenv.config();
 app.use(session({
@@ -33,4 +30,4 @@ const authService = new AuthService();
 app.use("/auth", authRouter(authService));
 
 app.use("/expense", expenseRouter);
-app.use("/budget", budgetRouter);
+app.use("/budget", budgetRouter);   
