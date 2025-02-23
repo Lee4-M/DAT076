@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
-import { Budget, getBudgets } from './api';
+import { Budget, getBudgets, delBudget } from './api';
 import { Sidebar } from './Sidebar'
 import { HelpSettings } from './HelpSettings'
 import { BudgetTable } from './BudgetTable'
@@ -24,9 +24,17 @@ function App() {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
   }
 
-  function deleteBudget(category: string) {
+  async function deleteBudget(category: string) {
     //console.log("Budgets before: ", budgets);
-    setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.category !== category));
+    const success = await delBudget(category);
+
+    if (success) {
+      setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.category !== category));
+      console.log("Budget deleted");
+    } else {
+        console.error("Failed to delete budget");
+    }
+
     //console.log("Budgets after: ", budgets);
   }
 
