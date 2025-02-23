@@ -9,7 +9,7 @@ export const expenseRouter = express.Router();
 
 expenseRouter.get("/", async (
     req: Request<{}, {}, {}>,
-    res: Response<Array<Expense> | String>
+    res: Response<Array<Expense> | String> //TODO: Change to string? -Kev
 ) => {
     try {
         const expenses = await expenseService.getExpenses();

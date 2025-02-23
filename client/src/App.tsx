@@ -24,10 +24,17 @@ function App() {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
   }
 
+  function deleteBudget(category: string) {
+    //console.log("Budgets before: ", budgets);
+    setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.category !== category));
+    //console.log("Budgets after: ", budgets);
+  }
+
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
-    loadBudgets();
+    //console.log("Budgets update from App.tsx: ", budgets);
+    //loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
   }, [loadBudgets]);
 
   return (
@@ -35,7 +42,7 @@ function App() {
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
           <Col lg="2" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} /></Col>
-          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} /></Col>
+          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteBudget={deleteBudget} /></Col>
           <Col lg="1" className='p-0'><HelpSettings /></Col>
         </Row>
       </Container>

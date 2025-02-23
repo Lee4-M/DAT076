@@ -60,3 +60,7 @@ td:last-child {
 #total-row {
   background-color: var(--main-secondary-color);
 }
+
+tbody > tr > td:last-child {
+  border: none !important;
+}
