@@ -25,23 +25,19 @@ function App() {
   }
 
   async function deleteBudget(category: string) {
-    //console.log("Budgets before: ", budgets);
     const success = await delBudget(category);
 
     if (success) {
       setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.category !== category));
       console.log("Budget deleted");
     } else {
-        console.error("Failed to delete budget");
+        console.log("Failed to delete budget");
     }
-
-    //console.log("Budgets after: ", budgets);
   }
 
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
-    //console.log("Budgets update from App.tsx: ", budgets);
     //loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
   }, [loadBudgets]);
 

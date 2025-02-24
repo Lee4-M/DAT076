@@ -10,7 +10,6 @@ interface BudgetTableProps {
 }
 
 export function BudgetTable({ budgets, deleteBudget }: BudgetTableProps) {
-    //console.log("Rendering BudgetTable with budgets:", budgets);
     let totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
     let totalExpenses = budgets.reduce((total, budget) => total + budget.expenses.reduce((total, expense) => total + expense.cost, 0), 0);
     let result = totalBudget - totalExpenses;
@@ -35,7 +34,7 @@ export function BudgetTable({ budgets, deleteBudget }: BudgetTableProps) {
                     </thead>
                     <tbody>
                         {budgets.map((budget, index) => (
-                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget}/>
+                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget}/> //TODO Change back to index?
                         ))}
                     </tbody>
                 </Table>
