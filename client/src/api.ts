@@ -13,6 +13,7 @@ export type Expense = {
     category: string;
     cost: number;
     description: string;
+    id: number;
 }
 
 const BASE_URL = "http://localhost:8080"

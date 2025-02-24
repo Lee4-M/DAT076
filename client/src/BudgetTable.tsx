@@ -1,5 +1,4 @@
 import './App.css'
-
 import { Table } from "react-bootstrap";
 import { Budget } from "./api";
 import { BudgetComponent } from "./BudgetComponent";
