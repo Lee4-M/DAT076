@@ -10,7 +10,9 @@ interface BudgetTableProps {
 
 export function BudgetTable({ budgets }: BudgetTableProps) {
     let totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
-    let totalExpenses = budgets.reduce((total, budget) => total + budget.expenses.reduce((total, expense) => total + expense.cost, 0), 0);
+    let totalExpenses = budgets.reduce((sum, budget) => 
+        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0), 
+    0);
     let result = totalBudget - totalExpenses;
     return (
         <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
