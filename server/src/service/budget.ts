@@ -25,6 +25,15 @@ export class BudgetService {
         return { ...budget };
     }
 
+    async deleteBudget(category: string): Promise<boolean> {
+        const index = this.budgets.findIndex(budget => budget.category === category);
+        if (index === -1) { // Budget not found
+            return false;
+        }
+        this.budgets.splice(index, 1);
+        return true;
+    }
+
     async addBudgetExpense(expense: Expense): Promise<Budget> {
         const budget = this.budgets.find(budget => budget.category === expense.category);
 

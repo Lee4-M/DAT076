@@ -6,12 +6,14 @@ import { BudgetComponent } from "./BudgetComponent";
 
 interface BudgetTableProps {
     budgets: Budget[];
+    deleteBudget: (category : string) => void;
 }
 
-export function BudgetTable({ budgets }: BudgetTableProps) {
+export function BudgetTable({ budgets, deleteBudget }: BudgetTableProps) {
     let totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
     let totalExpenses = budgets.reduce((total, budget) => total + budget.expenses.reduce((total, expense) => total + expense.cost, 0), 0);
     let result = totalBudget - totalExpenses;
+    
     return (
         <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
@@ -32,7 +34,7 @@ export function BudgetTable({ budgets }: BudgetTableProps) {
                     </thead>
                     <tbody>
                         {budgets.map((budget, index) => (
-                            <BudgetComponent key={index} budget={budget} />
+                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget}/> //TODO Change back to index?
                         ))}
                     </tbody>
                 </Table>

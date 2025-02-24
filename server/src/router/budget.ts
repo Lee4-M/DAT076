@@ -36,6 +36,23 @@ budgetRouter.post("/", async (
     }
 })
 
+budgetRouter.delete("/", async (
+    req: Request<{}, {}, { category: string }>,
+    res: Response<string>
+) => {
+    try {
+        const { category } = req.body;
+        const success = await budgetService.deleteBudget(category);
+        if (success) {
+            res.status(200).send("Budget deleted");
+        } else {
+            res.status(404).send("Budget not found");
+        }
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
+
 budgetRouter.delete("/expense", async (
     req: Request<{}, {}, { id: string }>,
     res: Response<Budget | string>

@@ -46,3 +46,20 @@ export async function addBudget(category: string, cost: number): Promise<Budget 
         return undefined;
     }
 }
+
+export async function delBudget(category: string): Promise<boolean> {
+    try {
+        const response = await axios.delete(`${BASE_URL}/budget`, { data: { category: category } });
+        
+        if (response.status === 200) {
+            return true; // Deleted budget
+        } else {
+            console.log(`Unexpected response status: ${response.status}`);
+            return false;
+        }
+        
+    } catch (e: any) {
+        console.log(e);
+        return false;
+    }
+}
