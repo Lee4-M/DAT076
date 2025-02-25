@@ -26,11 +26,20 @@ function App() {
 
   async function deleteExpense(id: string) {
     const success = await delExpense(id);
-
+  
     if (success) {
-      loadBudgets();
-    } //TODO fix this error handling
+      setBudgets((prevBudgets) =>
+        prevBudgets.map((budget) => ({
+          ...budget,
+          expenses: budget.expenses.filter((expense) => expense.id !== id),
+        }))
+      );
+      console.log("Expense deleted");
+    } else {
+      console.log("Failed to delete expense");
+    }
   }
+  
 
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
@@ -43,7 +52,7 @@ function App() {
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
           <Col lg="2" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} /></Col>
-          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} /></Col>
+          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteExpense={deleteExpense} /></Col>
           <Col lg="1" className='p-0'><HelpSettings /></Col>
         </Row>
       </Container>

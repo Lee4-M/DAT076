@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Budget, delExpense } from './api';
+import { Budget } from './api';
 import { ExpenseAccordion } from './ExpenseAccordion';
 import './App.css';
 
 
-export function BudgetComponent({ budget }: { budget: Budget }) {
+export function BudgetComponent({ budget, deleteExpense }: { budget: Budget, deleteExpense: (id: string) => void }) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
     const [expenses, setExpenses] = useState(budget.expenses); 
 
@@ -18,7 +18,7 @@ export function BudgetComponent({ budget }: { budget: Budget }) {
     //};
 
     const handleDeleteExpense = async (id: string) => {
-        delExpense(id);
+        deleteExpense(id);
         setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id));
     }
 
