@@ -1,5 +1,10 @@
 import './App.css'
-import { Budget, getBudgets } from './api';
+
+import Login from './components/Login';
+import Register from './components/Register';
+import Home from './components/Home';
+import { Budget, getBudgets, delBudget } from './api';
+
 import { Sidebar } from './Sidebar'
 import { HelpSettings } from './HelpSettings'
 import { BudgetTable } from './BudgetTable'
@@ -20,18 +25,29 @@ function App() {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
   }
 
+  async function deleteBudget(category: string) {
+    const success = await delBudget(category);
+
+    if (success) {
+      setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.category !== category));
+      console.log("Budget deleted");
+    } else {
+        console.log("Failed to delete budget");
+    }
+  }
+
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
-    loadBudgets();
+    //loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
   }, [loadBudgets]);
 
   return (
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets} /></Col>
           <Col lg="8" className='p-3'><BudgetTable budgets={budgets} /></Col>
+          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteBudget={deleteBudget} /></Col>
           <Col lg="1" className='p-0'><HelpSettings /></Col>
         </Row>
       </Container>

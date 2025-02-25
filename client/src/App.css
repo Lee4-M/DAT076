@@ -65,3 +65,7 @@ td:last-child {
   background-color: var(--main-secondary-color);
   border-radius: 12px;
 }
+
+tbody > tr > td:last-child {
+  border: none !important;
+}
