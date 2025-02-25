@@ -8,6 +8,10 @@ export class BudgetService {
         return JSON.parse(JSON.stringify(this.budgets));
     }
 
+    async resetBudgets(): Promise<void> {
+        this.budgets = [];
+    }
+
     async addBudget(category: string, cost: number, expense?: Expense): Promise<Budget> {
         // Assuming we add expenses after adding a budget row
         const budget: Budget = {
