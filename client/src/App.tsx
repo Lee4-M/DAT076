@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
-import { Budget, getBudgets } from './api';
+import { Budget, delExpense, getBudgets } from './api';
 import { Sidebar } from './Sidebar'
 import { HelpSettings } from './HelpSettings'
 import { BudgetTable } from './BudgetTable'
@@ -22,6 +22,14 @@ function App() {
 
   function addBudget(newBudget: Budget) {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
+  }
+
+  async function deleteExpense(id: string) {
+    const success = await delExpense(id);
+
+    if (success) {
+      loadBudgets();
+    } //TODO fix this error handling
   }
 
   // Som onMount i Svelte, körs när komponenten renderas.

@@ -1,20 +1,26 @@
 import { useState } from 'react';
-import { Budget, deleteExpense, getBudget } from './api';
+import { Budget, delExpense } from './api';
 import { ExpenseAccordion } from './ExpenseAccordion';
+import './App.css';
+
 
 export function BudgetComponent({ budget }: { budget: Budget }) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
     const [expenses, setExpenses] = useState(budget.expenses); 
 
+    //const handleDeleteExpense = async (id: string) => {
+    //    try {
+    //        await deleteExpense(id);
+    //        setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id)); // Safely update state
+    //    } catch (error) {
+    //        console.error("Failed to delete expense", error);
+    //    }
+    //};
+
     const handleDeleteExpense = async (id: string) => {
-        try {
-            await deleteExpense(id);
-            setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id)); // Safely update state
-        } catch (error) {
-            console.error("Failed to delete expense", error);
-        }
-    };
-    
+        delExpense(id);
+        setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id));
+    }
 
     return (
         <>

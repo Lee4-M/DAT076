@@ -53,10 +53,18 @@ export async function addBudget(category: string, cost: number): Promise<Budget 
     }
 }
 
-export async function deleteExpense(id: string) {
+export async function delExpense(id: string): Promise<boolean> {
     try {
-        await axios.delete(`${BASE_URL}/expense/${id}`);
+        const response = await axios.delete(`${BASE_URL}/expense/${id}`);
+
+        if (response.status === 200) {
+            return true; // Deleted expense
+        } else {
+            console.log(`Unexpected response status: ${response.status}`);
+            return false;
+        }
     } catch (e: any) {
         console.log(e);
+        return false;
     }
 }

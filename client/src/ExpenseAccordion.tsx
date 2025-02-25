@@ -1,7 +1,6 @@
 import { Budget } from "./api";
 import { Table } from "react-bootstrap";
 import './App.css'
-import { deleteExpense } from "./api";
 
 interface ExpenseAccordionProps {
     show: boolean;
