@@ -1,17 +1,34 @@
-import { useState } from "react";
-import { Col, Container, Row, Card, Image } from "react-bootstrap";
 import ExpenseModal from "./ExpenseModal";
 import BudgetItemModal from "./BudgetItemModal";
 import { Budget } from "./api";
 
+import { useState } from "react";
+import { Container, Row, Card, Image } from "react-bootstrap";
+
+import { PieChart } from "@mui/x-charts";
+
 interface SidebarProps {
     addBudget: (budget: Budget) => void;
     loadBudgets: () => void;
+    budgets: Budget[];
 }
 
-export function Sidebar({ addBudget, loadBudgets }: SidebarProps) {
+export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
+
+    let totalExpenses = budgets.reduce((sum, budget) => 
+        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0), 
+    0);
+
+    const expenseData = budgets.map(budget => {
+        const categoryTotal = budget.expenses.reduce((total, expense) => total + expense.cost, 0);
+        return {
+            id: budget.category,
+            value: totalExpenses > 0 ? parseFloat(((categoryTotal / totalExpenses) * 100).toFixed(1)) : 0, 
+            label: budget.category,
+        };
+    });
 
     return (
         <Container className="bg-light-subtle rounded-3 h-100">
@@ -19,33 +36,43 @@ export function Sidebar({ addBudget, loadBudgets }: SidebarProps) {
                 <Image src="/images/Budgie_Logo.svg" alt="Budgie" className="img-fluid w-25 h-auto mx-auto d-block" />
             </Row>
             <Row className="px-3 pt-4">
-                <button onClick={() => setShowBudgetModal(true)}>Add budget</button>
+                <button className="sidebar-button" onClick={() => setShowBudgetModal(true)}>Add budget</button>
             </Row>
             <Row className="px-3 pt-3">
-                <button onClick={() => setShowExpenseModal(true)}>Add expense</button>
+                <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
             <Row className="px-3 py-3">
-                <button>Edit expense</button>
+                <button className="sidebar-button">Edit expense</button>
             </Row>
-            <Row>
-                <Card className="p-3">
-                    <Row>
-                        <Image src="/images/pie-chart.png" alt="Pie chart" className="img-fluid w-75 h-auto mx-auto d-block" />
-                    </Row>
-                    <Row>
-                        <Col>c11</Col>
-                        <Col>c12</Col>
-                    </Row>
-                    <Row>
-                        <Col>c21</Col>
-                        <Col>c22</Col>
-                    </Row>
+            <Row className="p-3">
+                <Card className="d-flex justify-content-center align-items-center">    
+                    <PieChart 
+                        series={[
+                            {
+                                data: expenseData.map((item) => ({
+                                    id: item.id,
+                                    value: item.value,
+                                    label: item.label,
+                                })),
+                                innerRadius: 140,
+                                outerRadius: 0,
+                                cornerRadius: 3,
+                                paddingAngle: 1,
+                                cx: 200,
+                                valueFormatter: item => `${item.value}%`, 
+                                highlightScope: { fade: 'global', highlight: 'item' },
+                                faded: { innerRadius: 100, additionalRadius: -10, color: 'gray' },
+                            },
+                        ]}
+                        slotProps = {{ legend: { direction: 'row', position: {vertical: 'bottom', horizontal: 'middle'} }}}
+                        width={400}
+                        height={450}
+                    />
                 </Card>
             </Row>
             <Row className="p-3">
-                <button>Sign out</button>
+                <button className="sidebar-button">Sign out</button>
             </Row>
-
             <ExpenseModal show={showExpenseModal} handleClose={() => setShowExpenseModal(false)} onSave={() => {
                 setShowExpenseModal(false);
                 loadBudgets();

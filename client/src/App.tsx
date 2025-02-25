@@ -1,9 +1,10 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import { Budget, getBudgets, delBudget } from './api';
+
 import { Sidebar } from './Sidebar'
 import { HelpSettings } from './HelpSettings'
 import { BudgetTable } from './BudgetTable'
@@ -45,7 +46,7 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="2" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} /></Col>
+          <Col lg="8" className='p-3'><BudgetTable budgets={budgets} /></Col>
           <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteBudget={deleteBudget} /></Col>
           <Col lg="1" className='p-0'><HelpSettings /></Col>
         </Row>
