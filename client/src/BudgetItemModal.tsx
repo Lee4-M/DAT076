@@ -15,7 +15,13 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
     const [amount, setAmount] = useState<number | ''>('');
 
     async function saveBudgetItems() {
+        if (!category) {
+            alert('Please fill in a category name.');
+            return;
+        }
+
         const newBudgetItem = await addBudget(category, Number(amount));
+
         if (newBudgetItem) {
             // Måste se till att formuläret töms efter vi sparat
             onSave(newBudgetItem);
