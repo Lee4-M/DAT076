@@ -1,16 +1,21 @@
 import { Budget } from "./api";
 import { Table } from "react-bootstrap";
 import './App.css'
+import { deleteExpense } from "./api";
 
 interface ExpenseAccordionProps {
     show: boolean;
     handleClose: () => void;
-    deleteExpense: (expenseId: number) => void;
     budget: Budget;
+    onDeleteExpense: (id: string) => void;
 }
 
-export function ExpenseAccordion({ show, budget, handleClose, deleteExpense }: ExpenseAccordionProps) {
+export function ExpenseAccordion({ show, budget, handleClose, onDeleteExpense }: ExpenseAccordionProps) {
     if (!show) return null;
+
+    const handleDelete = async (id: string) => {
+        onDeleteExpense(id);
+    };
 
     return (
         <section>
@@ -28,7 +33,7 @@ export function ExpenseAccordion({ show, budget, handleClose, deleteExpense }: E
                             <td>{expense.cost} :-</td>
                             <td>{expense.description}</td>
                             <td>
-                                <button onClick={() => deleteExpense(expense.id)} className="btn btn-danger">
+                                <button onClick={() => handleDelete(expense.id)} className="btn btn-danger">
                                     Delete
                                 </button>
                             </td>
