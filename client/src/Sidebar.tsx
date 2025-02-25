@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 
 import { PieChart } from "@mui/x-charts";
-import { useMediaQuery } from '@mui/material'; // TODO: Implement media query for responsive design
 
 interface SidebarProps {
     addBudget: (budget: Budget) => void;
@@ -47,7 +46,6 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">    
-                    {/* TODO (?): Move to a seperate component file perhaps */}
                     <PieChart 
                         series={[
                             {
