@@ -40,7 +40,7 @@ expenseRouter.post("/", async (
 
 expenseRouter.delete("/:id", async (req: Request, res: Response<string>) => {
     try {
-        const { id } = req.params; // ✅ Get `id` from URL
+        const { id } = req.params;
         console.log(`Deleting expense with ID: ${id}`);
 
         await expenseService.removeExpense(id);
