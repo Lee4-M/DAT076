@@ -1,8 +1,5 @@
-import './App.css'
+import './App.css';
 
-import Login from './components/Login';
-import Register from './components/Register';
-import Home from './components/Home';
 import { Budget, getBudgets, delBudget } from './api';
 
 import { Sidebar } from './Sidebar'
@@ -32,7 +29,7 @@ function App() {
       setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.category !== category));
       console.log("Budget deleted");
     } else {
-        console.log("Failed to delete budget");
+      console.log("Failed to delete budget");
     }
   }
 
@@ -46,8 +43,8 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="8" className='p-3'><BudgetTable budgets={budgets} /></Col>
-          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteBudget={deleteBudget} /></Col>
+          <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets} /></Col>
+          <Col lg="8" className='p-3'><BudgetTable budgets={budgets} deleteBudget={deleteBudget} /></Col>
           <Col lg="1" className='p-0'><HelpSettings /></Col>
         </Row>
       </Container>
