@@ -38,15 +38,16 @@ expenseRouter.post("/", async (
     }
 })
 
-expenseRouter.delete("/", async (
-    req: Request<{}, {}, { id: string }>,
-    res: Response<string>
-) => {
+expenseRouter.delete("/:id", async (req: Request, res: Response<string>) => {
     try {
-        const { id } = req.body;
+        const { id } = req.params; // ✅ Get `id` from URL
+        console.log(`Deleting expense with ID: ${id}`);
+
         await expenseService.removeExpense(id);
+
         res.status(200).send("Expense deleted successfully.");
     } catch (e: any) {
+        console.error("Error deleting expense:", e.message);
         res.status(500).send(e.message);
     }
 });

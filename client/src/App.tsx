@@ -28,24 +28,23 @@ function App() {
     const success = await delExpense(id);
   
     if (success) {
-      setBudgets((prevBudgets) =>
-        prevBudgets.map((budget) => ({
-          ...budget,
-          expenses: budget.expenses.filter((expense) => expense.id !== id),
-        }))
-      );
-      console.log("Expense deleted");
+      console.log("Expense deleted, reloading budgets...");
+      await loadBudgets(); 
     } else {
       console.log("Failed to delete expense");
     }
   }
+  
+  
+  
   
 
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
     loadBudgets();
-  }, [loadBudgets]);
+  }, []);
+  
 
   return (
     <>

@@ -1,35 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Budget } from './api';
 import { ExpenseAccordion } from './ExpenseAccordion';
 import './App.css';
 
-
 export function BudgetComponent({ budget, deleteExpense }: { budget: Budget, deleteExpense: (id: string) => void }) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
-    const [expenses, setExpenses] = useState(budget.expenses); 
+    const [expenses, setExpenses] = useState(budget.expenses);
 
-    //const handleDeleteExpense = async (id: string) => {
-    //    try {
-    //        await deleteExpense(id);
-    //        setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id)); // Safely update state
-    //    } catch (error) {
-    //        console.error("Failed to delete expense", error);
-    //    }
-    //};
+    useEffect(() => {
+        setExpenses(budget.expenses);
+    }, [budget.expenses]); 
 
-    const handleDeleteExpense = async (id: string) => {
-        deleteExpense(id);
-        setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id));
-    }
+    const handleOpenAccordion = () => {
+        setShowExpenseAccordion(true);
+    };
 
     return (
         <>
-            <tr onClick={() => setShowExpenseAccordion(true)}>
+            <tr onClick={handleOpenAccordion}>
                 <td>{budget.category}</td>
                 <td>{budget.cost} :-</td>
-                <td>
-                    {expenses.reduce((total, expense) => total + expense.cost, 0)} :-
-                </td>
+                <td>{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
                 <td>{budget.result} :-</td>
             </tr>
 
@@ -40,7 +31,7 @@ export function BudgetComponent({ budget, deleteExpense }: { budget: Budget, del
                             show={showExpenseAccordion}
                             budget={{ ...budget, expenses }}
                             handleClose={() => setShowExpenseAccordion(false)}
-                            onDeleteExpense={handleDeleteExpense} // Pass delete function
+                            onDeleteExpense={deleteExpense}
                         />
                     </td>
                 </tr>

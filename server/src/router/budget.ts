@@ -36,7 +36,7 @@ budgetRouter.post("/", async (
     }
 })
 
-budgetRouter.delete("/expense", async (
+budgetRouter.delete("/expense/:id", async (
     req: Request<{}, {}, { id: string }>,
     res: Response<Budget | string>
 ) => {

@@ -12,10 +12,6 @@ interface ExpenseAccordionProps {
 export function ExpenseAccordion({ show, budget, handleClose, onDeleteExpense }: ExpenseAccordionProps) {
     if (!show) return null;
 
-    const handleDelete = async (id: string) => {
-        onDeleteExpense(id);
-    };
-
     return (
         <section>
             <Table striped bordered hover className="p-2 table-striped text-center">
@@ -32,7 +28,7 @@ export function ExpenseAccordion({ show, budget, handleClose, onDeleteExpense }:
                             <td>{expense.cost} :-</td>
                             <td>{expense.description}</td>
                             <td>
-                                <button onClick={() => handleDelete(expense.id)} className="btn btn-danger">
+                                <button onClick={() => onDeleteExpense(expense.id)} className="btn btn-danger">
                                     Delete
                                 </button>
                             </td>
