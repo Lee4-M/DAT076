@@ -46,7 +46,7 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">    
-                    <PieChart 
+                    <PieChart data-testid="pie-chart"
                         series={[
                             {
                                 data: expenseData.map((item) => ({
