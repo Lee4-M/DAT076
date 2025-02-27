@@ -11,7 +11,7 @@ export class ExpenseService {
     }
 
     async getExpenses(): Promise<Expense[]> {
-        return JSON.parse(JSON.stringify(this.expenses));
+        return [...this.expenses];
     }
 
     async addExpense(category: string, cost: number, description: string): Promise<Expense> {
@@ -31,6 +31,7 @@ export class ExpenseService {
 
     async removeExpense(id: string): Promise<void> {
         const index = this.expenses.findIndex(e => e.id === id);
+        
         if (index === -1) {
             throw new Error("Expense not found");
         }

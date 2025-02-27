@@ -60,3 +60,12 @@ td:last-child {
 #total-row {
   background-color: var(--main-secondary-color);
 }
+
+.sidebar-button {
+  background-color: var(--main-secondary-color);
+  border-radius: 12px;
+}
+
+tbody > tr > td:last-child {
+  border: none !important;
+}
