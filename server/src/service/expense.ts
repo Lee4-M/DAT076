@@ -47,6 +47,8 @@ export class ExpenseService {
             return;
         }
 
+        console.log("User expenses: ", user.expenses);
+        console.log("Id: ", id);
         const index = user.expenses.findIndex(e => e.id === id);
 
         if (index === -1) {
@@ -56,5 +58,7 @@ export class ExpenseService {
         user.expenses.splice(index, 1);
 
         await this.budgetService.removeBudgetExpense(username, id);
+
+        console.log("User expenses after removal: ", user.expenses);
     }
 }

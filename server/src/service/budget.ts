@@ -82,6 +82,8 @@ export class BudgetService {
             return undefined;
         }
 
+        console.log("User budget's expenses: ", user.budgets[0].expenses)
+
         const budget = user.budgets.find(budget =>
             budget.expenses.some(expense => expense.id === id)
         );
@@ -97,7 +99,8 @@ export class BudgetService {
 
         const removedExpense = budget.expenses.splice(index, 1)[0];
         budget.result += removedExpense.cost;
-
+        
+        console.log("User budget's expenses after removal: ", user.budgets[0].expenses)
         return { ...budget };
     }
 }

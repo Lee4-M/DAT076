@@ -1,9 +1,5 @@
 
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Register from './components/Register';
-import Home from './components/Home';
 import { Budget, delExpense, getBudgets, delBudget } from './api';
 
 import { Sidebar } from './Sidebar'
@@ -52,7 +48,7 @@ function App() {
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
-    //loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
+    loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
   }, [loadBudgets]);
 
   return (

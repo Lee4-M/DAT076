@@ -99,7 +99,7 @@ export function budgetRouter(budgetService: BudgetService): Router {
         session: any
     }
 
-    budgetRouter.delete("/expense/:id", async (
+    budgetRouter.delete("/", async (
         req: DeleteBudgetExpenseRequest,
         res: Response<Budget | string>
     ) => {
@@ -116,20 +116,6 @@ export function budgetRouter(budgetService: BudgetService): Router {
         }
     });
     
-    /*
-    budgetRouter.delete("/expense/:id", async (
-        req: Request<{}, {}, { id: string }>,
-        res: Response<Budget | string>
-    ) => {
-        try {
-            const { id } = req.body;
-            const updatedBudget = await budgetService.removeBudgetExpense(id);
-            res.status(200).send(updatedBudget);
-        } catch (e: any) {
-            res.status(500).send(e.message);
-        }
-    });
-    */
     return budgetRouter;  
 }
 
