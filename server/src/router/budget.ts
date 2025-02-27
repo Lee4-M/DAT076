@@ -91,7 +91,7 @@ export function budgetRouter(budgetService: BudgetService): Router {
             res.status(500).send(e.message);
         }
     });
-
+  
     interface DeleteBudgetExpenseRequest extends Request {
         body: {
             id: string
@@ -99,7 +99,7 @@ export function budgetRouter(budgetService: BudgetService): Router {
         session: any
     }
 
-    budgetRouter.delete("/budget", async (
+    budgetRouter.delete("/expense/:id", async (
         req: DeleteBudgetExpenseRequest,
         res: Response<Budget | string>
     ) => {
@@ -115,11 +115,22 @@ export function budgetRouter(budgetService: BudgetService): Router {
             res.status(500).send(e.message);
         }
     });
-
-    return budgetRouter;
-
+    
+    /*
+    budgetRouter.delete("/expense/:id", async (
+        req: Request<{}, {}, { id: string }>,
+        res: Response<Budget | string>
+    ) => {
+        try {
+            const { id } = req.body;
+            const updatedBudget = await budgetService.removeBudgetExpense(id);
+            res.status(200).send(updatedBudget);
+        } catch (e: any) {
+            res.status(500).send(e.message);
+        }
+    });
+    */
+    return budgetRouter;  
 }
-
-
 
 

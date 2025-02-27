@@ -1,15 +1,15 @@
-import './App.css'
-
 import { Table } from "react-bootstrap";
 import { Budget } from "./api";
 import { BudgetComponent } from "./BudgetComponent";
 
 interface BudgetTableProps {
     budgets: Budget[];
+    deleteExpense: (id: string) => void;
     deleteBudget: (category: string) => void;
 }
 
-export function BudgetTable({ budgets, deleteBudget }: BudgetTableProps) {
+export function BudgetTable({ budgets, deleteExpense, deleteBudget }: BudgetTableProps) {
+
     let totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
     let totalExpenses = budgets.reduce((sum, budget) =>
         sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
@@ -35,8 +35,10 @@ export function BudgetTable({ budgets, deleteBudget }: BudgetTableProps) {
                         </tr>
                     </thead>
                     <tbody>
+                      
                         {budgets.map(budget => (
-                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget} /> //TODO Change back to index?
+                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget} deleteExpense={deleteExpense}/> //TODO Change back to index?
+
                         ))}
                     </tbody>
                 </Table>
@@ -49,5 +51,5 @@ export function BudgetTable({ budgets, deleteBudget }: BudgetTableProps) {
                 <div className="flex-fill">{result} :-</div>
             </div>
         </section>
-    )
+    );
 }

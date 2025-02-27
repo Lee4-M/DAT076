@@ -1,6 +1,10 @@
-import './App.css';
 
-import { Budget, getBudgets, delBudget } from './api';
+import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Register from './components/Register';
+import Home from './components/Home';
+import { Budget, delExpense, getBudgets, delBudget } from './api';
 
 import { Sidebar } from './Sidebar'
 import { HelpSettings } from './HelpSettings'
@@ -22,6 +26,18 @@ function App() {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
   }
 
+
+  async function deleteExpense(id: string) {
+    const success = await delExpense(id);
+  
+    if (success) {
+      console.log("Expense deleted, reloading budgets...");
+      await loadBudgets(); 
+    } else {
+      console.log("Failed to delete expense");
+    }
+  }
+  
   async function deleteBudget(category: string) {
     const success = await delBudget(category);
 
@@ -36,15 +52,16 @@ function App() {
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
-    loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
+    //loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
   }, [loadBudgets]);
 
   return (
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets} /></Col>
-          <Col lg="8" className='p-3'><BudgetTable budgets={budgets} deleteBudget={deleteBudget} /></Col>
+
+          <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets}/></Col>
+          <Col lg="8" className='p-3'><BudgetTable budgets={budgets} deleteExpense={deleteExpense} deleteBudget={deleteBudget}/></Col>
           <Col lg="1" className='p-0'><HelpSettings /></Col>
         </Row>
       </Container>
