@@ -6,6 +6,8 @@ import { useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 
 import { PieChart } from "@mui/x-charts";
+import { useNavigate } from "react-router-dom";
+import { logout } from "./components/apiLogin";
 
 interface SidebarProps {
     addBudget: (budget: Budget) => void;
@@ -16,16 +18,17 @@ interface SidebarProps {
 export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
+    const navigate = useNavigate();
 
-    let totalExpenses = budgets.reduce((sum, budget) => 
-        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0), 
-    0);
+    let totalExpenses = budgets.reduce((sum, budget) =>
+        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
+        0);
 
     const expenseData = budgets.map(budget => {
         const categoryTotal = budget.expenses.reduce((total, expense) => total + expense.cost, 0);
         return {
             id: budget.category,
-            value: totalExpenses > 0 ? parseFloat(((categoryTotal / totalExpenses) * 100).toFixed(1)) : 0, 
+            value: totalExpenses > 0 ? parseFloat(((categoryTotal / totalExpenses) * 100).toFixed(1)) : 0,
             label: budget.category,
         };
     });
@@ -45,7 +48,7 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
                 <button className="sidebar-button">Edit expense</button>
             </Row>
             <Row className="p-3">
-                <Card className="d-flex justify-content-center align-items-center">    
+                <Card className="d-flex justify-content-center align-items-center">
                     <PieChart data-testid="pie-chart"
                         series={[
                             {
@@ -59,19 +62,22 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
                                 cornerRadius: 3,
                                 paddingAngle: 1,
                                 cx: 200,
-                                valueFormatter: item => `${item.value}%`, 
+                                valueFormatter: item => `${item.value}%`,
                                 highlightScope: { fade: 'global', highlight: 'item' },
                                 faded: { innerRadius: 100, additionalRadius: -10, color: 'gray' },
                             },
                         ]}
-                        slotProps = {{ legend: { direction: 'row', position: {vertical: 'bottom', horizontal: 'middle'} }}}
+                        slotProps={{ legend: { direction: 'row', position: { vertical: 'bottom', horizontal: 'middle' } } }}
                         width={400}
                         height={450}
                     />
                 </Card>
             </Row>
             <Row className="p-3">
-                <button className="sidebar-button">Sign out</button>
+                <button className="sidebar-button" onClick={async () => {
+                    await logout();
+                    navigate('/');
+                }}>Sign out</button>
             </Row>
             <ExpenseModal show={showExpenseModal} handleClose={() => setShowExpenseModal(false)} onSave={() => {
                 setShowExpenseModal(false);

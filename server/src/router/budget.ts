@@ -1,67 +1,125 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
 import { BudgetService } from "../service/budget";
 import { Budget } from "../model/budget.interface";
 
-export const budgetService = new BudgetService();
+export function budgetRouter(budgetService: BudgetService): Router {
+    const budgetRouter = express.Router();
 
-export const budgetRouter = express.Router();
-
-budgetRouter.get("/", async (
-    req: Request<{}, {}, {}>,
-    res: Response<Array<Budget> | string>
-) => {
-    try {
-        const budgets = await budgetService.getBudgets();
-        res.status(200).send(budgets);
-    } catch (e: any) {
-        res.status(500).send(e.message);
+    interface BudgetRequest {
+        session: any
     }
-});
-
-budgetRouter.post("/", async (
-    req: Request<{}, {}, { category : string, cost : number}>,
-    res: Response<Budget | string>
-) => {
-    try {
-        const category = req.body.category;
-        const cost = req.body.cost;
-        if ((typeof(category) !== "string") || (typeof(cost) !== "number")){
-            res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof(category)}`);
-            return;
+    budgetRouter.get("/budget", async (
+        req: BudgetRequest,
+        res: Response<Budget[] | string>
+    ) => {
+        try {
+            if (!req.session.username) {
+                res.status(401).send("Not logged in");
+                return;
+            }
+            const budgets: Budget[] | undefined = await budgetService.getBudgets(req.session.username);
+            if (!budgets) {
+                console.log("User logged in as " + req.session.username + " no longer exists");
+                delete req.session.username;
+                res.status(401).send("Not logged in");
+                return;
+            }
+            res.status(200).send(budgets);
+        } catch (e: any) {
+            res.status(500).send(e.message);
         }
-        const newBudget = await budgetService.addBudget(category, cost);
-        res.status(201).send(newBudget);
-    } catch (e: any) {
-        res.status(500).send(e.message);
-    }
-})
+    });
 
-budgetRouter.delete("/", async (
-    req: Request<{}, {}, { category: string }>,
-    res: Response<string>
-) => {
-    try {
-        const { category } = req.body;
-        const success = await budgetService.deleteBudget(category);
-        if (success) {
-            res.status(200).send("Budget deleted");
-        } else {
-            res.status(404).send("Budget not found");
+    interface AddBudgetRequest extends Request {
+        body: {
+            category: string,
+            cost: number
+        },
+        session: any
+    }
+
+    budgetRouter.post("/budget", async (
+        req: AddBudgetRequest,
+        res: Response<Budget | string>
+    ) => {
+        try {
+            if (!req.session.username) {
+                res.status(401).send("Not logged in");
+                return;
+            }
+            const category = req.body.category;
+            const cost = req.body.cost;
+            if ((typeof (category) !== "string") || (typeof (cost) !== "number")) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
+                return;
+            }
+            const newBudget: Budget | undefined = await budgetService.addBudget(req.session.name, category, cost);
+            res.status(201).send(newBudget);
+        } catch (e: any) {
+            res.status(500).send(e.message);
         }
-    } catch (e: any) {
-        res.status(500).send(e.message);
-    }
-});
+    });
 
-budgetRouter.delete("/expense", async (
-    req: Request<{}, {}, { id: string }>,
-    res: Response<Budget | string>
-) => {
-    try {
-        const { id } = req.body;
-        const updatedBudget = await budgetService.removeBudgetExpense(id);
-        res.status(200).send(updatedBudget);
-    } catch (e: any) {
-        res.status(500).send(e.message);
+    interface DeleteBudgetRequest extends Request {
+        body: {
+            category: string
+        },
+        session: any
     }
-});
+
+    budgetRouter.delete("/budget", async (
+        req: DeleteBudgetRequest,
+        res: Response<string>
+    ) => {
+        try {
+            if (!req.session.username) {
+                res.status(401).send("Not logged in");
+                return;
+            }
+            const category = req.body.category;
+            if (typeof (category) !== "string") {
+                res.status(400).send("category should be a string");
+                return;
+            }
+            const success = await budgetService.deleteBudget(req.session.username, category);
+            if (success) {
+                res.status(200).send("Budget deleted");
+            } else {
+                res.status(404).send("Budget not found");
+            }
+        } catch (e: any) {
+            res.status(500).send(e.message);
+        }
+    });
+
+    interface DeleteBudgetExpenseRequest extends Request {
+        body: {
+            id: string
+        },
+        session: any
+    }
+
+    budgetRouter.delete("/budget", async (
+        req: DeleteBudgetExpenseRequest,
+        res: Response<Budget | string>
+    ) => {
+        try {
+            if (!req.session.username) {
+                res.status(401).send("Not logged in");
+                return;
+            }
+            const id = req.body.id;
+            const updatedBudget = await budgetService.removeBudgetExpense(req.session.username, id);
+            res.status(200).send(updatedBudget);
+        } catch (e: any) {
+            res.status(500).send(e.message);
+        }
+    });
+
+    return budgetRouter;
+
+}
+
+
+
+

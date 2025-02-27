@@ -1,13 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/auth";
+const BASE_URL = "http://localhost:8080";
 
-axios.defaults.withCredentials = true; 
+axios.defaults.withCredentials = true;
 
-// Function to handle login
-export async function login(username: string, password: string):Promise<void> {
+export async function login(username: string, password: string): Promise<void> {
   try {
-    const response = await axios.post(`${BASE_URL}/login`, { username, password });
+    const response = await axios.post(`${BASE_URL}/user/login`, { username, password });
     console.log("Logged in successfully:", response.data);
     return response.data; // Return user data
   } catch (error: any) {
@@ -15,27 +14,26 @@ export async function login(username: string, password: string):Promise<void> {
   }
 };
 
-// Function to handle logout
-export async function logout(): Promise<void>{
+export async function logout(): Promise<void> {
   try {
-    await axios.post(`${BASE_URL}/logout`);
+    await axios.post(`${BASE_URL}/user/logout`);
     console.log("Logged out successfully");
   } catch (error: any) {
     console.error("Logout failed:", error.response?.data?.error || "Unknown error");
   }
 };
 
-
-export async function getSessionUser(): Promise<any | null> {
+export async function registerUser(username: string, password: string): Promise<void> {
   try {
-    const response = await axios.get(`${BASE_URL}/session`, {
-      withCredentials: true,
-    });
-    return response.data.user;
-  } catch (error: any) {
-    console.error("Failed to fetch session user:", error.response?.data?.error || "Unknown error");
-    return null;
+    const response = await axios.post(`${BASE_URL}/user`, { username: username, password: password });
+    console.log("Register response:", response.data);
+    return response.data;
+  } catch (e: unknown) {
+    console.log(e);
   }
-};
+}
+
+
+
 
 

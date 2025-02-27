@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css'; // Importing the external CSS file for styling
+import { registerUser } from './apiLogin';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 // Set up axios default configuration
 axios.defaults.withCredentials = true;  // Ensure credentials (like cookies) are included in requests
@@ -10,6 +12,7 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,15 +20,8 @@ const Register: React.FC = () => {
     setError(null); // Reset error message on new submit
 
     try {
-      // Send a POST request to the login route
-      const response = await axios.post('http://localhost:8080/auth/register', {
-        username,
-        password,
-      });
-
-      console.log('Registered successfully:', response.data);
-
-      // Handle successful register, e.g., store user data, redirect, etc.
+      await registerUser(username, password);
+      navigate('/');
     } catch (error: any) {
       setError(error.response?.data?.error || 'Unknown error occurred');
     } finally {
@@ -40,7 +36,7 @@ const Register: React.FC = () => {
         <div
           className="col-md-6 d-none d-md-flex align-items-center justify-content-center"
           style={{
-            background: '#1F4AA0', 
+            background: '#1F4AA0',
             color: '#fff',
           }}
         >
@@ -82,9 +78,9 @@ const Register: React.FC = () => {
               </button>
               <div className="text-center mb-3">
                 <span>Already have an account? </span>
-                <a href="/login" className="text-decoration-none">
+                <NavLink to="/" className="text-decoration-none" end>
                   Login
-                </a>
+                </NavLink>
               </div>
             </form>
           </div>
