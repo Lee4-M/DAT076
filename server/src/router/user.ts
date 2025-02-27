@@ -11,10 +11,14 @@ export function userRouter(userService: UserService): Router {
     }
 
     userRouter.post("/user", async (req: UserRequest, res: Response) => {
-        userService.createUser(req.body.username, req.body.password);
-        res.status(201).send({ username: req.body.username });
-    })
-
+        try {
+            await userService.createUser(req.body.username, req.body.password);
+            res.status(201).send("User registered sucessfully as: " + req.body.username); 
+        } catch (error: any) {
+            res.status(400).send("Failed to register user: " + error.message);
+        }
+    });
+    
     userRouter.post("/user/login", async (req: UserRequest, res: Response) => {
         const user: User | undefined = await userService.findUser(req.body.username, req.body.password);
         if (!user) {

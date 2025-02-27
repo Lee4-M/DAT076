@@ -4,12 +4,15 @@ export class UserService {
     users: User[] = [];
 
     async createUser(username: string, password: string) {
-        this.users.push({
+        const user: User = ({
             username: username,
             password: password,
             budgets: [],
             expenses: []
         });
+
+        this.users.push(user);
+        return user;
     }
 
     async findUser(username: string, password?: string): Promise<User | undefined> {

@@ -53,7 +53,7 @@ export function budgetRouter(budgetService: BudgetService): Router {
                 res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
                 return;
             }
-            const newBudget: Budget | undefined = await budgetService.addBudget(req.session.name, category, cost);
+            const newBudget: Budget | undefined = await budgetService.addBudget(req.session.username, category, cost);
             res.status(201).send(newBudget);
         } catch (e: any) {
             res.status(500).send(e.message);
