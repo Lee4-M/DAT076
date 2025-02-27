@@ -4,11 +4,19 @@ const BASE_URL = "http://localhost:8080";
 
 axios.defaults.withCredentials = true;
 
+export async function registerUser(username: string, password: string): Promise<void> {
+  try {
+    const response = await axios.post(`${BASE_URL}/user`, { username: username, password: password });
+    return response.data;
+  } catch (e: unknown) {
+    console.log(e);
+  }
+}
+
 export async function login(username: string, password: string): Promise<void> {
   try {
     const response = await axios.post(`${BASE_URL}/user/login`, { username, password });
-    console.log("Logged in successfully:", response.data);
-    return response.data; // Return user data
+    return response.data; 
   } catch (error: any) {
     throw error.response?.data?.error || "Unknown login error";
   }
@@ -23,15 +31,6 @@ export async function logout(): Promise<void> {
   }
 };
 
-export async function registerUser(username: string, password: string): Promise<void> {
-  try {
-    const response = await axios.post(`${BASE_URL}/user`, { username: username, password: password });
-    console.log("Register response:", response.data);
-    return response.data;
-  } catch (e: unknown) {
-    console.log(e);
-  }
-}
 
 
 

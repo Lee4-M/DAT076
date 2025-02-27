@@ -1,12 +1,13 @@
 import ExpenseModal from "./ExpenseModal";
 import BudgetItemModal from "./BudgetItemModal";
-import { Budget } from "./api";
 
 import { useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 import { PieChart } from "@mui/x-charts";
-import { useNavigate } from "react-router-dom";
+
+import { Budget } from "./api";
 import { logout } from "./components/apiLogin";
 
 interface SidebarProps {
@@ -18,7 +19,13 @@ interface SidebarProps {
 export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
+    
     const navigate = useNavigate();
+
+    async function handleLogout() {
+        await logout();
+        navigate('/');
+    }
 
     let totalExpenses = budgets.reduce((sum, budget) =>
         sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
@@ -74,10 +81,7 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
                 </Card>
             </Row>
             <Row className="p-3">
-                <button className="sidebar-button" onClick={async () => {
-                    await logout();
-                    navigate('/');
-                }}>Sign out</button>
+                <button className="sidebar-button" onClick={handleLogout}>Sign out</button>
             </Row>
             <ExpenseModal show={showExpenseModal} handleClose={() => setShowExpenseModal(false)} onSave={() => {
                 setShowExpenseModal(false);

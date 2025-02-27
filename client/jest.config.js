@@ -10,3 +10,4 @@ export default {
     "^.+\\.svg$": "jest-transformer-svg",
   },
 };
+
