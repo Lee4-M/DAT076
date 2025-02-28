@@ -2,7 +2,6 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { addBudget, Budget } from "./api";
 import { useState } from 'react';
 
-
 interface BudgetModalProps {
     show: boolean;
     handleClose: () => void;
@@ -23,7 +22,6 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
         const newBudgetItem = await addBudget(category, Number(amount));
 
         if (newBudgetItem) {
-            // Måste se till att formuläret töms efter vi sparat
             onSave(newBudgetItem);
             handleClose();
             setCategory('');

@@ -70,7 +70,7 @@ export function expenseRouter(expenseService: ExpenseService): Router {
         session: any
     }
 
-    expenseRouter.delete("/:id", async (
+    expenseRouter.delete("/expense/:id", async (
         req: DeleteExpenseRequest,
         res: Response<string>
     ) => {
@@ -79,7 +79,7 @@ export function expenseRouter(expenseService: ExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const id = req.params
+            const id = req.body.id
             console.log(`Deleting expense with ID: ${id}`);
             await expenseService.removeExpense(req.session.username, id);
             res.status(200).send("Expense deleted successfully.");
@@ -87,22 +87,5 @@ export function expenseRouter(expenseService: ExpenseService): Router {
             res.status(500).send(e.message);
         }
     });
-  
-    /*
-    expenseRouter.delete("/:id", async (req: Request, res: Response<string>) => {
-        try {
-            const { id } = req.params;
-            console.log(`Deleting expense with ID: ${id}`);
-
-            await expenseService.removeExpense(id);
-
-            res.status(200).send("Expense deleted successfully.");
-        } catch (e: any) {
-            console.error("Error deleting expense:", e.message);
-            res.status(500).send(e.message);
-        }
-    });
-    */
-
     return expenseRouter;
 }

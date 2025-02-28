@@ -25,10 +25,18 @@ export function userRouter(userService: UserService): Router {
             res.status(401).send("No such username or password");
             return;
         }
-        console.log("Logged in as:", user);
-        req.session.username = req.body.username;
-        res.status(200).send("Logged in");
-    })
+        req.session.username = req.body.username; 
+        res.status(200).send("Logged in as: " + req.body.username);
+    });
+
+    userRouter.post("/user/logout", async (req: UserRequest, res: Response) => {
+        if (!req.session.username) {
+            res.status(401).send("Not logged in");
+            return;
+        }
+        delete req.session.username;
+        res.status(200).send("Logged out successfully");
+    });
 
     return userRouter;
 }

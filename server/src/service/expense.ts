@@ -56,5 +56,6 @@ export class ExpenseService {
         user.expenses.splice(index, 1);
 
         await this.budgetService.removeBudgetExpense(username, id);
+
     }
 }
