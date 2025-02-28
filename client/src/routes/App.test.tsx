@@ -3,7 +3,6 @@ import { screen } from '@testing-library/dom';
 import App from './App';
 
 import axios from 'axios';
-import "text-encoding";
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>

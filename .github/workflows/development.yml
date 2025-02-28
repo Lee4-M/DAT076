@@ -1,0 +1,100 @@
+name: Development
+
+on:
+  push:
+    branches:
+      - '37-add-pipeline'
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+  workflow_call:
+
+jobs:
+  test-client:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v4"
+
+      - name: "🔧 setup node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: "🔧 install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "📦 Install dependencies"
+        working-directory: client
+        run: npm ci
+
+      - name: "🔍 run tests"
+        run: npm t
+
+      - name: "🔍 run coverage"
+        run: npm test --coverage
+    
+  test-server:
+    name: Test Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v4"
+
+      - name: "🔧 setup node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: server/package-lock.json
+
+      - name: "🔧 install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "📦 Install dependencies"
+        working-directory: server
+        run: npm ci
+
+      - name: "🔍 run tests"
+        run: npm t
+
+      - name: "🔍 run coverage"
+        run: npm test --coverage
+
+  lint:
+    name: Code Standards
+    runs-on: ubuntu-latest
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v2
+
+      - name: "🔧 Setup Node.js"
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: "📦 Install dependencies (client)"
+        working-directory: client
+        run: npm ci
+
+      - name: "🔍 Lint frontend code"
+        working-directory: client
+        run: npm run lint
+
+      - name: "📦 Install dependencies (server)"
+        working-directory: server
+        run: npm ci
+
+      - name: "🔍 Lint backend code"
+        working-directory: server
+        run: npm run lint

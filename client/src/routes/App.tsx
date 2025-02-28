@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { MemoryRouter } from 'react-router';
 
 import './App.css'
 import { Budget, delExpense, getBudgets, delBudget } from '../api/api';
