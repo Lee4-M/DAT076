@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { login } from './apiLogin';
-import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-axios.defaults.withCredentials = true;  // Ensure credentials (like cookies) are included in requests
+import './Login.css';
+import { registerUser } from '../api/apiLogin';
 
-const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Register: React.FC = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null); // Reset error message on new submit
 
     try {
-      await login(username, password);
-      navigate("/budget");
-    } catch (err: any) {
-      setError(err.message);
+      await registerUser(username, password);
+      navigate('/');
+    } catch (error: any) {
+      setError(error.response?.data?.error || 'Unknown error occurred');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,9 +38,9 @@ const Login = () => {
           }}
         >
           <div className="text-center p-5">
-            <h1 className="display-4 fw-bold">Budgie Boudgeet</h1>
+            <h1 className="display-4 fw-bold">Create Account</h1>
             <p className="lead">
-              Track or wack?
+              Take take take take take. Register now!
             </p>
           </div>
         </div>
@@ -46,9 +48,9 @@ const Login = () => {
         {/* Form Section (Right Side) */}
         <div className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="w-75 mx-auto">
-            <h2 className="text-center mb-4">Welcome to Budgie</h2>
+            <h2 className="text-center mb-4">Sign Up</h2>
             {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <input
                   type="text"
@@ -58,6 +60,7 @@ const Login = () => {
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <input
                   type="password"
@@ -68,12 +71,12 @@ const Login = () => {
                 />
               </div>
               <button type="submit" className="btn btn-primary w-100 mb-3">
-                Login
+                Register
               </button>
-              <div className="text-center">
-                <span>Don't have an account yet? </span>
-                <NavLink to="/register" className="text-decoration-none" end>
-                  Register
+              <div className="text-center mb-3">
+                <span>Already have an account? </span>
+                <NavLink to="/" className="text-decoration-none" end>
+                  Login
                 </NavLink>
               </div>
             </form>
@@ -84,4 +87,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

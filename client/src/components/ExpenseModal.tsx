@@ -1,5 +1,5 @@
 import { Modal, Button, Form } from 'react-bootstrap';
-import { addExpense, Expense } from "./api";
+import { addExpense, Expense } from "../api/api";
 import { useState } from 'react';
 
 // Define the types for the props

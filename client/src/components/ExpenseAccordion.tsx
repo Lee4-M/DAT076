@@ -1,6 +1,6 @@
-import { Budget } from "./api";
 import { Table } from "react-bootstrap";
-import './App.css'
+import { Budget } from "../api/api";
+import '../routes/App.css'
 
 interface ExpenseAccordionProps {
     show: boolean;

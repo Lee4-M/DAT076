@@ -16,7 +16,7 @@ export async function registerUser(username: string, password: string): Promise<
 export async function login(username: string, password: string): Promise<void> {
   try {
     const response = await axios.post(`${BASE_URL}/user/login`, { username, password });
-    return response.data; 
+    return response.data;
   } catch (error: any) {
     throw error.response?.data?.error || "Unknown login error";
   }

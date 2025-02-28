@@ -1,6 +1,7 @@
 import { Table } from "react-bootstrap";
-import { Budget } from "./api";
-import { BudgetComponent } from "./BudgetComponent";
+
+import { Budget } from "../api/api";
+import { BudgetComponent } from "./BudgetRowComponent";
 
 interface BudgetTableProps {
     budgets: Budget[];
@@ -35,9 +36,9 @@ export function BudgetTable({ budgets, deleteExpense, deleteBudget }: BudgetTabl
                         </tr>
                     </thead>
                     <tbody>
-                      
+
                         {budgets.map(budget => (
-                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget} deleteExpense={deleteExpense}/> //TODO Change back to index?
+                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget} deleteExpense={deleteExpense} /> //TODO Change back to index?
 
                         ))}
                     </tbody>
