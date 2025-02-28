@@ -22,7 +22,7 @@ mockedAxios.get.mockResolvedValue({
 });
 
 beforeEach(() => {
-    render(<App />);
+  render(<App />);
 });
 
 describe('App Component', () => {

@@ -1,14 +1,16 @@
-import ExpenseModal from "./ExpenseModal";
-import BudgetItemModal from "./BudgetItemModal";
-
 import { useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
+import { Budget } from "../api/api";
+import { logout } from "../api/apiLogin";
+
+import '../routes/App.css'
+import ExpenseModal from "./ExpenseModal";
+import BudgetItemModal from "./BudgetModal";
 import { PieChart } from "@mui/x-charts";
 
-import { Budget } from "./api";
-import { logout } from "./components/apiLogin";
+
 
 interface SidebarProps {
     addBudget: (budget: Budget) => void;
@@ -19,7 +21,7 @@ interface SidebarProps {
 export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
-    
+
     const navigate = useNavigate();
 
     async function handleLogout() {

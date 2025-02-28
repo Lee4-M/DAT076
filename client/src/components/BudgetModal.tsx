@@ -1,6 +1,7 @@
-import { Modal, Button, Form } from 'react-bootstrap';
-import { addBudget, Budget } from "./api";
 import { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { addBudget, Budget } from "../api/api";
+
 
 interface BudgetModalProps {
     show: boolean;

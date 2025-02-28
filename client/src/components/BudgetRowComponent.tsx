@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Budget } from './api';
-import { ExpenseAccordion } from './ExpenseAccordion';
-import './App.css';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 
-export function BudgetComponent({ budget, deleteExpense, deleteBudget }: { budget: Budget, deleteBudget: (category: string) => void, deleteExpense : (id: string) => void }) {
+import '../routes/App.css'
+import { Budget } from '../api/api';
+import { ExpenseAccordion } from './ExpenseAccordion';
+
+
+
+export function BudgetComponent({ budget, deleteExpense, deleteBudget }: { budget: Budget, deleteBudget: (category: string) => void, deleteExpense: (id: string) => void }) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
     const [expenses, setExpenses] = useState(budget.expenses);
 
     useEffect(() => {
         setExpenses(budget.expenses);
-    }, [budget.expenses]); 
+    }, [budget.expenses]);
 
     const handleOpenAccordion = () => {
         setShowExpenseAccordion(true);

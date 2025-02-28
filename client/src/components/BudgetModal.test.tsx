@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from '@testing-library/react';
-import BudgetItemModal from './BudgetItemModal';
+import BudgetItemModal from './BudgetModal';
 
 describe('BudgetItemModal Component', () => {
     test('changing inputs in text fields will give that value', () => {

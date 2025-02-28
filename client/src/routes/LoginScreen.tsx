@@ -1,31 +1,23 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import './Login.css'; // Importing the external CSS file for styling
-import { registerUser } from './apiLogin';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-// Set up axios default configuration
-axios.defaults.withCredentials = true;  // Ensure credentials (like cookies) are included in requests
+import { login } from '../api/apiLogin';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Register: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null); // Reset error message on new submit
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
 
     try {
-      await registerUser(username, password);
-      navigate('/');
-    } catch (error: any) {
-      setError(error.response?.data?.error || 'Unknown error occurred');
-    } finally {
-      setLoading(false);
+      await login(username, password);
+      navigate("/budget");
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
@@ -41,9 +33,9 @@ const Register: React.FC = () => {
           }}
         >
           <div className="text-center p-5">
-            <h1 className="display-4 fw-bold">Create Account</h1>
+            <h1 className="display-4 fw-bold">Budgie Boudgeet</h1>
             <p className="lead">
-              Take take take take take. Register now!
+              Track or wack?
             </p>
           </div>
         </div>
@@ -51,9 +43,9 @@ const Register: React.FC = () => {
         {/* Form Section (Right Side) */}
         <div className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="w-75 mx-auto">
-            <h2 className="text-center mb-4">Sign Up</h2>
+            <h2 className="text-center mb-4">Welcome to Budgie</h2>
             {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
               <div className="mb-3">
                 <input
                   type="text"
@@ -63,7 +55,6 @@ const Register: React.FC = () => {
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <input
                   type="password"
@@ -74,12 +65,12 @@ const Register: React.FC = () => {
                 />
               </div>
               <button type="submit" className="btn btn-primary w-100 mb-3">
-                Register
+                Login
               </button>
-              <div className="text-center mb-3">
-                <span>Already have an account? </span>
-                <NavLink to="/" className="text-decoration-none" end>
-                  Login
+              <div className="text-center">
+                <span>Don't have an account yet? </span>
+                <NavLink to="/register" className="text-decoration-none" end>
+                  Register
                 </NavLink>
               </div>
             </form>
@@ -90,4 +81,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default Login;

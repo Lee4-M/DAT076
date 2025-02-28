@@ -7,7 +7,7 @@
 
 :root {
   --main-bg-color: #e6da6a;
-  --main-secondary-color: #409BC9
+  --main-secondary-color: #409BC9;
 }
 
 .table-container {
@@ -61,9 +61,24 @@ td:last-child {
   background-color: var(--main-secondary-color);
 }
 
+button {
+  border: 1px solid transparent;
+}
+
 .sidebar-button {
+  color: white;
+  padding: 0.6em;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
   background-color: var(--main-secondary-color);
   border-radius: 12px;
+  transition: background-color 0.3s;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.sidebar-button:hover{
+  background-color: #337B9F;
 }
 
 tbody > tr > td:last-child {

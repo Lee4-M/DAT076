@@ -1,13 +1,15 @@
-import './App.css'
-import { Budget, delExpense, getBudgets, delBudget } from './api';
-
-import { Sidebar } from './Sidebar'
-import { BudgetTable } from './BudgetTable'
-
 import { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { MemoryRouter } from 'react-router';
+
+import './App.css'
+import { Budget, delExpense, getBudgets, delBudget } from '../api/api';
+
+import { Sidebar } from '../components/Sidebar'
+import { BudgetTable } from '../components/BudgetTable'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   const [budgets, setBudgets] = useState<Budget[]>([]);
@@ -25,15 +27,15 @@ function App() {
 
   async function deleteExpense(id: string) {
     const success = await delExpense(id);
-  
+
     if (success) {
       console.log("Expense deleted, reloading budgets...");
-      await loadBudgets(); 
+      await loadBudgets();
     } else {
       console.log("Failed to delete expense");
     }
   }
-  
+
   async function deleteBudget(category: string) {
     const success = await delBudget(category);
 
@@ -55,10 +57,8 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <MemoryRouter>
-            <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets}/></Col>
-          </MemoryRouter>
-          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteExpense={deleteExpense} deleteBudget={deleteBudget}/></Col>
+          <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets} /></Col>
+          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteExpense={deleteExpense} deleteBudget={deleteBudget} /></Col>
         </Row>
       </Container>
     </>
