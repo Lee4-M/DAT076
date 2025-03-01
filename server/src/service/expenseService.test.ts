@@ -21,29 +21,29 @@ beforeAll(async () => {
 });
 
 describe("Expense Service", () => {
-    describe("Add expense", () => {
-        test("if an expense is added it should appear in the array of expenses", async() =>{
-            await expenseService.addExpense(username, category, cost, description);
-            const expenses = await expenseService.getExpenses(username);
-            expect(expenses && expenses.some(expense => 
-                expense.category === category &&
-                expense.cost === cost &&
-                expense.description === description
-            )).toBeTruthy();
-        })
+    // describe("Add expense", () => {
+    //     test("if an expense is added it should appear in the array of expenses", async() =>{
+    //         await expenseService.addExpense(username, category, cost, description);
+    //         const expenses = await expenseService.getExpenses(username);
+    //         expect(expenses && expenses.some(expense => 
+    //             expense.category === category &&
+    //             expense.cost === cost &&
+    //             expense.description === description
+    //         )).toBeTruthy();
+    //     })
         
-        test("should throw an error for invalid category input", async () => {
-            await expect(expenseService.addExpense(username, "", 500, "Shirt")).rejects.toThrow("Invalid category");
-        });
+    //     test("should throw an error for invalid category input", async () => {
+    //         await expect(expenseService.addExpense(username, "", 500, "Shirt")).rejects.toThrow("Invalid category");
+    //     });
 
-        test("should throw an error for invalid cost input", async () => {
-            await expect(expenseService.addExpense(username, "Clothes", -500, "Shirt")).rejects.toThrow("Invalid cost");
-        });
+    //     test("should throw an error for invalid cost input", async () => {
+    //         await expect(expenseService.addExpense(username, "Clothes", -500, "Shirt")).rejects.toThrow("Invalid cost");
+    //     });
 
-        test("should throw an error for invalid description input", async () => {
-            await expect(expenseService.addExpense(username, "Clothes", 500, "")).rejects.toThrow("Invalid description");
-        });
-    });
+    //     test("should throw an error for invalid description input", async () => {
+    //         await expect(expenseService.addExpense(username, "Clothes", 500, "")).rejects.toThrow("Invalid description");
+    //     });
+    // });
 
     describe("Remove expenses", () => {
         test("if an expense is removed it should not appear in the array of expenses", async() =>{

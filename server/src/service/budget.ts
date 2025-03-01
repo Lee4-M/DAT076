@@ -17,9 +17,13 @@ export class BudgetService {
         }
         return JSON.parse(JSON.stringify(user.budgets));
     }
-    
-    async resetBudgets(): Promise<void> {
-        this.budgets = [];
+
+    async resetBudgets(username: string): Promise<void | undefined> {
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+        user.budgets = [];
     }
 
     async addBudget(username: string, category: string, cost: number, expense?: Expense): Promise<Budget | undefined> {
