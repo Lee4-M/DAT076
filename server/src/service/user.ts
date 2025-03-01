@@ -19,13 +19,13 @@ export class UserService {
 
     async findUser(username: string, password?: string): Promise<User | undefined> {
         const user = this.users.find((user) => user.username === username);
-        
-        if (!user) return undefined; 
-    
-        if (!password) return user; 
-    
+
+        if (!user) return undefined;
+
+        if (!password) return user;
+
         const isMatch = await bcrypt.compare(password, user.password);
-        return isMatch ? user : undefined; 
+        return isMatch ? user : undefined;
     }
-    
+
 }

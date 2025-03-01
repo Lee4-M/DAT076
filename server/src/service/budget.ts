@@ -15,7 +15,7 @@ export class BudgetService {
         if (!user) {
             return undefined;
         }
-        return JSON.parse(JSON.stringify(user.budgets));
+        return user?.budgets ?? undefined;
     }
 
     async addBudget(username: string, category: string, cost: number, expense?: Expense): Promise<Budget | undefined> {
@@ -97,7 +97,7 @@ export class BudgetService {
 
         const removedExpense = budget.expenses.splice(index, 1)[0];
         budget.result += removedExpense.cost;
-        
+
         return { ...budget };
     }
 }

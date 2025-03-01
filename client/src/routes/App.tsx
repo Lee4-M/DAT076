@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { MemoryRouter } from 'react-router';
 
 import './App.css'
 import { Budget, delExpense, getBudgets, delBudget } from '../api/api';
@@ -14,10 +13,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   const [budgets, setBudgets] = useState<Budget[]>([]);
 
-  async function loadBudgets() {
+  const loadBudgets = useCallback(async () => {
     const budgets = await getBudgets();
     setBudgets(budgets);
-  }
+  }, []);
 
   // I believe it's better to pass setBudgets to respective components, and handle states there.
   // This way, we avoid code in App.tsx that is not directly related to the App component. -Liam
@@ -50,7 +49,7 @@ function App() {
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
-    // loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
+    loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
   }, [loadBudgets]);
 
   return (

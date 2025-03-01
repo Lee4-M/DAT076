@@ -6,7 +6,7 @@ import { app } from "./start";
 */
 
 
-const PORT : number = 8080;
+const PORT = 8080;
 
 
 /**

@@ -29,7 +29,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-const userService = new UserService();
+const userService: number = new UserService();
 const budgetService = new BudgetService(userService);
 const expenseService = new ExpenseService(userService, budgetService);
 
