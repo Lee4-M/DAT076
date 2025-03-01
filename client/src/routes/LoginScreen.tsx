@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { login } from './apiLogin';
-import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import { NavLink, useNavigate } from 'react-router-dom';
 
-axios.defaults.withCredentials = true;  // Ensure credentials (like cookies) are included in requests
+import { login } from '../api/apiLogin';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -16,9 +14,8 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      const user = await login(username, password);
-      console.log("User logged in:", user);
-      navigate("/");
+      await login(username, password);
+      navigate("/budget");
     } catch (err: any) {
       setError(err.message);
     }
@@ -31,7 +28,7 @@ const Login = () => {
         <div
           className="col-md-6 d-none d-md-flex align-items-center justify-content-center"
           style={{
-            background: '#1F4AA0', 
+            background: '#1F4AA0',
             color: '#fff',
           }}
         >
@@ -72,9 +69,9 @@ const Login = () => {
               </button>
               <div className="text-center">
                 <span>Don't have an account yet? </span>
-                <a href="/register" className="text-decoration-none">
+                <NavLink to="/register" className="text-decoration-none" end>
                   Register
-                </a>
+                </NavLink>
               </div>
             </form>
           </div>

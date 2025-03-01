@@ -1,20 +1,32 @@
 import { v4 as uuidv4 } from "uuid";
 import { Expense } from "../model/expense.interface";
 import { BudgetService } from "./budget";
+import { UserService } from "./user";
+import { User } from "../model/user.interface";
 
 export class ExpenseService {
-    private expenses: Expense[] = [];
     private budgetService: BudgetService;
+    private userService: UserService;
 
-    constructor(budgetService: BudgetService) {
+    constructor(userService: UserService, budgetService: BudgetService) {
         this.budgetService = budgetService;
+        this.userService = userService;
     }
 
-    async getExpenses(): Promise<Expense[]> {
-        return JSON.parse(JSON.stringify(this.expenses));
+    async getExpenses(username: string): Promise<Expense[] | undefined> {
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+        return [...user.expenses];
     }
 
-    async addExpense(category: string, cost: number, description: string): Promise<Expense> {
+    async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+
         const expense = {
             id: uuidv4(),
             category: category,
@@ -22,21 +34,28 @@ export class ExpenseService {
             description: description
         }
 
-        this.expenses.push(expense);
+        user.expenses.push(expense);
 
-        await this.budgetService.addBudgetExpense(expense);
+        await this.budgetService.addBudgetExpense(username, expense);
 
         return { ...expense };
     }
 
-    async removeExpense(id: string): Promise<void> {
-        const index = this.expenses.findIndex(e => e.id === id);
+    async removeExpense(username: string, id: string): Promise<void> {
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return;
+        }
+
+        const index = user.expenses.findIndex(e => e.id === id);
+
         if (index === -1) {
             throw new Error("Expense not found");
         }
 
-        this.expenses.splice(index, 1);
+        user.expenses.splice(index, 1);
 
-        await this.budgetService.removeBudgetExpense(id);
+        await this.budgetService.removeBudgetExpense(username, id);
+
     }
 }
