@@ -3,6 +3,7 @@ import { screen } from '@testing-library/dom';
 import App from './App';
 
 import axios from 'axios';
+import { MemoryRouter } from 'react-router-dom';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>
@@ -21,7 +22,11 @@ mockedAxios.get.mockResolvedValue({
 });
 
 beforeEach(() => {
-  render(<App />);
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
 });
 
 describe('App Component', () => {

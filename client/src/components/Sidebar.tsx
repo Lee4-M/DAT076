@@ -29,7 +29,7 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
         navigate('/');
     }
 
-    let totalExpenses = budgets.reduce((sum, budget) =>
+    const totalExpenses = budgets.reduce((sum, budget) =>
         sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
         0);
 
