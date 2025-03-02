@@ -4,15 +4,15 @@ import { UserService } from "./user";
 import { app } from "../start";
 import request from "supertest";
 
-const username: string = "User";
-const password: string = "Password";
+const username = "User";
+const password = "Password";
 
 let userService: UserService;
 let budgetService: BudgetService;
 
 beforeAll(async () => {
     userService = new UserService();
-    budgetService = new BudgetService(userService); 
+    budgetService = new BudgetService(userService);
     await userService.createUser(username, password);
 });
 
@@ -22,14 +22,14 @@ beforeEach(async () => {
 
 describe("Budget Service", () => {
     test("If a budget is added, it should appear in the list", async () => {
-        const category: string = "Clothes";
-        const cost: number = 500;
+        const category = "Clothes";
+        const cost = 500;
 
         await budgetService.addBudget(username, category, cost);
 
         const budgets: Budget[] | undefined = await budgetService.getBudgets(username);
 
-        expect(budgets && budgets.some(budget => budget.category === category && budget.cost === cost)).toBeTruthy();
+        expect(budgets?.some(budget => budget.category === category && budget.cost === cost)).toBeTruthy();
     });
 });
 
