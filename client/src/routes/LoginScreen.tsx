@@ -31,27 +31,31 @@ const Login = () => {
   return (
     <div className="container-fluid vh-100">
       <div className="row h-100">
-        {/* Gradient Section (Left Side) */}
+        {/* Photo Left Side */}
         <div
-          className="col-md-6 d-none d-md-flex align-items-center justify-content-center"
-          style={{
-            background: '#1F4AA0',
-            color: '#fff',
-          }}
+          className="col-md-6 d-none d-md-flex left-section"
+  
         >
           <div className="text-center p-5">
-            <h1 className="display-4 fw-bold">Budgie Boudgeet</h1>
+          <img
+              src="/images/Budgie_Logo.svg" 
+              alt="Budgie Logo"
+              className="mb-4" 
+              style={{ maxWidth: '150px' }} 
+            />
+            <h1 className="display-4 fw-bold">Budgie</h1>
             <p className="lead">
-              Track or wack?
+              Budget your money with Budgie. Keep track of your expenses and
+              income.
             </p>
           </div>
         </div>
 
-        {/* Form Section (Right Side) */}
+        {/* Form Section Right Side */}
         <div className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="w-75 mx-auto">
             <h2 className="text-center mb-4">Welcome to Budgie</h2>
-            {error && <div className="alert alert-danger">{error}</div>}
+            {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleLogin}>
               <div className="mb-3">
                 <input
@@ -71,7 +75,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button type="submit" className="btn btn-primary w-100 mb-3">
+              <button type="submit" className="btn login-button mb-3">
                 Login
               </button>
               <div className="text-center">
