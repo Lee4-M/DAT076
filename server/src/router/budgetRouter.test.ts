@@ -14,15 +14,18 @@ beforeAll(async () => {
     await userService.createUser(username, password);
 });
 
-beforeEach(async () => {
-    await budgetService.resetBudgets(username);
+// TODO: Review, required to bypass Linter's no misused promises - Kevin
+beforeEach((): Promise<void> => {
+    return (async () => {
+        await budgetService.resetBudgets(username);
 
-    agent = request.agent(app);
+        agent = request.agent(app);
 
-    await agent
-        .post("/user/login")
-        .send({ username, password })
-        .expect(200);
+        await agent
+            .post("/user/login")
+            .send({ username, password })
+            .expect(200);
+    })();
 });
 
 describe("Delete Budget", () => {
