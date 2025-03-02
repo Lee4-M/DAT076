@@ -13,11 +13,18 @@ const Login = () => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    setError(null);
+
+    if (!username || !password) {
+      setError("Please enter username and password");
+      return;
+    }
+
     try {
       await login(username, password);
       navigate("/budget");
     } catch (err: any) {
-      setError(err.message);
+      setError("Wrong username or password");
     }
   };
 
