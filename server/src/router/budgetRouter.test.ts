@@ -15,14 +15,14 @@ beforeAll(async () => {
 });
 
 // TODO: Review, required to bypass Linter's no misused promises - Kevin
-beforeEach(() => {
-    return budgetService.resetBudgets(username).then(() => {
-        agent = request.agent(app);
-        return agent
-            .post("/user/login")
-            .send({ username, password })
-            .expect(200);
-    });
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+beforeEach(async () => {
+    await budgetService.resetBudgets(username);
+    agent = request.agent(app);
+    await agent
+        .post("/user/login")
+        .send({ username, password })
+        .expect(200);
 });
 
 describe("Delete Budget", () => {
