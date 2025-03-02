@@ -1,8 +1,6 @@
 import { Budget } from "../model/budget.interface";
 import { BudgetService } from "./budget";
 import { UserService } from "./user";
-import { app } from "../start";
-import request from "supertest";
 
 const username: string = "User";
 const password: string = "Password";

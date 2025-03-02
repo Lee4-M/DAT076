@@ -3,8 +3,8 @@ import { userService } from "../start";
 import { app } from "../start";
 import request from "supertest";
 
-const username: string = "User";
-const password: string = "Password";
+const username = "User";
+const password = "Password";
 
 let budgetService: BudgetService;
 let agent: ReturnType<typeof request.agent>;
