@@ -44,25 +44,4 @@ describe("Delete Budget", () => {
         const budgets: Budget[] | undefined = await budgetService.getBudgets(username);
         expect(budgets && budgets.length === 0).toBeTruthy();
     })
-
-    // test("Budget deleted successfully", async() =>{
-    //     const category = "Groceries";
-    //     const cost = 1000;
-
-    //     await budgetService.addBudget(username, category, cost);
-        
-    //     const loginResponse = await request(app)
-    //         .post("/user/login")
-    //         .send({ username, password })
-    //         .expect(200);
-
-    //     console.log("Set-Cookie:", loginResponse.headers['set-cookie']);
-
-    //     //const token = loginResponse.body.token;
-
-    //     const response = await request(app)
-    //         .delete("/budget")
-    //         .send({ category : "Groceries" })
-    //         .expect(200);
-    // })
 });

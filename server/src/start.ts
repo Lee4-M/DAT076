@@ -21,7 +21,7 @@ if (!process.env.SESSION_SECRET) {
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true, // TODO -- Double check? -Kev
 }));
 app.use(cors({
   origin: true,
@@ -29,7 +29,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-const userService = new UserService();
+export const userService = new UserService();
 const budgetService = new BudgetService(userService);
 const expenseService = new ExpenseService(userService, budgetService);
 

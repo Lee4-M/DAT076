@@ -21,11 +21,14 @@ export function userRouter(userService: UserService): Router {
     
     userRouter.post("/user/login", async (req: UserRequest, res: Response) => {
         const user: User | undefined = await userService.findUser(req.body.username, req.body.password);
+        //console.log("Session after login:", req.session);
         if (!user) {
             res.status(401).send("No such username or password");
+            //console.log("aaa");
             return;
         }
         req.session.username = req.body.username; 
+        //console.log("Session after login:", req.session);
         res.status(200).send("Logged in as: " + req.body.username);
     });
 
