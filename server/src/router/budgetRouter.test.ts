@@ -14,10 +14,9 @@ beforeAll(async () => {
     await userService.createUser(username, password);
 });
 
-// TODO: Review, required to bypass Linter's no misused promises - Kevin
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 beforeEach(async () => {
     await budgetService.resetBudgets(username);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     agent = request.agent(app);
     await agent
         .post("/user/login")
@@ -29,25 +28,25 @@ describe("Delete Budget", () => {
     test("Budget deleted successfully", async () => {
         const category = "Groceries";
         const cost = 1000;
-    
+
         await budgetService.addBudget(username, category, cost);
-    
+
         await agent
             .delete("/budget")
             .send({ category: "Groceries" })
             .expect(200);
     });
 
-    test("Wrong budget item attempted to be deleted", async() =>{
+    test("Wrong budget item attempted to be deleted", async () => {
         const category = "Groceries";
         const cost = 1000;
-    
+
         await budgetService.addBudget(username, category, cost);
-    
+
         await agent
             .delete("/budget")
             .send({ category: "not-existing" })
             .expect(404);
     })
-    
+
 });
