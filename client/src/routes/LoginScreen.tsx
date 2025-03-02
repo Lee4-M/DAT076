@@ -23,7 +23,7 @@ const Login = () => {
     try {
       await login(username, password);
       navigate("/budget");
-    } catch (err: any) {
+    } catch {
       setError("Wrong username or password");
     }
   };
