@@ -14,18 +14,25 @@ export class UserService {
         });
 
         this.users.push(user);
+        // console.log("Users after creation:", this.users);
         return user;
     }
 
     async findUser(username: string, password?: string): Promise<User | undefined> {
         const user = this.users.find((user) => user.username === username);
-
-        if (!user) return undefined;
-
-        if (!password) return user;
-
+        // console.log("Users at findUser:", this.users);
+        if (!user) {
+            // console.log("Returns here");
+            return undefined;
+        } 
+    
+        if (!password) {
+            return user;
+        }
+    
         const isMatch = await bcrypt.compare(password, user.password);
-        return isMatch ? user : undefined;
+        
+        return isMatch ? user : undefined; 
     }
 
 }

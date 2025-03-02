@@ -18,6 +18,14 @@ export class BudgetService {
         return user?.budgets ?? undefined;
     }
 
+    async resetBudgets(username: string): Promise<void | undefined> {
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+        user.budgets = [];
+    }
+
     async addBudget(username: string, category: string, cost: number, expense?: Expense): Promise<Budget | undefined> {
         // Assuming we add expenses after adding a budget row
         const user: User | undefined = await this.userService.findUser(username);
