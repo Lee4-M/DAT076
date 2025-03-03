@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 export class UserService {
     async createUser(username: string, password: string): Promise<UserModel | null> {
 
-        if (await UserModel.findOne({where: {username}})) {
+        if (await UserModel.findOne({ where: { username } })) {
             return null;
         }
 
@@ -19,11 +19,11 @@ export class UserService {
     }
 
     async findUser(username: string, password?: string): Promise<User | null> {
-        if (! password) {
-            return await UserModel.findOne({ where: { username }});
+        if (!password) {
+            return await UserModel.findOne({ where: { username } });
         }
 
-        const user : User | null = await UserModel.findOne({ where: {username}, include: "tasks"});
+        const user: User | null = await UserModel.findOne({ where: { username }, include: "tasks" });
 
         if (!user) return null;
 

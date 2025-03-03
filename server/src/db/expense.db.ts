@@ -1,52 +1,46 @@
-import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes, ForeignKey } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes, ForeignKey, Association } from 'sequelize';
 import { sequelize } from './conn';
-import { BudgetModel } from './budget.db'; 
+import { BudgetModel } from './budget.db';
 import { UserModel } from './user.db';
 
 export class ExpenseModel extends Model<InferAttributes<ExpenseModel>, InferCreationAttributes<ExpenseModel>> {
-  declare id: string;
-  declare category: ForeignKey<BudgetModel['category']>;
+  declare id: CreationOptional<number>;
+  declare category: ForeignKey<BudgetModel['category']> | null;
   declare cost: number;
   declare description: string;
-  declare userId: ForeignKey<UserModel['userId']>;
+  declare userId: ForeignKey<UserModel['id']>;
+  declare static associations: {
+    budget: Association<ExpenseModel, BudgetModel>;
+  }
 }
 
 ExpenseModel.init(
   {
     id: {
-        type: DataTypes.STRING,
-        autoIncrement: false,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
     },
     category: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        references: {
-            model: BudgetModel,
-            key: 'category'
-          }
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: true,
     },
-    cost: { 
-        type: DataTypes.BIGINT,
-        allowNull: false
-  },
-    description: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    userId: {
+    cost: {
       type: DataTypes.BIGINT,
-      allowNull: false,
-      references: {
-          model: UserModel,
-          key: 'userId'
-        }
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   },
-},
   {
-        sequelize,
+    sequelize,
+    tableName: 'expenses'
   }
 );
 
-BudgetModel.hasMany(ExpenseModel, { foreignKey: 'category' });
-ExpenseModel.belongsTo(BudgetModel, { foreignKey: 'category' });
+ExpenseModel.hasOne(BudgetModel, {
+  sourceKey: 'category'
+});
