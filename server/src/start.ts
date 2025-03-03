@@ -7,9 +7,9 @@ import dotenv from "dotenv";
 import { expenseRouter } from "./router/expense";
 import { budgetRouter } from "./router/budget";
 import { userRouter } from "./router/user";
-import { BudgetService } from "./service/budget";
-import { UserService } from "./service/user";
-import { ExpenseService } from "./service/expense";
+import { BudgetService } from "./service_mockup/budget";
+import { UserService } from "./service_mockup/user";
+import { ExpenseService } from "./service_mockup/expense";
 
 export const app = express();
 

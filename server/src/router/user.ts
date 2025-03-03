@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { UserService } from "../service/user";
+import { UserService } from "../service_mockup/user";
 import { User } from "../model/user.interface";
 
 export function userRouter(userService: UserService): Router {

@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { BudgetService } from "../service/budget";
+import { BudgetService } from "../service_mockup/budget";
 import { Budget } from "../model/budget.interface";
 
 export function budgetRouter(budgetService: BudgetService): Router {
