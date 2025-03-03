@@ -1,28 +1,29 @@
 import { Budget } from "../model/budget.interface";
 import { Expense } from "../model/expense.interface";
 import { User } from "../model/user.interface";
+import { IBudgetService } from "./IBudgetService";
 import { UserService } from "./user";
 
-export class BudgetService {
+export class BudgetService implements IBudgetService{
     private userService: UserService;
 
     constructor(userService: UserService) {
         this.userService = userService;
     }
 
-    async getBudgets(username: string): Promise<Budget[] | undefined> {
+    async getBudgets(username: string): Promise<Budget[]> {
         const user: User | undefined = await this.userService.findUser(username);
-        if (!user) {
-            return undefined;
+        if (!user || !user.budgets) {
+            return [];
         }
-        return user?.budgets ?? undefined;
+        return user.budgets;
     }
 
-    async addBudget(username: string, category: string, cost: number, expense?: Expense): Promise<Budget | undefined> {
+    async addBudget(username: string, category: string, cost: number, expense?: Expense): Promise<Budget> {
         // Assuming we add expenses after adding a budget row
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
-            return undefined;
+            throw new Error("User not found");
         }
 
         const budget: Budget = {
@@ -42,10 +43,10 @@ export class BudgetService {
         return { ...budget };
     }
 
-    async deleteBudget(username: string, category: string): Promise<boolean | undefined> {
+    async deleteBudget(username: string, category: string): Promise<boolean> {
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
-            return undefined;
+            throw new Error("User not found");
         }
 
         const index = user.budgets.findIndex(budget => budget.category === category);
@@ -76,10 +77,10 @@ export class BudgetService {
     }
 
 
-    async removeBudgetExpense(username: string, id: string): Promise<Budget | undefined> {
+    async removeBudgetExpense(username: string, id: string): Promise<Budget> {
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
-            return undefined;
+            throw new Error("User not found");
         }
 
         const budget = user.budgets.find(budget =>

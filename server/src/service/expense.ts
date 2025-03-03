@@ -3,8 +3,9 @@ import { Expense } from "../model/expense.interface";
 import { BudgetService } from "./budget";
 import { UserService } from "./user";
 import { User } from "../model/user.interface";
+import { IExpenseService } from "./IExpenseService";
 
-export class ExpenseService {
+export class ExpenseService implements IExpenseService{
     private budgetService: BudgetService;
     private userService: UserService;
 
@@ -13,18 +14,18 @@ export class ExpenseService {
         this.userService = userService;
     }
 
-    async getExpenses(username: string): Promise<Expense[] | undefined> {
+    async getExpenses(username: string): Promise<Expense[]> {
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
-            return undefined;
+            throw new Error("User not found");
         }
         return [...user.expenses];
     }
 
-    async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {
+    async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense> {
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
-            return undefined;
+            throw new Error ("User not found");
         }
 
         const expense = {
@@ -44,7 +45,7 @@ export class ExpenseService {
     async removeExpense(username: string, id: string): Promise<void> {
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
-            return;
+            throw new Error("User not found");
         }
 
         const index = user.expenses.findIndex(e => e.id === id);

@@ -1,8 +1,8 @@
 import express, { Request, Response, Router } from "express";
-import { BudgetService } from "../service_mockup/budget";
 import { Budget } from "../model/budget.interface";
+import { IBudgetService } from "../service/IBudgetService";
 
-export function budgetRouter(budgetService: BudgetService): Router {
+export function budgetRouter(budgetService: IBudgetService): Router {
     const budgetRouter = express.Router();
 
     interface BudgetRequest {

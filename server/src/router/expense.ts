@@ -1,8 +1,8 @@
 import express, { Request, Response, Router } from "express";
 import { Expense } from "../model/expense.interface";
-import { ExpenseService } from "../service_mockup/expense";
+import { IExpenseService } from "../service/IExpenseService";
 
-export function expenseRouter(expenseService: ExpenseService): Router {
+export function expenseRouter(expenseService: IExpenseService): Router {
     const expenseRouter = express.Router();
 
     interface ExpenseRequest {
