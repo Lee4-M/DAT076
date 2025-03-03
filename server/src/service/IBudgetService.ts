@@ -12,5 +12,4 @@ export interface IBudgetService {
     // If the task is already done, this method performs no operation and returns true
     deleteBudget(username: String, category: String): Promise<boolean>
 
-    removeBudgetExpense(username: String, id: String): Promise<Budget>
   }

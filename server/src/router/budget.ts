@@ -91,7 +91,7 @@ export function budgetRouter(budgetService: IBudgetService): Router {
             res.status(500).send(e.message);
         }
     });
-  
+  /*
     interface DeleteBudgetExpenseRequest extends Request {
         body: {
             id: string
@@ -115,6 +115,8 @@ export function budgetRouter(budgetService: IBudgetService): Router {
             res.status(500).send(e.message);
         }
     });
+    */
+   //TODO only expense router should delete expenses
     
     return budgetRouter;  
 }

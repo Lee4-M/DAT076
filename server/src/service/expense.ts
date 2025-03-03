@@ -1,15 +1,15 @@
 import { v4 as uuidv4 } from "uuid";
 import { Expense } from "../model/expense.interface";
-import { BudgetService } from "./budget";
-import { UserService } from "./user";
 import { User } from "../model/user.interface";
 import { IExpenseService } from "./IExpenseService";
+import { IBudgetService } from "./IBudgetService";
+import { IUserService } from "./IUserService";
 
-export class ExpenseService implements IExpenseService{
-    private budgetService: BudgetService;
-    private userService: UserService;
+export class ExpenseDBService implements IExpenseService{
+    private budgetService: IBudgetService;
+    private userService: IUserService;
 
-    constructor(userService: UserService, budgetService: BudgetService) {
+    constructor(userService: IUserService, budgetService: IBudgetService) {
         this.budgetService = budgetService;
         this.userService = userService;
     }
@@ -37,8 +37,6 @@ export class ExpenseService implements IExpenseService{
 
         user.expenses.push(expense);
 
-        await this.budgetService.addBudgetExpense(username, expense);
-
         return { ...expense };
     }
 
@@ -55,8 +53,6 @@ export class ExpenseService implements IExpenseService{
         }
 
         user.expenses.splice(index, 1);
-
-        await this.budgetService.removeBudgetExpense(username, id);
 
     }
 }

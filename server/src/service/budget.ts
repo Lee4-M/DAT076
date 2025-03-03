@@ -1,3 +1,4 @@
+import { BudgetModel } from "../db/budget.db";
 import { Budget } from "../model/budget.interface";
 import { Expense } from "../model/expense.interface";
 import { User } from "../model/user.interface";
@@ -16,7 +17,7 @@ export class BudgetService implements IBudgetService{
         if (!user || !user.budgets) {
             return [];
         }
-        return user.budgets;
+        return BudgetModel.findAll({ where: { userId: user.username} });
     }
 
     async addBudget(username: string, category: string, cost: number, expense?: Expense): Promise<Budget> {
@@ -28,16 +29,14 @@ export class BudgetService implements IBudgetService{
 
         const budget: Budget = {
             category: category,
-            cost: cost,
-            expenses: [] as Expense[],
-            result: cost
+            cost: cost
         }
 
         // TODO: Calculate result in function outside of field.
-        if (typeof expense !== 'undefined') {
-            budget.expenses.push(expense);
-            budget.result -= expense.cost;
-        }
+        //if (typeof expense !== 'undefined') {
+        //    budget.expenses.push(expense);
+        //    budget.result -= expense.cost;
+        //}
 
         user.budgets.push(budget);
         return { ...budget };
@@ -57,7 +56,7 @@ export class BudgetService implements IBudgetService{
         user.budgets.splice(index, 1);
         return true;
     }
-
+/*
     async addBudgetExpense(username: string, expense: Expense): Promise<Budget | undefined> {
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
@@ -100,6 +99,8 @@ export class BudgetService implements IBudgetService{
         budget.result += removedExpense.cost;
 
         return { ...budget };
-    }
+    }*/
+
+    //TODO fix addBudgetExpense and removeBudgetExpense through new implementation
 }
 
