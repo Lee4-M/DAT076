@@ -5,12 +5,10 @@ import { IExpenseService } from "./IExpenseService";
 import { IBudgetService } from "./IBudgetService";
 import { IUserService } from "./IUserService";
 
-export class ExpenseDBService implements IExpenseService{
-    private budgetService: IBudgetService;
+export class ExpenseService implements IExpenseService{
     private userService: IUserService;
 
-    constructor(userService: IUserService, budgetService: IBudgetService) {
-        this.budgetService = budgetService;
+    constructor(userService: IUserService) {
         this.userService = userService;
     }
 

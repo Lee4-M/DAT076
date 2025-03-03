@@ -26,20 +26,22 @@ export class BudgetService implements IBudgetService{
         if (!user) {
             throw new Error("User not found");
         }
-
+        return BudgetModel.create({ userId: user.userId, category: category, cost: cost });
+        /*
         const budget: Budget = {
             category: category,
             cost: cost
         }
 
-        // TODO: Calculate result in function outside of field.
-        //if (typeof expense !== 'undefined') {
-        //    budget.expenses.push(expense);
-        //    budget.result -= expense.cost;
-        //}
+         TODO: Calculate result in function outside of field.
+        if (typeof expense !== 'undefined') {
+            budget.expenses.push(expense);
+            budget.result -= expense.cost;
+        }
 
-        user.budgets.push(budget);
+        user.budgets.push(budget); //TODO remove - old implementation
         return { ...budget };
+        */
     }
 
     async deleteBudget(username: string, category: string): Promise<boolean> {

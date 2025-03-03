@@ -1,13 +1,14 @@
-import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes, ForeignKey } from 'sequelize';
 import { sequelize } from './conn';
-import { Expense } from '../model/expense.interface';
 import { BudgetModel } from './budget.db'; 
+import { UserModel } from './user.db';
 
 export class ExpenseModel extends Model<InferAttributes<ExpenseModel>, InferCreationAttributes<ExpenseModel>> {
   declare id: string;
-  declare category: string;
+  declare category: ForeignKey<BudgetModel['category']>;
   declare cost: number;
   declare description: string;
+  declare userId: ForeignKey<UserModel['userId']>;
 }
 
 ExpenseModel.init(
@@ -33,6 +34,14 @@ ExpenseModel.init(
         type: DataTypes.STRING,
         allowNull: true
     },
+    userId: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      references: {
+          model: UserModel,
+          key: 'userId'
+        }
+  },
 },
   {
         sequelize,

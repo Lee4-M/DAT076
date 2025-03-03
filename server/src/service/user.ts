@@ -1,31 +1,37 @@
 import { User } from "../model/user.interface";
+import { UserModel } from "../db/user.db";
 import bcrypt from "bcrypt";
 
 export class UserService {
-    users: User[] = [];
+    async createUser(username: string, password: string): Promise<UserModel | null> {
 
-    async createUser(username: string, password: string) {
-        const salt = bcrypt.genSaltSync(10);
-        const user: User = ({
+        if (await UserModel.findOne({where: {username}})) {
+            return null;
+        }
+
+        const salt: string = bcrypt.genSaltSync(10);
+        const hashedPassword: string = bcrypt.hashSync(password, salt);
+
+        return await UserModel.create({
             username: username,
-            password: bcrypt.hashSync(password, salt),
-            budgets: [],
-            expenses: []
+            password: hashedPassword,
         });
-
-        this.users.push(user);
-        return user;
     }
 
-    async findUser(username: string, password?: string): Promise<User | undefined> {
-        const user = this.users.find((user) => user.username === username);
+    async findUser(username: string, password?: string): Promise<User | null> {
+        if (! password) {
+            return await UserModel.findOne({ where: { username }});
+        }
 
-        if (!user) return undefined;
+        const user : User | null = await UserModel.findOne({ where: {username}, include: "tasks"});
 
-        if (!password) return user;
+        if (!user) return null;
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        return isMatch ? user : undefined;
+        if (bcrypt.compareSync(password, user.password)) {
+            return user;
+        }
+
+        return null;
     }
 
 }

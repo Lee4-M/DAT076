@@ -6,7 +6,7 @@ import { UserModel } from './user.db'; // Adjust the path as necessary
 export class BudgetModel extends Model<InferAttributes<BudgetModel>, InferCreationAttributes<BudgetModel>> {
     declare category: string;
     declare cost: number;
-    declare userId: ForeignKey<UserModel['username']>;
+    declare userId: ForeignKey<UserModel['userId']>;
   }
   
   BudgetModel.init(
@@ -19,6 +19,14 @@ export class BudgetModel extends Model<InferAttributes<BudgetModel>, InferCreati
           type: DataTypes.BIGINT,
           allowNull: false
       },
+      userId: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        references: {
+            model: UserModel,
+            key: 'userId'
+          }
+    },
   },
     {
           sequelize,
