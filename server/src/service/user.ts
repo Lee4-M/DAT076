@@ -1,13 +1,14 @@
 import { User } from "../model/user.interface";
 import { UserModel } from "../db/user.db";
 import bcrypt from "bcrypt";
+import { IUserService } from "./IUserService";
 
-export class UserService {
+export class UserService implements IUserService {
     async createUser(username: string, password: string): Promise<UserModel | null> {
 
-        if (await UserModel.findOne({ where: { username } })) {
-            return null;
-        }
+        // if (await UserModel.findOne({ where: { username } })) {
+        //     return null;
+        // }
 
         const salt: string = bcrypt.genSaltSync(10);
         const hashedPassword: string = bcrypt.hashSync(password, salt);
@@ -23,7 +24,7 @@ export class UserService {
             return await UserModel.findOne({ where: { username } });
         }
 
-        const user: User | null = await UserModel.findOne({ where: { username }, include: "tasks" });
+        const user: User | null = await UserModel.findOne({ where: { username }, include: "budgetRows" });
 
         if (!user) return null;
 

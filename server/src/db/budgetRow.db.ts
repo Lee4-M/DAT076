@@ -3,18 +3,17 @@ import { sequelize } from './conn';
 import { UserModel } from './user.db';
 import { ExpenseModel } from './expense.db';
 
-
-export class BudgetModel extends Model<InferAttributes<BudgetModel>, InferCreationAttributes<BudgetModel>> {
+export class BudgetRowModel extends Model<InferAttributes<BudgetRowModel>, InferCreationAttributes<BudgetRowModel>> {
   declare id: CreationOptional<number>;
   declare category: string;
   declare amount: number;
   declare userId: ForeignKey<UserModel['id']>;
   declare static associations: {
-    expenses: Association<BudgetModel, ExpenseModel>;
+    expenses: Association<BudgetRowModel, ExpenseModel>;
   }
 }
 
-BudgetModel.init(
+BudgetRowModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -29,15 +28,15 @@ BudgetModel.init(
     amount: {
       type: DataTypes.BIGINT,
       allowNull: false
-    },
+    }
   },
   {
     sequelize,
-    tableName: 'budgets'
+    tableName: 'budgetRows'
   }
 );
 
-BudgetModel.hasMany(ExpenseModel, {
-  foreignKey: 'category',
+BudgetRowModel.hasMany(ExpenseModel, {
+  foreignKey: 'budgetRowId',
   as: 'expenses'
 });

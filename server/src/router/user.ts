@@ -20,7 +20,7 @@ export function userRouter(userService: IUserService): Router {
     });
 
     userRouter.post("/user/login", async (req: UserRequest, res: Response) => {
-        const user: User | undefined = await userService.findUser(req.body.username, req.body.password);
+        const user: User | null = await userService.findUser(req.body.username, req.body.password);
         if (!user) {
             res.status(401).send("No such username or password");
             return;

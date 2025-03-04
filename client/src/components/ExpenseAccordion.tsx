@@ -1,15 +1,15 @@
 import { Table } from "react-bootstrap";
-import { Budget } from "../api/api";
+import { Expense } from "../api/api";
 import '../routes/App.css'
 
 interface ExpenseAccordionProps {
     show: boolean;
     handleClose: () => void;
-    budget: Budget;
-    onDeleteExpense: (id: string) => void;
+    expenses: Expense[];
+    onDeleteExpense: (id: number) => void;
 }
 
-export function ExpenseAccordion({ show, budget, handleClose, onDeleteExpense }: ExpenseAccordionProps) {
+export function ExpenseAccordion({ show, expenses, handleClose, onDeleteExpense }: ExpenseAccordionProps) {
     if (!show) return null;
 
     return (
@@ -23,7 +23,7 @@ export function ExpenseAccordion({ show, budget, handleClose, onDeleteExpense }:
                     </tr>
                 </thead>
                 <tbody>
-                    {budget.expenses.map((expense) => (
+                    {expenses.map((expense) => (
                         <tr key={expense.id}>
                             <td>{expense.cost} :-</td>
                             <td>{expense.description}</td>

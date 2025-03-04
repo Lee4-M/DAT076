@@ -5,9 +5,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import { expenseRouter } from "./router/expense";
-import { budgetRouter } from "./router/budget";
+import { budgetRowRouter } from "./router/budget";
 import { userRouter } from "./router/user";
-import { BudgetService } from "./service_mockup/budget";
+import { BudgetRowService } from "./service/budgetRow";
 import { UserService } from "./service/user";
 import { ExpenseService } from "./service/expense";
 
@@ -29,10 +29,10 @@ app.use(cors({
 }));
 
 app.use(express.json());
-const userService: number = new UserService();
-const budgetService = new BudgetService(userService);
-const expenseService = new ExpenseService(userService, budgetService);
+const userService = new UserService();
+const budgetRowService = new BudgetRowService(userService);
+const expenseService = new ExpenseService(budgetRowService, userService);
 
-app.use(budgetRouter(budgetService));
+app.use(budgetRowRouter(budgetRowService));
 app.use(expenseRouter(expenseService));
 app.use(userRouter(userService));

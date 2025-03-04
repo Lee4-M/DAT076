@@ -1,3 +1,4 @@
+import { initDB } from "./db/conn";
 import { app } from "./start";
 
 
@@ -17,3 +18,5 @@ const PORT = 8080;
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
 });
+
+initDB();

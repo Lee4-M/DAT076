@@ -1,16 +1,16 @@
 import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes, ForeignKey, Association } from 'sequelize';
 import { sequelize } from './conn';
-import { BudgetModel } from './budget.db';
+import { BudgetRowModel } from './budgetRow.db';
 import { UserModel } from './user.db';
 
 export class ExpenseModel extends Model<InferAttributes<ExpenseModel>, InferCreationAttributes<ExpenseModel>> {
   declare id: CreationOptional<number>;
-  declare category: ForeignKey<BudgetModel['category']> | null;
+  declare budgetRowId: ForeignKey<BudgetRowModel['id']>;
   declare cost: number;
   declare description: string;
   declare userId: ForeignKey<UserModel['id']>;
   declare static associations: {
-    budget: Association<ExpenseModel, BudgetModel>;
+    budgetRow: Association<ExpenseModel, BudgetRowModel>;
   }
 }
 
@@ -21,10 +21,9 @@ ExpenseModel.init(
       autoIncrement: true,
       primaryKey: true
     },
-    category: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: true,
+    budgetRowId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     cost: {
       type: DataTypes.BIGINT,
@@ -32,7 +31,7 @@ ExpenseModel.init(
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     }
   },
   {
@@ -41,6 +40,7 @@ ExpenseModel.init(
   }
 );
 
-ExpenseModel.hasOne(BudgetModel, {
-  sourceKey: 'category'
-});
+// ExpenseModel.belongsTo(BudgetRowModel, {
+//   foreignKey: 'budgetRowId',
+//   as: 'budgetRow'
+// });

@@ -1,5 +1,4 @@
-// Invariant: result === cost - sum of expenses
-export interface Budget {
+export interface BudgetRow {
     id: number;
     category: string;
     amount: number;

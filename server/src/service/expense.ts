@@ -2,55 +2,56 @@ import { v4 as uuidv4 } from "uuid";
 import { Expense } from "../model/expense.interface";
 import { User } from "../model/user.interface";
 import { IExpenseService } from "./IExpenseService";
-import { IBudgetService } from "./IBudgetService";
-import { IUserService } from "./IUserService";
+import { ExpenseModel } from "../db/expense.db";
+import { BudgetRow } from "../model/budgetRow.interface";
+import { BudgetRowModel } from "../db/budgetRow.db";
+import { BudgetRowService } from "./budgetRow";
+import { UserService } from "./user";
 
-export class ExpenseService implements IExpenseService{
-    private userService: IUserService;
+export class ExpenseService implements IExpenseService {
+    private budgetRowService: BudgetRowService;
+    private userService: UserService;
 
-    constructor(userService: IUserService) {
+    constructor(budgetService: BudgetRowService, userService: UserService) {
+        this.budgetRowService = budgetService;
         this.userService = userService;
     }
 
-    async getExpenses(username: string): Promise<Expense[]> {
-        const user: User | undefined = await this.userService.findUser(username);
-        if (!user) {
-            throw new Error("User not found");
-        }
-        return [...user.expenses];
+    async getExpenses(budgetRowId: number): Promise<Expense[] | undefined> {
+        const expenses = await ExpenseModel.findAll({
+            where: { budgetRowId: budgetRowId }
+        });
+
+        return expenses;
     }
 
-    async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense> {
-        const user: User | undefined = await this.userService.findUser(username);
+    async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {
+        const budgetRow = await BudgetRowModel.findOne({ where: { category: category } });
+
+        const user: User | null = await this.userService.findUser(username);
         if (!user) {
-            throw new Error ("User not found");
+            return undefined;
         }
 
-        const expense = {
-            id: uuidv4(),
-            category: category,
-            cost: cost,
-            description: description
+        if (!budgetRow) {
+            const newBudget = await this.budgetRowService.addBudget(username, category, 0,);
+            if (!newBudget) {
+                return undefined;
+            }
+            return await ExpenseModel.create({ budgetRowId: newBudget.id, cost: cost, description: description });
         }
 
-        user.expenses.push(expense);
-
-        return { ...expense };
+        return await ExpenseModel.create({ budgetRowId: budgetRow?.id, cost: cost, description: description });
     }
 
-    async removeExpense(username: string, id: string): Promise<void> {
-        const user: User | undefined = await this.userService.findUser(username);
-        if (!user) {
-            throw new Error("User not found");
-        }
+    async removeExpense(username: string, id: string): Promise<number> {            //Gives the amount of rows deleted
+        const expense = await ExpenseModel.findOne({ where: { id: id } });
 
-        const index = user.expenses.findIndex(e => e.id === id);
-
-        if (index === -1) {
+        if (!expense) {
             throw new Error("Expense not found");
         }
+        return await ExpenseModel.destroy({ where: { id: id } });
 
-        user.expenses.splice(index, 1);
 
     }
 }

@@ -1,13 +1,13 @@
 import { UserService } from './user';
 import { ExpenseService } from './expense';
-import { BudgetService } from './budget';
+import { BudgetRowService } from './budgetRow';
 
 const username = "User";
 const password = "Password";
 
 let userService: UserService;
 let expenseService: ExpenseService;
-let budgetService: BudgetService;
+let budgetService: BudgetRowService;
 
 const category = "Clothes";
 const cost = 500;
@@ -15,8 +15,8 @@ const description = "Shirt";
 
 beforeAll(async () => {
     userService = new UserService();
-    budgetService = new BudgetService(userService);
-    expenseService = new ExpenseService(userService, budgetService);
+    budgetService = new BudgetRowService(userService);
+    expenseService = new ExpenseService(userService, budgetRowService);
     await userService.createUser(username, password);
 });
 

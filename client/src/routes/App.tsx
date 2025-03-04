@@ -24,7 +24,7 @@ function App() {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
   }
 
-  async function deleteExpense(id: string) {
+  async function deleteExpense(id: number) {
     const success = await delExpense(id);
 
     if (success) {
@@ -35,11 +35,11 @@ function App() {
     }
   }
 
-  async function deleteBudget(category: string) {
-    const success = await delBudget(category);
+  async function deleteBudget(id: number) {
+    const success = await delBudget(id);
 
     if (success) {
-      setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.category !== category));
+      setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.id !== id));
       console.log("Budget deleted");
     } else {
       console.log("Failed to delete budget");
@@ -49,7 +49,7 @@ function App() {
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
-    loadBudgets(); //TODO Uncommented as it re-rendered the table every millisecond, which is unnessesary? -Kev
+    loadBudgets();
   }, [loadBudgets]);
 
   return (

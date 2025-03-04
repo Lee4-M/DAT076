@@ -1,20 +1,39 @@
 import { Table } from "react-bootstrap";
 
-import { Budget } from "../api/api";
-import { BudgetComponent } from "./BudgetRowComponent";
+import { Budget, getExpenses } from "../api/api";
+import { BudgetRowComponent } from "./BudgetRowComponent";
+import { useEffect, useState } from "react";
 
 interface BudgetTableProps {
     budgets: Budget[];
-    deleteExpense: (id: string) => void;
-    deleteBudget: (category: string) => void;
+    deleteExpense: (id: number) => void;
+    deleteBudget: (id: number) => void;
 }
 
 export function BudgetTable({ budgets, deleteExpense, deleteBudget }: BudgetTableProps) {
+    const [totalExpenses, setTotalExpenses] = useState<number>(0);
 
-    const totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
-    const totalExpenses = budgets.reduce((sum, budget) =>
-        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
-        0);
+    const totalBudget = budgets.reduce((total, budget) => total + budget.amount, 0);
+
+    async function getTotalExpenses(budgets: Budget[]): Promise<number> {
+        const expensePromises = budgets.map(async (budget) => {
+            const expenses = await getExpenses(budget.id); // Fetch expenses for each budget row
+            return expenses.reduce((total, expense) => total + expense.cost, 0);
+        });
+
+        const expensesPerBudget = await Promise.all(expensePromises); // Wait for all expenses to be fetched
+        return expensesPerBudget.reduce((sum, expenseTotal) => sum + expenseTotal, 0);
+    }
+
+    useEffect(() => {
+        async function fetchTotalExpenses() {
+            const total = await getTotalExpenses(budgets);
+            setTotalExpenses(total);
+        }
+
+        fetchTotalExpenses();
+    }, [budgets]);
+
     const result = totalBudget - totalExpenses;
 
     return (
@@ -36,9 +55,8 @@ export function BudgetTable({ budgets, deleteExpense, deleteBudget }: BudgetTabl
                         </tr>
                     </thead>
                     <tbody>
-
                         {budgets.map(budget => (
-                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget} deleteExpense={deleteExpense} /> //TODO Change back to index?
+                            <BudgetRowComponent key={budget.category} budget={budget} deleteBudget={deleteBudget} deleteExpense={deleteExpense} /> //TODO Change back to index?
 
                         ))}
                     </tbody>

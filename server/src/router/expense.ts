@@ -6,9 +6,12 @@ export function expenseRouter(expenseService: IExpenseService): Router {
     const expenseRouter = express.Router();
 
     interface ExpenseRequest {
+        body: {
+            budgetRowId: number
+        }
         session: any
     }
-
+    //TODO Fixa så den tar budgetRowId istället för username
     expenseRouter.get("/expense", async (
         req: ExpenseRequest,
         res: Response<Expense[] | string>
@@ -18,13 +21,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const expenses: Expense[] | undefined = await expenseService.getExpenses(req.session.username);
-            if (!expenses) {
-                console.log("User logged in as " + req.session.username + " no longer exists");
-                delete req.session.username;
-                res.status(401).send("Not logged in");
-                return;
-            }
+            const expenses: Expense[] | undefined = await expenseService.getExpenses(req.body.budgetRowId);
             res.status(200).send(expenses);
         } catch (e: any) {
             res.status(500).send(e.message);

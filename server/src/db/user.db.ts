@@ -1,4 +1,4 @@
-import { BudgetModel } from './budget.db';
+import { BudgetRowModel } from './budgetRow.db';
 import { sequelize } from './conn';
 import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes, ForeignKey, Association } from 'sequelize';
 import { ExpenseModel } from './expense.db';
@@ -9,8 +9,7 @@ export class UserModel extends Model<InferAttributes<UserModel>, InferCreationAt
   declare username: string;
   declare password: string;
   declare static associations: {
-    budgets: Association<UserModel, BudgetModel>;
-    expenses: Association<UserModel, ExpenseModel>;
+    budgetRows: Association<UserModel, BudgetRowModel>;
   };
 }
 
@@ -38,17 +37,12 @@ UserModel.init(
   {
     sequelize,
     tableName: 'users',
+    timestamps: false
   }
 );
 
-UserModel.hasMany(BudgetModel, {
-  sourceKey: 'id',
-  foreignKey: 'od',
-  as: 'budgets'
-});
-
-UserModel.hasMany(ExpenseModel, {
+UserModel.hasMany(BudgetRowModel, {
   sourceKey: 'id',
   foreignKey: 'userId',
-  as: 'expenses'
-}); 
+  as: 'budgetRows'
+});
