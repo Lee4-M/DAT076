@@ -8,6 +8,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     interface BudgetRowRequest {
         session: any
     }
+
     budgetRowRouter.get("/budget", async (
         req: BudgetRowRequest,
         res: Response<BudgetRow[] | string>
@@ -77,10 +78,6 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 return;
             }
             const id = req.body.id;
-            if (typeof (id) !== "number") {
-                res.status(400).send("category should be a string");
-                return;
-            }
             const success = await budgetRowService.deleteBudgetRow(req.session.username, id);
             if (success) {
                 res.status(200).send("Budget row deleted");

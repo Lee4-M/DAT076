@@ -5,5 +5,5 @@ export interface IExpenseService {
 
   addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined>
 
-  removeExpense(username: string, id: string): Promise<number>
+  removeExpense(id: number): Promise<number>
 }

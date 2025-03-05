@@ -31,14 +31,12 @@ export class ExpenseService implements IExpenseService {
         return ExpenseModel.create({ budgetRowId: budgetRow.id, cost: cost, description: description });
     }
 
-    async removeExpense(id: string): Promise<number> {
+    async removeExpense(id: number): Promise<number> {
         const expense = await ExpenseModel.findOne({ where: { id: id } });
 
         if (!expense) {
             throw new Error("Expense not found");
         }
         return await ExpenseModel.destroy({ where: { id: id } });
-
-
     }
 }

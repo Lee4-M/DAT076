@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-import { Budget } from "../api/api";
+import { Expense } from "../api/api";
 import { logout } from "../api/apiLogin";
 
 import '../routes/App.css'
@@ -12,10 +12,12 @@ import { PieChart } from "@mui/x-charts";
 
 interface SidebarProps {
     loadBudgets: () => void;
-    budgets: Budget[];
+    expenses: {
+        [budget_id: number]: Expense[];
+    }
 }
 
-export function Sidebar({ loadBudgets, budgets }: SidebarProps) {
+export function Sidebar({ loadBudgets, expenses }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
 
@@ -26,18 +28,11 @@ export function Sidebar({ loadBudgets, budgets }: SidebarProps) {
         navigate('/');
     }
 
-    // const totalExpenses = budgets.reduce((sum, budget) =>
-    //     sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
-    //     0);
-
-    // const expenseData = budgets.map(budget => {
-    //     const categoryTotal = budget.expenses.reduce((total, expense) => total + expense.cost, 0);
-    //     return {
-    //         id: budget.category,
-    //         value: totalExpenses > 0 ? parseFloat(((categoryTotal / totalExpenses) * 100).toFixed(1)) : 0,
-    //         label: budget.category,
-    //     };
-    // });
+    const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => ({
+        id: Number(budgetRowId),
+        value: expenseList.reduce((sum, expense) => sum + expense.cost, 0),
+        label: `Category ${budgetRowId}`
+    }));
 
     return (
         <Container className="bg-light-subtle rounded-3 h-100">
@@ -53,7 +48,7 @@ export function Sidebar({ loadBudgets, budgets }: SidebarProps) {
             <Row className="px-3 py-3">
                 <button className="sidebar-button">Edit expense</button>
             </Row>
-            {/* <Row className="p-3">
+            <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">
                     <PieChart data-testid="pie-chart"
                         series={[
@@ -68,7 +63,7 @@ export function Sidebar({ loadBudgets, budgets }: SidebarProps) {
                                 cornerRadius: 3,
                                 paddingAngle: 1,
                                 cx: 200,
-                                valueFormatter: item => `${item.value}%`,
+                                valueFormatter: item => `${item.value}`,
                                 highlightScope: { fade: 'global', highlight: 'item' },
                                 faded: { innerRadius: 100, additionalRadius: -10, color: 'gray' },
                             },
@@ -78,7 +73,7 @@ export function Sidebar({ loadBudgets, budgets }: SidebarProps) {
                         height={450}
                     />
                 </Card>
-            </Row> */}
+            </Row>
             <Row className="p-3">
                 <button className="sidebar-button" onClick={handleLogout}>Sign out</button>
             </Row>

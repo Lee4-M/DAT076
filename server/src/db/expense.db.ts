@@ -39,8 +39,3 @@ ExpenseModel.init(
     tableName: 'expenses'
   }
 );
-
-// ExpenseModel.belongsTo(BudgetRowModel, {
-//   foreignKey: 'budgetRowId',
-//   as: 'budgetRow'
-// });

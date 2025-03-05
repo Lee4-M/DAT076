@@ -57,7 +57,7 @@ export async function deleteExpense(id: number): Promise<boolean> {
     try {
         console.log("Sending DELETE request to:", `${BASE_URL}/expense/${id}`);
 
-        const response = await axios.delete(`${BASE_URL}/expense/${id}`, { data: { id: id } });
+        const response = await axios.delete(`${BASE_URL}/expense`, { data: { id: id } });
 
         if (response.status === 200) {
             console.log("Expense deleted successfully.");
@@ -74,7 +74,7 @@ export async function deleteExpense(id: number): Promise<boolean> {
 
 export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     try {
-        const response = await axios.delete(`${BASE_URL}/budget`, { data: { budgetRowId: budgetRowId } });
+        const response = await axios.delete(`${BASE_URL}/budget`, { data: { id: budgetRowId } });
 
         if (response.status === 200) {
             return true; // Deleted budget

@@ -10,9 +10,10 @@ interface BudgetRowComponentProps {
     budget: Budget;
     loadBudgets: () => void;
     expenses: Expense[];
+    loadExpenses: () => void;
 }
 
-export function BudgetRowComponent({ budget, loadBudgets, expenses }: BudgetRowComponentProps) {
+export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
 
     async function removeBudget(id: number) {
@@ -50,6 +51,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses }: BudgetRowC
                             show={showExpenseAccordion}
                             expenses={expenses}
                             handleClose={() => setShowExpenseAccordion(false)}
+                            loadExpenses={loadExpenses}
                         />
                     </td>
                 </tr>

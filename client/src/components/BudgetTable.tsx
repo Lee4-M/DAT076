@@ -7,9 +7,10 @@ interface BudgetTableProps {
     budgets: Budget[];
     loadBudgets: () => void;
     expenses: { [budget_id: number]: Expense[] };
+    loadExpenses: () => void;
 }
 
-export function BudgetTable({ budgets, loadBudgets, expenses }: BudgetTableProps) {
+export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: BudgetTableProps) {
     const totalBudget = budgets.reduce((total, budget) => total + budget.amount, 0);
     const totalExpenses = Object.values(expenses).flat().reduce((total, expense) => total + expense.cost, 0);
     const result = totalBudget - totalExpenses;
@@ -34,7 +35,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses }: BudgetTableProps
                     </thead>
                     <tbody>
                         {budgets.map(budget => (
-                            <BudgetRowComponent key={budget.category} budget={budget} loadBudgets={loadBudgets} expenses={expenses[budget.id] || []} /> //TODO Change back to index?
+                            <BudgetRowComponent key={budget.category} budget={budget} loadBudgets={loadBudgets} loadExpenses={loadExpenses} expenses={expenses[budget.id] || []} /> //TODO Change back to index?
                         ))}
                     </tbody>
                 </Table>
@@ -43,7 +44,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses }: BudgetTableProps
             <div className="p-4 m-2 rounded text-center d-flex fw-bold justify-content-between text-white" id="total-row">
                 <div className="flex-fill">Total</div>
                 <div className="flex-fill">{totalBudget} :-</div>
-                <div className="flex-fill">{0} :-</div>
+                <div className="flex-fill">{totalExpenses} :-</div>
                 <div className="flex-fill">{result} :-</div>
             </div>
         </section>

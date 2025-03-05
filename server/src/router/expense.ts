@@ -65,7 +65,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
 
     interface DeleteExpenseRequest extends Request {
         body: {
-            id: string
+            id: number
         },
         session: any
     }
@@ -80,7 +80,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 return;
             }
             const id = req.body.id
-            await expenseService.removeExpense(req.session.username, id);
+            await expenseService.removeExpense(id);
             res.status(200).send("Expense deleted successfully.");
         } catch (e: any) {
             res.status(500).send(e.message);

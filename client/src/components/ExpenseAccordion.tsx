@@ -6,16 +6,17 @@ interface ExpenseAccordionProps {
     show: boolean;
     handleClose: () => void;
     expenses: Expense[];
+    loadExpenses: () => void;
 }
 
-export function ExpenseAccordion({ show, expenses, handleClose }: ExpenseAccordionProps) {
+export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses }: ExpenseAccordionProps) {
     if (!show) return null;
 
     async function removeExpense(id: number) {
         const success = await deleteExpense(id);
-
         if (success) {
             console.log("Expense deleted, reloading budgets...");
+            loadExpenses();
         } else {
             console.log("Failed to delete expense");
         }
