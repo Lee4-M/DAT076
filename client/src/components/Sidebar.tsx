@@ -11,14 +11,15 @@ import BudgetItemModal from "./BudgetModal";
 import { PieChart } from "@mui/x-charts";
 
 
-
 interface SidebarProps {
     addBudget: (budget: Budget) => void;
     loadBudgets: () => void;
     budgets: Budget[];
+    isEditing: boolean,
+    setIsEditing: (editing: boolean) => void,
 }
 
-export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
+export function Sidebar({ addBudget, loadBudgets, budgets, isEditing, setIsEditing }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
 
@@ -54,7 +55,7 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
                 <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
             <Row className="px-3 py-3">
-                <button className="sidebar-button">Edit expense</button>
+                <button className="sidebar-button" onClick={() => setIsEditing(!isEditing)}>{isEditing ? "Save Changes" : "Edit Budget"}</button>
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">

@@ -6,15 +6,31 @@ import '../routes/App.css'
 import { Budget } from '../api/api';
 import { ExpenseAccordion } from './ExpenseAccordion';
 
+interface BudgetRowComponentProps {
+    budget: Budget,
+    isEditing: boolean,
+    setIsEditing: (editing: boolean) => void,
+    deleteBudget: (category: string) => void,
+    deleteExpense: (id: string) => void,
+    updateBudgetCost: (category: string, amount: number) => void
+}
 
-
-export function BudgetComponent({ budget, deleteExpense, deleteBudget }: { budget: Budget, deleteBudget: (category: string) => void, deleteExpense: (id: string) => void }) {
+export function BudgetComponent({ budget, isEditing, setIsEditing, deleteExpense, deleteBudget, updateBudgetCost}: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
     const [expenses, setExpenses] = useState(budget.expenses);
 
+    const [editedCost, setEditedCost] = useState(budget.cost);
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            updateBudgetCost(budget.category, editedCost);
+            setIsEditing(false);
+        }
+    };
+
     useEffect(() => {
         setExpenses(budget.expenses);
-    }, [budget.expenses]);
+    }, [budget]);
 
     const handleOpenAccordion = () => {
         setShowExpenseAccordion(true);
@@ -24,7 +40,21 @@ export function BudgetComponent({ budget, deleteExpense, deleteBudget }: { budge
         <>
             <tr onClick={handleOpenAccordion}>
                 <td>{budget.category}</td>
-                <td>{budget.cost} :-</td>
+                <td>
+                    {isEditing ? (
+                        <input
+                            type="number"
+                            value={editedCost}
+                            onChange={(e) => setEditedCost(Number(e.target.value))}
+                            //onBlur={() => setIsEditing(false)}
+                            onKeyDown={handleKeyDown}
+                            autoFocus
+                        />
+                    ) : (
+                        // <span onClick={() => setIsEditing(true)}>{budget.cost} :-</span>
+                         <span>{budget.cost} :-</span>
+                    )}
+                </td>
                 <td>{budget.expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
                 <td>{budget.result} :-</td>
                 <td className='text-center col-1 ps-0'>

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import './App.css'
-import { Budget, delExpense, getBudgets, delBudget } from '../api/api';
+import { Budget, delExpense, getBudgets, delBudget, updateBudget, updateBudgets } from '../api/api';
 
 import { Sidebar } from '../components/Sidebar'
 import { BudgetTable } from '../components/BudgetTable'
@@ -17,6 +17,17 @@ function App() {
     const budgets = await getBudgets();
     setBudgets(budgets);
   }, []);
+
+  const [isEditing, bsetIsEditing] = useState(false);
+
+  function setIsEditing(editing: boolean) {
+    if (editing) {
+      console.log("Editing mode enabled");
+    } else {
+      console.log("Saving...");
+    }
+    bsetIsEditing(editing);
+  }
 
   // I believe it's better to pass setBudgets to respective components, and handle states there.
   // This way, we avoid code in App.tsx that is not directly related to the App component. -Liam
@@ -46,6 +57,31 @@ function App() {
     }
   }
 
+  async function updateBudgetCost(category: string, amount: number) {
+    console.log("Updating budget " + category + " to " + amount);
+    await updateBudget(category, amount);
+
+    const updatedBudgets = budgets.map(budget => {
+      if (budget.category === category) {
+        budget.cost = amount;
+      }
+      loadBudgets();
+      return budget;
+    });    
+  }
+
+  async function updateBudgetsCosts(budgets: Budget[]) {
+    console.log("Updating budgets");
+    await updateBudgets(budgets);
+
+    // const updatedBudgets = budgets.map(budget => {
+    //   if (budget.category === category) {
+    //     budget.cost = amount;
+    //   }
+    //   return budget;
+    // });    
+  }
+
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
@@ -56,8 +92,8 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets} /></Col>
-          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} deleteExpense={deleteExpense} deleteBudget={deleteBudget} /></Col>
+          <Col lg="3" className='p-3'><Sidebar addBudget={addBudget} loadBudgets={loadBudgets} budgets={budgets} isEditing={isEditing} setIsEditing={setIsEditing}/></Col>
+          <Col lg="9" className='p-3'><BudgetTable budgets={budgets} isEditing={isEditing} setIsEditing={setIsEditing} deleteExpense={deleteExpense} deleteBudget={deleteBudget} updateBudgetCost={updateBudgetCost}/></Col>
         </Row>
       </Container>
     </>

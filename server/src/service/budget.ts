@@ -108,5 +108,44 @@ export class BudgetService {
 
         return { ...budget };
     }
+
+    async updateBudget(username: string, category: string, cost: number): Promise<Budget | undefined> {
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+
+        const budget = user.budgets.find(budget => budget.category === category);
+        if (!budget) {
+            return undefined;
+        }
+
+        budget.cost = cost;
+        budget.result = cost - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
+        
+        return { ...budget };
+    }
+
+    // async updateBudgets(username: string, categories: string[], amounts: number[]): Promise<Budget[] | undefined> {
+    //     // Assuming we add expenses after adding a budget row
+    //     const user: User | undefined = await this.userService.findUser(username);
+    //     if (!user) {
+    //         return undefined;
+    //     }
+
+    //     let budgets: Budget[] = [];
+
+    //     categories.forEach((c, i) => {
+    //         const budget = user.budgets.find(budget => budget.category === c);
+    //         if (!budget) {
+    //             return undefined;
+    //         }
+    //         budget.cost = amounts[i];
+    //         budget.result = amounts[i] - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
+    //         budgets.push(budget);
+    //     });
+
+    //     return {...budgets};
+    // }
 }
 
