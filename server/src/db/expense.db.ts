@@ -26,7 +26,7 @@ ExpenseModel.init(
       allowNull: false,
     },
     cost: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     description: {

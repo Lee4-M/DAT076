@@ -22,17 +22,22 @@ BudgetRowModel.init(
     },
     category: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false
     },
     amount: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },
   {
     sequelize,
-    tableName: 'budgetRows'
+    tableName: 'budgetRows',
+    indexes: [
+      {
+        unique: true,
+        fields: ['userId', 'category']
+      }
+    ]
   }
 );
 

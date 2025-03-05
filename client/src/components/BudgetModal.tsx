@@ -2,28 +2,26 @@ import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addBudget, Budget } from "../api/api";
 
-
 interface BudgetModalProps {
     show: boolean;
     handleClose: () => void;
-    onSave: (budget: Budget) => void;
+    onSave: () => void;
 }
 
 function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
-
     const [category, setCategory] = useState<string>('');
     const [amount, setAmount] = useState<number | ''>('');
 
-    async function saveBudgetItems() {
+    async function saveBudgetRow() {
         if (!category) {
             alert('Please fill in a category name.');
             return;
         }
 
-        const newBudgetItem = await addBudget(category, Number(amount));
+        const newBudgetItem: Budget | undefined = await addBudget(category, Number(amount));
 
         if (newBudgetItem) {
-            onSave(newBudgetItem);
+            onSave();
             handleClose();
             setCategory('');
             setAmount('');
@@ -55,7 +53,7 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
                 <Button variant="secondary" onClick={() => { handleClose() }}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={saveBudgetItems}>Save Budget</Button>
+                <Button variant="primary" onClick={saveBudgetRow}>Save Budget</Button>
             </Modal.Footer>
         </Modal>
     );

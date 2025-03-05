@@ -1,6 +1,6 @@
 import { UserService } from './user';
 import { ExpenseService } from './expense';
-import { BudgetRowService } from './budgetRow';
+import { BudgetRowService } from './budget';
 
 const username = "User";
 const password = "Password";

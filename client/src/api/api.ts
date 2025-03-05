@@ -6,6 +6,7 @@ export type Budget = {
     id: number
     category: string;
     amount: number;
+    userId: number;
 }
 
 export type Expense = {
@@ -18,7 +19,7 @@ export type Expense = {
 const BASE_URL = "http://localhost:8080"
 
 export async function getExpenses(budgetRowId: number): Promise<Expense[]> {
-    const response = await axios.get<Expense[]>(`${BASE_URL}/expense`, { data: { budgetRowId: budgetRowId } })
+    const response = await axios.get<Expense[]>(`${BASE_URL}/expense`, { params: { budgetRowId: budgetRowId } })
     return response.data
 }
 
@@ -52,7 +53,7 @@ export async function addBudget(category: string, cost: number): Promise<Budget 
     }
 }
 
-export async function delExpense(id: number): Promise<boolean> {
+export async function deleteExpense(id: number): Promise<boolean> {
     try {
         console.log("Sending DELETE request to:", `${BASE_URL}/expense/${id}`);
 
@@ -71,7 +72,7 @@ export async function delExpense(id: number): Promise<boolean> {
     }
 }
 
-export async function delBudget(budgetRowId: number): Promise<boolean> {
+export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     try {
         const response = await axios.delete(`${BASE_URL}/budget`, { data: { budgetRowId: budgetRowId } });
 

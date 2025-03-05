@@ -1,50 +1,37 @@
-import { v4 as uuidv4 } from "uuid";
 import { Expense } from "../model/expense.interface";
-import { User } from "../model/user.interface";
 import { IExpenseService } from "./IExpenseService";
 import { ExpenseModel } from "../db/expense.db";
-import { BudgetRow } from "../model/budgetRow.interface";
 import { BudgetRowModel } from "../db/budgetRow.db";
-import { BudgetRowService } from "./budgetRow";
-import { UserService } from "./user";
+import { BudgetRowService } from "./budget";
 
 export class ExpenseService implements IExpenseService {
     private budgetRowService: BudgetRowService;
-    private userService: UserService;
 
-    constructor(budgetService: BudgetRowService, userService: UserService) {
-        this.budgetRowService = budgetService;
-        this.userService = userService;
+    constructor(budgetRowService: BudgetRowService) {
+        this.budgetRowService = budgetRowService;
     }
 
     async getExpenses(budgetRowId: number): Promise<Expense[] | undefined> {
         const expenses = await ExpenseModel.findAll({
             where: { budgetRowId: budgetRowId }
         });
-
+        if (!expenses) return undefined;
         return expenses;
     }
 
     async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {
-        const budgetRow = await BudgetRowModel.findOne({ where: { category: category } });
-
-        const user: User | null = await this.userService.findUser(username);
-        if (!user) {
-            return undefined;
-        }
+        let budgetRow = await this.budgetRowService.findBudgetRow(username, category);
 
         if (!budgetRow) {
-            const newBudget = await this.budgetRowService.addBudget(username, category, 0,);
-            if (!newBudget) {
-                return undefined;
-            }
-            return await ExpenseModel.create({ budgetRowId: newBudget.id, cost: cost, description: description });
+            const newBudgetRow = await this.budgetRowService.addBudgetRow(username, category, 0);
+            if (!newBudgetRow) return undefined;
+            budgetRow = newBudgetRow as BudgetRowModel;
         }
 
-        return await ExpenseModel.create({ budgetRowId: budgetRow?.id, cost: cost, description: description });
+        return ExpenseModel.create({ budgetRowId: budgetRow.id, cost: cost, description: description });
     }
 
-    async removeExpense(username: string, id: string): Promise<number> {            //Gives the amount of rows deleted
+    async removeExpense(id: string): Promise<number> {
         const expense = await ExpenseModel.findOne({ where: { id: id } });
 
         if (!expense) {

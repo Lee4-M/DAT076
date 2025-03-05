@@ -6,12 +6,12 @@ export function expenseRouter(expenseService: IExpenseService): Router {
     const expenseRouter = express.Router();
 
     interface ExpenseRequest {
-        body: {
-            budgetRowId: number
+        query: {
+            budgetRowId: string
         }
         session: any
     }
-    //TODO Fixa så den tar budgetRowId istället för username
+
     expenseRouter.get("/expense", async (
         req: ExpenseRequest,
         res: Response<Expense[] | string>
@@ -21,7 +21,10 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const expenses: Expense[] | undefined = await expenseService.getExpenses(req.body.budgetRowId);
+
+            const budgetRowId = parseInt(req.query.budgetRowId, 10);
+
+            const expenses: Expense[] | undefined = await expenseService.getExpenses(budgetRowId);
             res.status(200).send(expenses);
         } catch (e: any) {
             res.status(500).send(e.message);
@@ -67,7 +70,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
-    expenseRouter.delete("/expense/:id", async (
+    expenseRouter.delete("/expense", async (
         req: DeleteExpenseRequest,
         res: Response<string>
     ) => {
@@ -77,7 +80,6 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 return;
             }
             const id = req.body.id
-            console.log(`Deleting expense with ID: ${id}`);
             await expenseService.removeExpense(req.session.username, id);
             res.status(200).send("Expense deleted successfully.");
         } catch (e: any) {

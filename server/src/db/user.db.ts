@@ -1,8 +1,6 @@
 import { BudgetRowModel } from './budgetRow.db';
 import { sequelize } from './conn';
 import { Model, InferAttributes, InferCreationAttributes, CreationOptional, DataTypes, ForeignKey, Association } from 'sequelize';
-import { ExpenseModel } from './expense.db';
-
 
 export class UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
   declare id: CreationOptional<number>;

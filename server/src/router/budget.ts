@@ -17,7 +17,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const budgetRows: BudgetRow[] | undefined = await budgetRowService.getBudgets(req.session.username);
+            const budgetRows: BudgetRow[] | undefined = await budgetRowService.getBudgetRows(req.session.username);
             if (!budgetRows) {
                 console.log("User logged in as " + req.session.username + " no longer exists");
                 delete req.session.username;
@@ -53,7 +53,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
                 return;
             }
-            const newBudgetRow: BudgetRow | undefined = await budgetRowService.addBudget(req.session.username, category, cost);
+            const newBudgetRow: BudgetRow | undefined = await budgetRowService.addBudgetRow(req.session.username, category, cost);
             res.status(201).send(newBudgetRow);
         } catch (e: any) {
             res.status(500).send(e.message);
@@ -81,7 +81,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(400).send("category should be a string");
                 return;
             }
-            const success = await budgetRowService.deleteBudget(req.session.username, id);
+            const success = await budgetRowService.deleteBudgetRow(req.session.username, id);
             if (success) {
                 res.status(200).send("Budget row deleted");
             } else {

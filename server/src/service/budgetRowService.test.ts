@@ -1,5 +1,5 @@
 import { BudgetRow } from "../model/budgetRow.interface";
-import { BudgetRowService } from "./budgetRow";
+import { BudgetRowService } from "./budget";
 import { UserService } from "./user";
 
 const username = "User";

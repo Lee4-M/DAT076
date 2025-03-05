@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import { expenseRouter } from "./router/expense";
 import { budgetRowRouter } from "./router/budget";
 import { userRouter } from "./router/user";
-import { BudgetRowService } from "./service/budgetRow";
+import { BudgetRowService } from "./service/budget";
 import { UserService } from "./service/user";
 import { ExpenseService } from "./service/expense";
 
@@ -31,7 +31,7 @@ app.use(cors({
 app.use(express.json());
 const userService = new UserService();
 const budgetRowService = new BudgetRowService(userService);
-const expenseService = new ExpenseService(budgetRowService, userService);
+const expenseService = new ExpenseService(budgetRowService);
 
 app.use(budgetRowRouter(budgetRowService));
 app.use(expenseRouter(expenseService));

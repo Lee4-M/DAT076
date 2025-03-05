@@ -1,17 +1,25 @@
 import { Table } from "react-bootstrap";
-import { Expense } from "../api/api";
+import { deleteExpense, Expense } from "../api/api";
 import '../routes/App.css'
 
 interface ExpenseAccordionProps {
     show: boolean;
     handleClose: () => void;
     expenses: Expense[];
-    onDeleteExpense: (id: number) => void;
 }
 
-export function ExpenseAccordion({ show, expenses, handleClose, onDeleteExpense }: ExpenseAccordionProps) {
+export function ExpenseAccordion({ show, expenses, handleClose }: ExpenseAccordionProps) {
     if (!show) return null;
 
+    async function removeExpense(id: number) {
+        const success = await deleteExpense(id);
+
+        if (success) {
+            console.log("Expense deleted, reloading budgets...");
+        } else {
+            console.log("Failed to delete expense");
+        }
+    }
     return (
         <section>
             <Table striped bordered hover className="p-2 table-striped text-center">
@@ -23,12 +31,12 @@ export function ExpenseAccordion({ show, expenses, handleClose, onDeleteExpense 
                     </tr>
                 </thead>
                 <tbody>
-                    {expenses.map((expense) => (
+                    {expenses.map(expense => (
                         <tr key={expense.id}>
                             <td>{expense.cost} :-</td>
                             <td>{expense.description}</td>
                             <td>
-                                <button onClick={() => onDeleteExpense(expense.id)} className="btn btn-danger">
+                                <button onClick={() => removeExpense(expense.id)} className="btn btn-danger">
                                     Delete
                                 </button>
                             </td>

@@ -6,9 +6,9 @@ import { IUserService } from "./IUserService";
 export class UserService implements IUserService {
     async createUser(username: string, password: string): Promise<UserModel | null> {
 
-        // if (await UserModel.findOne({ where: { username } })) {
-        //     return null;
-        // }
+        if (await UserModel.findOne({ where: { username } })) {
+            return null;
+        }
 
         const salt: string = bcrypt.genSaltSync(10);
         const hashedPassword: string = bcrypt.hashSync(password, salt);

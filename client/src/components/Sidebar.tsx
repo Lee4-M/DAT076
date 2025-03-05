@@ -10,15 +10,12 @@ import ExpenseModal from "./ExpenseModal";
 import BudgetItemModal from "./BudgetModal";
 import { PieChart } from "@mui/x-charts";
 
-
-
 interface SidebarProps {
-    addBudget: (budget: Budget) => void;
     loadBudgets: () => void;
     budgets: Budget[];
 }
 
-export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
+export function Sidebar({ loadBudgets, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
 
@@ -89,9 +86,9 @@ export function Sidebar({ addBudget, loadBudgets, budgets }: SidebarProps) {
                 setShowExpenseModal(false);
                 loadBudgets();
             }} />
-            <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={(newBudget) => {
-                addBudget(newBudget);
+            <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={() => {
                 setShowBudgetModal(false);
+                loadBudgets();
             }}
             />
         </Container>
