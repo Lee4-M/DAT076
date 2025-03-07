@@ -29,7 +29,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-const userService = new UserService();
+export const userService = new UserService();
 const budgetRowService = new BudgetRowService(userService);
 const expenseService = new ExpenseService(budgetRowService);
 
