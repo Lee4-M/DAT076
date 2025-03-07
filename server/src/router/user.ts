@@ -1,8 +1,8 @@
 import express, { Request, Response, Router } from "express";
-import { UserService } from "../service/user";
 import { User } from "../model/user.interface";
+import { IUserService } from "../service/IUserService";
 
-export function userRouter(userService: UserService): Router {
+export function userRouter(userService: IUserService): Router {
     const userRouter = express.Router();
 
     interface UserRequest extends Request {
@@ -20,8 +20,7 @@ export function userRouter(userService: UserService): Router {
     });
 
     userRouter.post("/user/login", async (req: UserRequest, res: Response) => {
-        const user: User | undefined = await userService.findUser(req.body.username, req.body.password);
-        //console.log("Session after login:", req.session);
+        const user: User | null = await userService.findUser(req.body.username, req.body.password);
         if (!user) {
             res.status(401).send("No such username or password");
             //console.log("aaa");

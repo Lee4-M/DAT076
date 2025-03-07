@@ -1,20 +1,18 @@
 import { Table } from "react-bootstrap";
 
-import { Budget } from "../api/api";
-import { BudgetComponent } from "./BudgetRowComponent";
+import { Budget, Expense } from "../api/api";
+import { BudgetRowComponent } from "./BudgetRowComponent";
 
 interface BudgetTableProps {
     budgets: Budget[];
-    deleteExpense: (id: string) => void;
-    deleteBudget: (category: string) => void;
+    loadBudgets: () => void;
+    expenses: { [budget_id: number]: Expense[] };
+    loadExpenses: () => void;
 }
 
-export function BudgetTable({ budgets, deleteExpense, deleteBudget }: BudgetTableProps) {
-
-    const totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
-    const totalExpenses = budgets.reduce((sum, budget) =>
-        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
-        0);
+export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: BudgetTableProps) {
+    const totalBudget = budgets.reduce((total, budget) => total + budget.amount, 0);
+    const totalExpenses = Object.values(expenses).flat().reduce((total, expense) => total + expense.cost, 0);
     const result = totalBudget - totalExpenses;
 
     return (
@@ -36,10 +34,8 @@ export function BudgetTable({ budgets, deleteExpense, deleteBudget }: BudgetTabl
                         </tr>
                     </thead>
                     <tbody>
-
                         {budgets.map(budget => (
-                            <BudgetComponent key={budget.category} budget={budget} deleteBudget={deleteBudget} deleteExpense={deleteExpense} /> //TODO Change back to index?
-
+                            <BudgetRowComponent key={budget.category} budget={budget} loadBudgets={loadBudgets} loadExpenses={loadExpenses} expenses={expenses[budget.id] || []} /> //TODO Change back to index?
                         ))}
                     </tbody>
                 </Table>

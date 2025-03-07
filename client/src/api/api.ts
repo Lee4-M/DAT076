@@ -3,23 +3,23 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 export type Budget = {
+    id: number
     category: string;
-    cost: number;
-    expenses: Expense[];
-    result: number;
+    amount: number;
+    userId: number;
 }
 
 export type Expense = {
-    category: string;
+    id: number;
+    budgetRowId: number;
     cost: number;
     description: string;
-    id: string;
 }
 
 const BASE_URL = "http://localhost:8080"
 
-export async function getExpenses(): Promise<Expense[]> {
-    const response = await axios.get<Expense[]>(`${BASE_URL}/expense`)
+export async function getExpenses(budgetRowId: number): Promise<Expense[]> {
+    const response = await axios.get<Expense[]>(`${BASE_URL}/expense`, { params: { budgetRowId: budgetRowId } })
     return response.data
 }
 
@@ -53,11 +53,11 @@ export async function addBudget(category: string, cost: number): Promise<Budget 
     }
 }
 
-export async function delExpense(id: string): Promise<boolean> {
+export async function deleteExpense(id: number): Promise<boolean> {
     try {
         console.log("Sending DELETE request to:", `${BASE_URL}/expense/${id}`);
 
-        const response = await axios.delete(`${BASE_URL}/expense/${id}`, { data: {id: id}});
+        const response = await axios.delete(`${BASE_URL}/expense`, { data: { id: id } });
 
         if (response.status === 200) {
             console.log("Expense deleted successfully.");
@@ -72,17 +72,17 @@ export async function delExpense(id: string): Promise<boolean> {
     }
 }
 
-export async function delBudget(category: string): Promise<boolean> {
+export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     try {
-        const response = await axios.delete(`${BASE_URL}/budget`, { data: { category: category } });
-        
+        const response = await axios.delete(`${BASE_URL}/budget`, { data: { id: budgetRowId } });
+
         if (response.status === 200) {
             return true; // Deleted budget
         } else {
             console.log(`Unexpected response status: ${response.status}`);
             return false;
         }
-        
+
     } catch (e: any) {
         console.log(e);
         return false;

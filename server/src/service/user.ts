@@ -1,38 +1,38 @@
 import { User } from "../model/user.interface";
+import { UserModel } from "../db/user.db";
 import bcrypt from "bcrypt";
+import { IUserService } from "./IUserService";
 
-export class UserService {
-    users: User[] = [];
+export class UserService implements IUserService {
+    async createUser(username: string, password: string): Promise<UserModel | null> {
 
-    async createUser(username: string, password: string) {
-        const salt = bcrypt.genSaltSync(10);
-        const user: User = ({
+        if (await UserModel.findOne({ where: { username } })) {
+            return null;
+        }
+
+        const salt: string = bcrypt.genSaltSync(10);
+        const hashedPassword: string = bcrypt.hashSync(password, salt);
+
+        return await UserModel.create({
             username: username,
-            password: bcrypt.hashSync(password, salt),
-            budgets: [],
-            expenses: []
+            password: hashedPassword,
         });
-
-        this.users.push(user);
-        // console.log("Users after creation:", this.users);
-        return user;
     }
 
-    async findUser(username: string, password?: string): Promise<User | undefined> {
-        const user = this.users.find((user) => user.username === username);
-        // console.log("Users at findUser:", this.users);
-        if (!user) {
-            // console.log("Returns here");
-            return undefined;
-        } 
-    
+    async findUser(username: string, password?: string): Promise<User | null> {
         if (!password) {
+            return await UserModel.findOne({ where: { username } });
+        }
+
+        const user: User | null = await UserModel.findOne({ where: { username }, include: "budgetRows" });
+
+        if (!user) return null;
+
+        if (bcrypt.compareSync(password, user.password)) {
             return user;
         }
-    
-        const isMatch = await bcrypt.compare(password, user.password);
-        
-        return isMatch ? user : undefined; 
+
+        return null;
     }
 
 }
