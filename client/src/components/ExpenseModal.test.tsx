@@ -8,9 +8,6 @@ describe('ExpenseModal Component', () => {
 
         render(<ExpenseModal show={true} handleClose={handleClose} onSave={onSave} />);
 
-        fireEvent.change(screen.getByPlaceholderText('Enter expense category'), {
-            target: { value: 'Restaurant' }
-        });
         fireEvent.change(screen.getByPlaceholderText('Enter amount'), {
             target: { value: 25 }
         });
@@ -18,7 +15,6 @@ describe('ExpenseModal Component', () => {
             target: { value: 'Lunch at a restaurant' }
         });
 
-        expect(screen.getByPlaceholderText('Enter expense category')).toHaveValue('Restaurant');
         expect(screen.getByPlaceholderText('Enter amount')).toHaveValue(25);
         expect(screen.getByPlaceholderText('Enter description')).toHaveValue('Lunch at a restaurant');
     });
@@ -30,10 +26,6 @@ describe('ExpenseModal Component', () => {
         const alertMock = jest.spyOn(window, 'alert').mockImplementation();
 
         render(<ExpenseModal show={true} handleClose={handleClose} onSave={onSave} />);
-
-        fireEvent.change(screen.getByPlaceholderText('Enter expense category'), {
-            target: { value: '' }
-        });
 
         fireEvent.change(screen.getByPlaceholderText('Enter amount'), {
             target: { value: 'abc' }

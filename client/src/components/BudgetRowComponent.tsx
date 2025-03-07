@@ -6,7 +6,8 @@ import '../routes/App.css'
 import { Budget } from '../api/api';
 import { ExpenseAccordion } from './ExpenseAccordion';
 
-
+//TODO: 
+// 1. Fix the "Delete budget item" button by adding "Edit" and then Delete button
 
 export function BudgetComponent({ budget, deleteExpense, deleteBudget }: { budget: Budget, deleteBudget: (category: string) => void, deleteExpense: (id: string) => void }) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
