@@ -23,6 +23,7 @@ export function userRouter(userService: IUserService): Router {
         const user: User | null = await userService.findUser(req.body.username, req.body.password);
         if (!user) {
             res.status(401).send("No such username or password");
+            //console.log("aaa");
             return;
         }
         req.session.username = req.body.username;

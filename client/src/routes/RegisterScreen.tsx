@@ -19,6 +19,12 @@ const Register: React.FC = () => {
     setLoading(true);
     setError(null); // Reset error message on new submit
 
+    if (!username || !password) {
+      setError("Please fill all fields");
+      return;
+    }
+
+    // TODO: If the user already exists, display an error message
     try {
       await registerUser(username, password);
       navigate('/');
@@ -32,27 +38,31 @@ const Register: React.FC = () => {
   return (
     <div className="container-fluid vh-100">
       <div className="row h-100">
-        {/* Gradient Section (Left Side) */}
+        {/* Left Side*/}
         <div
-          className="col-md-6 d-none d-md-flex align-items-center justify-content-center"
-          style={{
-            background: '#1F4AA0',
-            color: '#fff',
-          }}
+          className="col-md-6 d-none d-md-flex left-section"
         >
           <div className="text-center p-5">
+
+          <img
+              src="/images/Budgie_Logo.svg" 
+              alt="Budgie Logo"
+              className="mb-4" 
+              style={{ maxWidth: '150px' }} 
+            />
+
             <h1 className="display-4 fw-bold">Create Account</h1>
             <p className="lead">
-              Take take take take take. Register now!
+              Register for Budgie to start budgeting your money. Keep track of your expenses and income.
             </p>
           </div>
         </div>
 
-        {/* Form Section (Right Side) */}
+        {/*Right Side */}
         <div className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="w-75 mx-auto">
             <h2 className="text-center mb-4">Sign Up</h2>
-            {error && <div className="alert alert-danger">{error}</div>}
+            {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <input
@@ -73,7 +83,7 @@ const Register: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button type="submit" className="btn btn-primary w-100 mb-3">
+              <button type="submit" className="btn register-button mb-3">
                 Register
               </button>
               <div className="text-center mb-3">
