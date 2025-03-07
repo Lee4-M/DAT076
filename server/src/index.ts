@@ -19,4 +19,4 @@ app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
 });
 
-await initDB();
+initDB();
