@@ -146,37 +146,32 @@ export function budgetRouter(budgetService: BudgetService): Router {
         }
     });
 
-    // interface EditBudgetsRequest extends Request {
-    //     body: {
-    //         categories: [string],
-    //         amounts: [number]
-    //     },
-    //     session: any
-    // }
+    interface EditBudgetsRequest extends Request {
+        body: {
+            categories: [string],
+            costs: [number]
+        },
+        session: any
+    }
 
-    // budgetRouter.put("/budgets", async (
-    //     req: EditBudgetsRequest,
-    //     res: Response<Budget[] | string>
-    // ) => {
-    //     try {
-    //         if (!req.session.username) {
-    //             res.status(401).send("Not logged in");
-    //             return;
-    //         }
-    //         const categories = req.body.categories;
-    //         const amounts = req.body.amounts;
-            
-    //         // if ((typeof (category) !== "string") || (typeof (cost) !== "number")) {
-    //         //     res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
-    //         //     return;
-    //         // }
-
-    //         const newBudgets: Budget[] | undefined = await budgetService.updateBudgets(req.session.username, categories, amounts);
-    //         res.status(201).send(newBudgets);
-    //     } catch (e: any) {
-    //         res.status(500).send(e.message);
-    //     }
-    // });
+    budgetRouter.put("/budgets", async (
+        req: EditBudgetsRequest,
+        res: Response<Budget[] | string>
+    ) => {
+        try {
+            if (!req.session.username) {
+                res.status(401).send("Not logged in");
+                return;
+            }
+            const categories = req.body.categories;
+            const amounts = req.body.costs;
+            console.log("reached hereeeeee1")
+            const newBudgets: Budget[] | undefined = await budgetService.updateAllBudgets(req.session.username, categories, amounts);
+            res.status(201).send(newBudgets);
+        } catch (e: any) {
+            res.status(500).send(e.message);
+        }
+    });
     
     return budgetRouter;  
 }

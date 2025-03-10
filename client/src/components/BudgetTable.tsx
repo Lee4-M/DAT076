@@ -6,13 +6,13 @@ import { BudgetComponent } from "./BudgetRowComponent";
 interface BudgetTableProps {
     budgets: Budget[];
     isEditing: boolean;
-    setIsEditing: (editing: boolean) => void;
     deleteExpense: (id: string) => void;
     deleteBudget: (category: string) => void;
     updateBudgetCost: (category: string, amount: number) => void;
+    //setEditedBudgets: React.Dispatch<React.SetStateAction<Budget[]>>;
 }
 
-export function BudgetTable({ budgets, isEditing, setIsEditing, deleteExpense, deleteBudget, updateBudgetCost }: BudgetTableProps) {
+export function BudgetTable({ budgets, isEditing, deleteExpense, deleteBudget, updateBudgetCost }: BudgetTableProps) {
 
     const totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
     const totalExpenses = budgets.reduce((sum, budget) =>
@@ -41,7 +41,7 @@ export function BudgetTable({ budgets, isEditing, setIsEditing, deleteExpense, d
                     <tbody>
 
                         {budgets.map(budget => (
-                            <BudgetComponent key={budget.category} budget={budget} isEditing={isEditing} setIsEditing={setIsEditing} deleteBudget={deleteBudget} deleteExpense={deleteExpense} updateBudgetCost={updateBudgetCost}/> //TODO Change back to index?
+                            <BudgetComponent key={budget.category} budget={budget} isEditing={isEditing} deleteBudget={deleteBudget} deleteExpense={deleteExpense} updateBudgetCost={updateBudgetCost}/> //TODO Change back to index?
 
                         ))}
                     </tbody>

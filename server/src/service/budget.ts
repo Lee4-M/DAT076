@@ -126,26 +126,30 @@ export class BudgetService {
         return { ...budget };
     }
 
-    // async updateBudgets(username: string, categories: string[], amounts: number[]): Promise<Budget[] | undefined> {
-    //     // Assuming we add expenses after adding a budget row
-    //     const user: User | undefined = await this.userService.findUser(username);
-    //     if (!user) {
-    //         return undefined;
-    //     }
+    async updateAllBudgets(username: string, categories: string[], amounts: number[]): Promise<Budget[] | undefined> {
+        console.log("reached hereeeeee2")
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+        
 
-    //     let budgets: Budget[] = [];
+        let newBudgets: Budget[] = [];
+        
 
-    //     categories.forEach((c, i) => {
-    //         const budget = user.budgets.find(budget => budget.category === c);
-    //         if (!budget) {
-    //             return undefined;
-    //         }
-    //         budget.cost = amounts[i];
-    //         budget.result = amounts[i] - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
-    //         budgets.push(budget);
-    //     });
+        categories.forEach((c, i) => {
+            console.log("reached here")
+            const budget = user.budgets.find(budget => budget.category === c);
+            if (!budget) {
+                return undefined;
+            }
+            budget.cost = amounts[i];
+            console.log(budget.cost);
+            budget.result = amounts[i] - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
+            newBudgets.push(budget);
+        });
 
-    //     return {...budgets};
-    // }
+        return { ...newBudgets };
+    }
 }
 

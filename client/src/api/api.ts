@@ -99,7 +99,7 @@ export async function updateBudget(category: string, amount: number): Promise<Bu
     }
 }
 
-export async function updateBudgets(budgets : Budget[]): Promise<Budget | undefined> {
+export async function updateBudgets(budgets : Budget[]): Promise<Budget[] | undefined> {
     try {
         let categories: string[] = [];
         let amounts: number[] = [];
@@ -108,7 +108,6 @@ export async function updateBudgets(budgets : Budget[]): Promise<Budget | undefi
             categories.push(budget.category);
             amounts.push(budget.cost);
         }
-
         const response = await axios.put(`${BASE_URL}/budgets`, { categories: categories, costs: amounts });
         return response.data;
     } catch (e: any) {

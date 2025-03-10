@@ -9,23 +9,17 @@ import { ExpenseAccordion } from './ExpenseAccordion';
 interface BudgetRowComponentProps {
     budget: Budget,
     isEditing: boolean,
-    setIsEditing: (editing: boolean) => void,
     deleteBudget: (category: string) => void,
     deleteExpense: (id: string) => void,
     updateBudgetCost: (category: string, amount: number) => void
 }
 
-export function BudgetComponent({ budget, isEditing, setIsEditing, deleteExpense, deleteBudget, updateBudgetCost}: BudgetRowComponentProps) {
+export function BudgetComponent({ budget, isEditing, deleteExpense, deleteBudget, updateBudgetCost}: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
     const [expenses, setExpenses] = useState(budget.expenses);
 
-    const [editedCost, setEditedCost] = useState(budget.cost);
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            updateBudgetCost(budget.category, editedCost);
-            setIsEditing(false);
-        }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        updateBudgetCost(budget.category, Number(e.target.value));
     };
 
     useEffect(() => {
@@ -44,14 +38,11 @@ export function BudgetComponent({ budget, isEditing, setIsEditing, deleteExpense
                     {isEditing ? (
                         <input
                             type="number"
-                            value={editedCost}
-                            onChange={(e) => setEditedCost(Number(e.target.value))}
-                            //onBlur={() => setIsEditing(false)}
-                            onKeyDown={handleKeyDown}
+                            value={budget.cost}
+                            onChange={handleChange}
                             autoFocus
                         />
                     ) : (
-                        // <span onClick={() => setIsEditing(true)}>{budget.cost} :-</span>
                          <span>{budget.cost} :-</span>
                     )}
                 </td>
