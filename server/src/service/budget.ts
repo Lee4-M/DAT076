@@ -1,7 +1,7 @@
 import { BudgetRowModel } from "../db/budgetRow.db";
 import { BudgetRow } from "../model/budgetRow.interface";
-import { IBudgetRowService } from "./IBudgetRowService";
 import { User } from "../model/user.interface";
+import { IBudgetRowService } from "./interface/IBudgetRowService";
 import { UserService } from "./user";
 
 export class BudgetRowService implements IBudgetRowService {
@@ -24,7 +24,7 @@ export class BudgetRowService implements IBudgetRowService {
         return await BudgetRowModel.findAll({ where: { userId: user.id } });
     }
 
-    async findBudgetRow(username: string, category: string): Promise<BudgetRow | undefined> {
+    async findBudgetRowByCategory(username: string, category: string): Promise<BudgetRow | undefined> {
         if (!username || !category) {
             console.error("Invalid input: username or category");
             return undefined;
@@ -36,6 +36,15 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
         const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, category: category} });
+        return budgetRow ?? undefined;
+    }
+
+    async findBudgetRowById(id: number): Promise<BudgetRow | undefined> {
+        if (id < 0) {
+            console.error("Invalid input: id");
+            return undefined;
+        }
+        const budgetRow = await BudgetRowModel.findOne({ where: { id: id } });
         return budgetRow ?? undefined;
     }
 

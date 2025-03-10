@@ -44,16 +44,16 @@ describe("Budget Service", () => {
         });
     });
 
-    describe("Finding a budget row", () => {
+    describe("Finding a budget row by category", () => {
         test("Finding a budget row for a user should return the budget row", async () => {
             await budgetService.addBudgetRow("User", "Clothes", 500);
 
-            const budget = await budgetService.findBudgetRow("User", "Clothes");
+            const budget = await budgetService.findBudgetRowByCategory("User", "Clothes");
             expect(budget).toEqual(expect.objectContaining({ category: "Clothes", amount: 500 }));
         });
 
         test("Finding a budget row for a user with no budget rows should return undefined", async () => {
-            const budget = await budgetService.findBudgetRow("User", "Clothes");
+            const budget = await budgetService.findBudgetRowByCategory("User", "Clothes");
             expect(budget).toBeUndefined();
         });
 
@@ -62,13 +62,32 @@ describe("Budget Service", () => {
         });
 
         test("Finding a budget row for a non-existent user should return undefined", async () => { 
-            const budget = await budgetService.findBudgetRow("NonExistentUser", "Clothes");
+            const budget = await budgetService.findBudgetRowByCategory("NonExistentUser", "Clothes");
             expect(budget).toBeUndefined();
         });
 
         test("Finding a budget row for an empty username should return undefined", async () => {
-            const budget = await budgetService.findBudgetRow("", "Clothes");
+            const budget = await budgetService.findBudgetRowByCategory("", "Clothes");
             expect(budget).toBeUndefined();
+        });
+    });
+
+    describe("Finding a budget row by id", () => {
+        test("Finding a budget row for a user should return the budget row", async () => {
+            const budget = await budgetService.addBudgetRow("User", "Clothes", 500);
+
+            const foundBudget = await budgetService.findBudgetRowById(budget!.id);
+            expect(foundBudget).toEqual(expect.objectContaining({ category: "Clothes", amount: 500 }));
+        });
+
+        test("Finding a budget row for a user with no budget rows should return undefined", async () => {
+            const foundBudget = await budgetService.findBudgetRowById(999);
+            expect(foundBudget).toBeUndefined();
+        });
+
+        test("Finding a budget row for a negative id should return undefined", async () => {
+            const foundBudget = await budgetService.findBudgetRowById(-1);
+            expect(foundBudget).toBeUndefined();
         });
     });
 

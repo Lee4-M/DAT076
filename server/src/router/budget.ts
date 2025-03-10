@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { BudgetRow } from "../model/budgetRow.interface";
-import { IBudgetRowService } from "../service/IBudgetRowService";
+import { IBudgetRowService } from "../service/interface/IBudgetRowService";
 
 export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     const budgetRowRouter = express.Router();

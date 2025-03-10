@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { User } from "../model/user.interface";
-import { IUserService } from "../service/IUserService";
+import { IUserService } from "../service/interface/IUserService";
 
 export function userRouter(userService: IUserService): Router {
     const userRouter = express.Router();

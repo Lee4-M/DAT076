@@ -1,4 +1,3 @@
-import e from "express";
 import { BudgetRowService } from "./budget";
 import { ExpenseService } from "./expense";
 import { UserService } from "./user";
@@ -39,6 +38,46 @@ describe("Expense Service", () => {
         
         test("Getting expenses for a budget row with no expenses should return an empty array", async () => {
             expect(await expenseService.getExpenses(budget!.id)).toEqual([]);
+        });
+    });
+
+    describe("Adding expenses", () => {
+        test("Adding an expense to an existing budget row should return the new expense", async () => {
+            expect(await expenseService.addExpense("User", "Clothes", 100, "Shirt")).toEqual(
+                expect.objectContaining({ cost: 100, description: "Shirt" })
+            );
+        });
+
+        test("Adding an expense to a non-existent budget row should create the budget row and add the expense", async () => {
+            expect(await expenseService.addExpense("User", "Food", 200, "Lunch")).toEqual(
+                expect.objectContaining({ cost: 200, description: "Lunch" })
+            );
+        });
+
+        test("Adding an expense with a negative cost should return undefined", async () => {
+            expect(await expenseService.addExpense("User", "Clothes", -100, "Invalid Expense")).toBeUndefined();
+        });
+
+        test("Adding an expense for a non-existent user should return undefined", async () => {
+            expect(await expenseService.addExpense("NonExistentUser", "Clothes", 100, "Shirt")).toBeUndefined();
+        });
+    });
+
+    describe("Deleting expenses", () => {
+        test("Deleting an existing expense should reflect in the expense database table", async () => {
+            const expense = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
+            const result = await expenseService.deleteExpense(expense!.id);
+            expect(result).toBe(true);
+        });
+
+        test("Deleting a non-existent expense should return false", async () => {
+            const result = await expenseService.deleteExpense(999);
+            expect(result).toBe(false);
+        });
+
+        test("Deleting an expense with a negative id should return false", async () => {
+            const result = await expenseService.deleteExpense(-1);
+            expect(result).toBe(false);
         });
     });
 });

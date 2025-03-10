@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { Expense } from "../model/expense.interface";
-import { IExpenseService } from "../service/IExpenseService";
+import { IExpenseService } from "../service/interface/IExpenseService";
 
 export function expenseRouter(expenseService: IExpenseService): Router {
     const expenseRouter = express.Router();
@@ -80,7 +80,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 return;
             }
             const id = req.body.id
-            await expenseService.removeExpense(id);
+            await expenseService.deleteExpense(id);
             res.status(200).send("Expense deleted successfully.");
         } catch (e: any) {
             res.status(500).send(e.message);
