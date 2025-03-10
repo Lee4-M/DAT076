@@ -36,6 +36,7 @@ ExpenseModel.init(
   },
   {
     sequelize,
-    tableName: 'expenses'
+    tableName: 'expenses',
+    timestamps: false
   }
 );

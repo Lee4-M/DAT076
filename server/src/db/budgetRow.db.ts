@@ -32,6 +32,7 @@ BudgetRowModel.init(
   {
     sequelize,
     tableName: 'budgetRows',
+    timestamps: false,
     indexes: [
       {
         unique: true,
