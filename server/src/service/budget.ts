@@ -12,6 +12,10 @@ export class BudgetRowService implements IBudgetRowService {
     }
 
     async getBudgetRows(username: string): Promise<BudgetRow[] | undefined> {
+        if (!username) {
+            console.error("Invalid input: username");
+            return undefined;
+        }
         const user: User | null = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
@@ -21,12 +25,17 @@ export class BudgetRowService implements IBudgetRowService {
     }
 
     async findBudgetRow(username: string, category: string): Promise<BudgetRow | undefined> {
+        if (!username || !category) {
+            console.error("Invalid input: username or category");
+            return undefined;
+        }
+
         const user: User | null = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
         }
-        const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, category: category } });
+        const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, category: category} });
         return budgetRow ?? undefined;
     }
 
@@ -45,13 +54,24 @@ export class BudgetRowService implements IBudgetRowService {
     }
 
     async deleteBudgetRow(username: string, id: number): Promise<boolean> {
+        if(!username || id < 0) {
+            console.error("Invalid input: username or id");
+            return false;
+        }
+
         const user: User | null = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return false;
         }
 
-        await BudgetRowModel.destroy({ where: { userId: user.id, id: id } });
+        const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });
+        if (!budgetRow) {
+            console.warn(`Budget row not found: ID ${id} for user ${username}`);
+            return false;
+        }
+
+        await budgetRow.destroy();
 
         return true;
     }
