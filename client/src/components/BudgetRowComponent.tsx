@@ -27,16 +27,20 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
     }
 
     const handleOpenAccordion = () => {
-        setShowExpenseAccordion(true);
+        setShowExpenseAccordion((prev) => !prev);
     };
 
     return (
         <>
-            <tr onClick={handleOpenAccordion}>
+            <tr className="budget-row" onClick={handleOpenAccordion}>
                 <td>{budget.category}</td>
                 <td>{budget.amount} :-</td>
                 <td>{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
-                <td>{budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
+                <td 
+                    style={{ color: (budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)) < 0 ? 'red' : 'black' }}
+                >
+                    {budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-
+                </td>
                 <td className='text-center col-1 ps-0'>
                     <Button variant='transparent' aria-label="Delete budget item" onClick={() => removeBudget(budget.id)}>
                         <Image src="/images/delete-budget-item.png" alt="Icon 1" width="40" height="40" />

@@ -11,6 +11,7 @@ interface BudgetTableProps {
 }
 
 export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: BudgetTableProps) {
+    
     const totalBudget = budgets.reduce((total, budget) => total + budget.amount, 0);
     const totalExpenses = Object.values(expenses).flat().reduce((total, expense) => total + expense.cost, 0);
     const result = totalBudget - totalExpenses;
@@ -18,17 +19,19 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: Bu
     return (
         <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
-                <Table striped bordered hover className="p-2 table-striped text-center">
+                <Table striped bordered hover className="budget-table p-2  text-center">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th className="pb-0">
+                            <th>
+                                <div className="w-75 m-auto py-2">Category</div>
+                            </th>
+                            <th>
                                 <div className="w-75 m-auto py-2">Budget</div>
                             </th>
-                            <th className="pb-0">
+                            <th>
                                 <div className="w-75 m-auto py-2">Expense</div>
                             </th>
-                            <th className="pb-0">
+                            <th>
                                 <div className="w-75 m-auto py-2">Result</div>
                             </th>
                         </tr>

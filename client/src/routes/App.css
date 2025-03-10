@@ -8,6 +8,7 @@
 :root {
   --main-bg-color: #e6da6a;
   --main-secondary-color: #409BC9;
+  --main-accent-color: #FFE72F;
 }
 
 .table-container {
@@ -21,40 +22,11 @@
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td {
-  background-color: #dedede;
+  background-color: #F1F1F1;
 }
 
 .table-striped > tbody > tr:nth-child(even) > td {
   background-color: #f5f5f5;
-}
-th {
-  border: none !important; 
-  background-color: transparent !important; 
-  font-weight: normal;
-}
-
-th > div {
-  color: white;
-  background-color: #646464;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-td {
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-}
-
-/* Välj första och sista cell i varje rad och applicera rundade hörn */
-td:first-child {
-  font-weight: bold;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-
-td:last-child {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
 }
 
 #total-row {
@@ -83,4 +55,81 @@ button {
 
 tbody > tr > td:last-child {
   border: none !important;
+}
+
+
+.budget-table th {
+  background-color: var(--main-accent-color) !important;
+  color: black !important;
+  font-weight: bold !important;
+  border-top: none !important;
+  border-bottom: 4px solid white !important;
+  border-right: none!important;
+  border-left:none!important;
+  padding: 4px;
+  
+}
+
+.budget-table th:first-child {
+  border-top-left-radius: 8px; 
+
+}
+
+.budget-table th:last-child {
+  border-top-right-radius: 8px; 
+}
+
+
+.budget-row td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px; 
+  cursor: pointer;
+  font-size: medium;
+  border: white 1px solid;
+}
+
+@media (max-width: 600px) {
+  .budget-row td {
+    font-size: 12px;
+  }
+}
+
+
+/* Align first column (Category) to the left */
+.budget-row td:first-child {
+  font-size: larger;
+  padding-left: 30px;
+}
+
+/* Center budget, expenses, and result columns */
+.budget-row td:nth-child(2),
+.budget-row td:nth-child(3),
+.budget-row td:nth-child(4) {
+  text-align: center;
+}
+
+.expense-row-btn{
+  background-color: var(--main-secondary-color);
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.4em;
+  padding-right: 1em;
+  padding-left: 1em;
+  
+
+
+}
+
+.expense-row-btn:hover{
+  background-color: #337B9F;
+}
+
+.expense-table{
+  background-color: inherit !important;
+  color: black !important;
+  font-weight: bold !important;
+  padding: 4px;
 }
