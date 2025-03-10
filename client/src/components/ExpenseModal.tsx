@@ -1,6 +1,7 @@
 import { Modal, Button, Form } from 'react-bootstrap';
-import { addExpense, Expense } from "../api/api";
-import { useState } from 'react';
+import { addExpense, Expense, getBudgets } from "../api/api";
+import { useState, useEffect } from 'react';
+import { Budget } from '../api/api';
 
 // Define the types for the props
 interface ExpenseModalProps {
@@ -11,14 +12,48 @@ interface ExpenseModalProps {
 
 function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
 
+    const [budgets, setBudgets] = useState<Budget[]>([]);
+    const [customCategory, setCustomCategory] = useState<string>('');
+    const [isCustomCategory, setIsCustomCategory] = useState(false);
+
+
+
     const [expenseName, setExpenseName] = useState('');
     const [cost, setCost] = useState('');
     const [description, setDescription] = useState('');
 
+    useEffect(() => {
+        async function fetchBudgets() {
+            const fetchedBudgets = await getBudgets();
+            setBudgets(fetchedBudgets);
+        }
+
+        if (show) {
+            fetchBudgets();
+            setIsCustomCategory(false);
+            setCustomCategory('');
+        }
+    }, [show]);
+
+    function handleCategoryChange(value: string) {
+        if (value === "custom") {
+            setIsCustomCategory(true);
+            setExpenseName(''); 
+        } else {
+            setIsCustomCategory(false);
+            setExpenseName(value);
+        }
+    }
+
+
+
+
     async function saveExpense() {
         // Convert cost to a number
         const expenseCost = parseFloat(cost);
-        if (!expenseName || isNaN(expenseCost) || !description) {
+        const categoryToUse = isCustomCategory ? customCategory : expenseName;
+
+        if (!categoryToUse || isNaN(expenseCost) || !description) {
             alert('Please fill in all fields correctly.');
             return;
         }
@@ -29,8 +64,10 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
             onSave();
             // Reset form fields
             setExpenseName('');
+            setCustomCategory('');
             setCost('');
             setDescription('');
+            setIsCustomCategory(false);
         } else {
             alert('Failed to add expense');
         }
@@ -43,14 +80,35 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group className="mb-3">
+                <Form.Group className="mb-3">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Enter expense category"
-                            value={expenseName}
-                            onChange={(e) => setExpenseName(e.target.value)}
-                        />
+                        <Form.Select
+                            value={expenseName || ""}
+                            onChange={(e) => handleCategoryChange(e.target.value)}
+                            className={!expenseName ? "text-muted" : ""}
+                        >
+                            {!expenseName && (
+                                <option value="" disabled hidden>
+                                    Pick a category
+                                </option>
+                            )}
+                            
+                            {budgets.map((budget) => (
+                                <option key={budget.category} value={budget.category}>
+                                    {budget.category}
+                                </option>
+                            ))}
+                            <option value="custom">Enter Manually</option>
+                        </Form.Select>
+                        {isCustomCategory && (
+                            <Form.Control
+                                type="text"
+                                placeholder="Create new budget category"
+                                value={customCategory}
+                                onChange={(e) => setCustomCategory(e.target.value)}
+                                className="mt-2"
+                            />
+                        )}
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Cost</Form.Label>
