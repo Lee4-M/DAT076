@@ -7,7 +7,7 @@ dotenv.config();
 
 let sequelize: Sequelize;
 
-if (process.env.NODE_ENV === "test") {
+if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
   const db = newDb();
   const pool = db.adapters.createPg();
 
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "test") {
     logging: false,
   });
 
-  console.log("Using in-memory database for testing");
+  console.log("Using in-memory database for testing/development");
 } else {
 
   const DB_NAME: string = process.env.DB_NAME!;
@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === "test") {
     port: DB_PORT,
   });
 
-  console.log("Using PostgreSQL database for production");
+  console.log("Using PostgreSQL database for development/production");
 }
 
 export { sequelize };
