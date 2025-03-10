@@ -12,11 +12,7 @@ export class ExpenseService implements IExpenseService {
     }
 
     async getExpenses(budgetRowId: number): Promise<Expense[] | undefined> {
-        const expenses = await ExpenseModel.findAll({
-            where: { budgetRowId: budgetRowId }
-        });
-        if (!expenses) return undefined;
-        return expenses;
+        return await ExpenseModel.findAll({where: { budgetRowId: budgetRowId }});
     }
 
     async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {
