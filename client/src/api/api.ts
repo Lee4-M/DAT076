@@ -89,3 +89,29 @@ export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     }
 }
 
+export async function updateBudget(category: string, amount: number): Promise<Budget | undefined> {
+    try {
+        const response = await axios.put(`${BASE_URL}/budget`, { category: category, cost: amount });
+        return response.data;
+    } catch (e: any) {
+        console.log(e);
+        return undefined;
+    }
+}
+
+export async function updateBudgets(budgets : Budget[]): Promise<Budget[] | undefined> {
+    try {
+        let categories: string[] = [];
+        let amounts: number[] = [];
+
+        for (let budget of budgets) {
+            categories.push(budget.category);
+            amounts.push(budget.cost);
+        }
+        const response = await axios.put(`${BASE_URL}/budgets`, { categories: categories, costs: amounts });
+        return response.data;
+    } catch (e: any) {
+        console.log(e);
+        return undefined;
+    }
+}

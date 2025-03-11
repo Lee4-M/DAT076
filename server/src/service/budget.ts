@@ -75,5 +75,48 @@ export class BudgetRowService implements IBudgetRowService {
 
         return true;
     }
+
+    async updateBudget(username: string, category: string, cost: number): Promise<Budget | undefined> {
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+
+        const budget = user.budgets.find(budget => budget.category === category);
+        if (!budget) {
+            return undefined;
+        }
+
+        budget.cost = cost;
+        budget.result = cost - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
+        
+        return { ...budget };
+    }
+
+    async updateAllBudgets(username: string, categories: string[], amounts: number[]): Promise<Budget[] | undefined> {
+        console.log("reached hereeeeee2")
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            return undefined;
+        }
+        
+
+        let newBudgets: Budget[] = [];
+        
+
+        categories.forEach((c, i) => {
+            console.log("reached here")
+            const budget = user.budgets.find(budget => budget.category === c);
+            if (!budget) {
+                return undefined;
+            }
+            budget.cost = amounts[i];
+            console.log(budget.cost);
+            budget.result = amounts[i] - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
+            newBudgets.push(budget);
+        });
+
+        return { ...newBudgets };
+    }
 }
 

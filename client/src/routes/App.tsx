@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import './App.css'
-import { Budget, Expense, getBudgets, getExpenses } from '../api/api';
+import { Budget, Expense, getBudgets, getExpenses, updateBudget } from '../api/api';
 
 import { Sidebar } from '../components/Sidebar'
 import { BudgetTable } from '../components/BudgetTable'
@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [editedBudgets, setEditedBudgets] = useState<Budget[]>(budgets);
   const [expenses, setExpenses] = useState<{ [budget_id: number]: Expense[] }>([]);
 
   const loadBudgets = useCallback(async () => {
@@ -18,6 +19,8 @@ function App() {
     setBudgets(budgets);
   }, []);
 
+  const [isEditing, setIsEditing] = useState(false);
+  
   const loadExpenses = useCallback(async () => {
     if (budgets.length === 0) return;
 
@@ -31,6 +34,20 @@ function App() {
     setExpenses(expensesMap);
   }, [budgets]);
 
+  async function updateBudgetCost(category: string, amount: number) {
+    await updateBudget(category, amount);
+
+    budgets.map(budget => {
+      if (budget.category === category) {
+        budget.amount = amount; //Var budget.cost
+      }
+      loadBudgets();
+      return budget;
+    });    
+  }
+
+  // Som onMount i Svelte, körs när komponenten renderas.
+  // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
     loadBudgets();
   }, [loadBudgets]);
@@ -43,8 +60,8 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} /></Col>
-          <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={budgets} expenses={expenses} /></Col>
+          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} editedBudgets={editedBudgets} setEditedBudgets={setEditedBudgets} isEditing={isEditing} setIsEditing={setIsEditing}/></Col>
+          <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={editedBudgets} expenses={expenses} updateBudgetCost={updateBudgetCost} isEditing={isEditing}/></Col>
         </Row>
       </Container>
     </>
