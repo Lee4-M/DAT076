@@ -1,16 +1,17 @@
 import { User } from "../model/user.interface";
 import { UserModel } from "../db/user.db";
-import bcrypt from "bcrypt";
 import { IUserService } from "./interface/IUserService";
+import bcrypt from "bcrypt";
 
 export class UserService implements IUserService {
-    async createUser(username: string, password: string): Promise<UserModel | null> {
+    async createUser(username: string, password: string): Promise<UserModel | undefined> {
         if (!username || !password) {
-            return null;
+            return undefined;
         }
 
         if (await UserModel.findOne({ where: { username } })) {
-            return null;
+            console.error("User already exists");
+            return undefined;
         }
 
         const salt: string = bcrypt.genSaltSync(10);
@@ -22,12 +23,12 @@ export class UserService implements IUserService {
         });
     }
 
-    async findUser(username: string, password?: string): Promise<User | null> {
+    async findUser(username: string, password?: string): Promise<User | undefined> {
         const user: User | null = await UserModel.findOne({ where: { username }, include: "budgetRows" });
 
         if (!user) {
             console.warn(`User not found: ${username}`);
-            return null;
+            return undefined;
         }
 
         if (!password) {
@@ -39,7 +40,7 @@ export class UserService implements IUserService {
         }
 
         console.warn(`Incorrect password for user: ${username}`);
-        return null;
+        return undefined;
     }
 
 }

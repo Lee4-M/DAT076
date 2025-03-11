@@ -16,7 +16,7 @@ export class BudgetRowService implements IBudgetRowService {
             console.error("Invalid input: username");
             return undefined;
         }
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -30,12 +30,13 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
         }
-        const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, category: category} });
+
+        const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, category: category } });
         return budgetRow ?? undefined;
     }
 
@@ -54,7 +55,7 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -63,12 +64,12 @@ export class BudgetRowService implements IBudgetRowService {
     }
 
     async deleteBudgetRow(username: string, id: number): Promise<boolean> {
-        if(!username || id < 0) {
+        if (!username || id < 0) {
             console.error("Invalid input: username or id");
             return false;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return false;

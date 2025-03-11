@@ -34,7 +34,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     interface AddBudgetRowRequest extends Request {
         body: {
             category: string,
-            cost: number
+            amount: number
         },
         session: any
     }
@@ -49,12 +49,12 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 return;
             }
             const category = req.body.category;
-            const cost = req.body.cost;
-            if ((typeof (category) !== "string") || (typeof (cost) !== "number")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
+            const amount = req.body.amount;
+            if ((typeof (category) !== "string") || (typeof (amount) !== "number")) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)} or amount has type ${typeof (amount)}`);
                 return;
             }
-            const newBudgetRow: BudgetRow | undefined = await budgetRowService.addBudgetRow(req.session.username, category, cost);
+            const newBudgetRow: BudgetRow | undefined = await budgetRowService.addBudgetRow(req.session.username, category, amount);
             res.status(201).send(newBudgetRow);
         } catch (e: any) {
             res.status(500).send(e.message);
@@ -78,6 +78,10 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 return;
             }
             const id = req.body.id;
+            if (typeof (id) !== "number") {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof (id)}`);
+                return;
+            }
             const success = await budgetRowService.deleteBudgetRow(req.session.username, id);
             if (success) {
                 res.status(200).send("Budget row deleted");

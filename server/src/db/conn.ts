@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
 
   sequelize = new Sequelize({
     dialect: "postgres",
-    dialectModule: pool, 
+    dialectModule: pool,
     logging: false,
   });
 
@@ -48,13 +48,13 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
 export { sequelize };
 
 export async function initDB() {
-    try {
-        await import('./associations');
-        await sequelize.sync({ alter: true, force: false });
-        console.log('Database synced successfully');
-    } catch (error) {
-        console.error('Failed to initialize the database:', error);
-        throw error; 
-    }
+  try {
+    await import('./associations');
+    await sequelize.sync({ alter: true, force: false });
+    console.log('Database synced successfully');
+  } catch (error) {
+    console.error('Failed to initialize the database:', error);
+    throw error;
+  }
 }
 

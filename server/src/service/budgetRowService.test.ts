@@ -61,7 +61,7 @@ describe("Budget Service", () => {
             await budgetService.addBudgetRow("User", "Clothes", 500);
         });
 
-        test("Finding a budget row for a non-existent user should return undefined", async () => { 
+        test("Finding a budget row for a non-existent user should return undefined", async () => {
             const budget = await budgetService.findBudgetRowByCategory("NonExistentUser", "Clothes");
             expect(budget).toBeUndefined();
         });
@@ -153,4 +153,3 @@ describe("Budget Service", () => {
 });
 
 
-  
