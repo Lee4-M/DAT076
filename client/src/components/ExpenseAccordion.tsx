@@ -53,25 +53,26 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , d
                         </tr>
                     </thead>
                     <tbody>
-                    {expenses.map(expense => (
+                        {expenses.map(expense => (
                             <tr key={expense.id}>
                                 <td>{expense.cost} :-</td>
                                 <td>{expense.description}</td>
-                                {isEditing && (
                                 <td style={{ padding: "0px", backgroundColor: "inherit", textAlign: "center" }}>
-                                    <img 
-                                        src="/images/bin-svgrepo-com.svg" 
-                                        alt="Delete" 
-                                        width="20" 
-                                        height="20" 
-                                        style={{ cursor: "pointer"}} 
-                                        onClick={() => removeExpense(expense.id)} 
-                                    />
+                                    {isEditing && (
+                                        <img 
+                                            src="/images/bin-svgrepo-com.svg" 
+                                            alt="Delete" 
+                                            width="20" 
+                                            height="20" 
+                                            style={{ cursor: "pointer" }} 
+                                            onClick={() => removeExpense(expense.id)} 
+                                        />
+                                    )}
                                 </td>
-                                )}
                             </tr>
                         ))}
                     </tbody>
+
                 </Table>
             )}
 

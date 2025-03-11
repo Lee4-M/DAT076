@@ -135,8 +135,10 @@ tbody > tr > td:last-child {
 /*Expense Table*/
 .expense-table thead th {
   background-color: transparent !important; 
+  font-weight: normal !important;
   border-radius: 0px !important;
   color: black !important;
+  border-bottom: #cfcfcf 1px solid !important;
 
 }
 .expense-table{
@@ -165,6 +167,12 @@ tbody > tr > td:last-child {
   border-left-color: none;
 }
 
+.expense-table td:nth-child(2){
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-left-color: none;
+}
+
 .delete-budget-btn{
   background-color: inherit !important;
   color: red;
@@ -184,3 +192,4 @@ tbody > tr > td:last-child {
 .edit-budget-btn:hover{
   color: #004C6D;
 }
+
