@@ -1,4 +1,3 @@
-import e from "express";
 import { BudgetRowService } from "./budget";
 import { ExpenseService } from "./expense";
 import { UserService } from "./user";
