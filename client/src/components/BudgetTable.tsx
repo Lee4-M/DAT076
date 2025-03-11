@@ -1,23 +1,21 @@
 import { Table } from "react-bootstrap";
 
-import { Budget } from "../api/api";
-import { BudgetComponent } from "./BudgetRowComponent";
+import { Budget, Expense } from "../api/api";
+import { BudgetRowComponent } from "./BudgetRowComponent";
 
 interface BudgetTableProps {
     budgets: Budget[];
-    isEditing: boolean;
-    deleteExpense: (id: string) => void;
-    deleteBudget: (category: string) => void;
+  
+    loadBudgets: () => void;
+    expenses: { [budget_id: number]: Expense[] };
+    loadExpenses: () => void;
     updateBudgetCost: (category: string, amount: number) => void;
-    //setEditedBudgets: React.Dispatch<React.SetStateAction<Budget[]>>;
+    isEditing: boolean;
 }
 
-export function BudgetTable({ budgets, isEditing, deleteExpense, deleteBudget, updateBudgetCost }: BudgetTableProps) {
-
-    const totalBudget = budgets.reduce((total, budget) => total + budget.cost, 0);
-    const totalExpenses = budgets.reduce((sum, budget) =>
-        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
-        0);
+export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, updateBudgetCost, isEditing }: BudgetTableProps) {
+    const totalBudget = budgets.reduce((total, budget) => total + budget.amount, 0);
+    const totalExpenses = Object.values(expenses).flat().reduce((total, expense) => total + expense.cost, 0);
     const result = totalBudget - totalExpenses;
 
     return (
@@ -39,10 +37,8 @@ export function BudgetTable({ budgets, isEditing, deleteExpense, deleteBudget, u
                         </tr>
                     </thead>
                     <tbody>
-
                         {budgets.map(budget => (
-                            <BudgetComponent key={budget.category} budget={budget} isEditing={isEditing} deleteBudget={deleteBudget} deleteExpense={deleteExpense} updateBudgetCost={updateBudgetCost}/> //TODO Change back to index?
-
+                            <BudgetRowComponent key={budget.category} budget={budget} loadBudgets={loadBudgets} loadExpenses={loadExpenses} expenses={expenses[budget.id] || []} isEditing={isEditing} updateBudgetCost={updateBudgetCost}/> //TODO Change back to index?
                         ))}
                     </tbody>
                 </Table>

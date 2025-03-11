@@ -1,11 +1,14 @@
 import express, { Request, Response, Router } from "express";
 import { Expense } from "../model/expense.interface";
-import { ExpenseService } from "../service/expense";
+import { IExpenseService } from "../service/IExpenseService";
 
-export function expenseRouter(expenseService: ExpenseService): Router {
+export function expenseRouter(expenseService: IExpenseService): Router {
     const expenseRouter = express.Router();
 
     interface ExpenseRequest {
+        query: {
+            budgetRowId: string
+        }
         session: any
     }
 
@@ -18,13 +21,10 @@ export function expenseRouter(expenseService: ExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const expenses: Expense[] | undefined = await expenseService.getExpenses(req.session.username);
-            if (!expenses) {
-                console.log("User logged in as " + req.session.username + " no longer exists");
-                delete req.session.username;
-                res.status(401).send("Not logged in");
-                return;
-            }
+
+            const budgetRowId = parseInt(req.query.budgetRowId, 10);
+
+            const expenses: Expense[] | undefined = await expenseService.getExpenses(budgetRowId);
             res.status(200).send(expenses);
         } catch (e: any) {
             res.status(500).send(e.message);
@@ -65,12 +65,12 @@ export function expenseRouter(expenseService: ExpenseService): Router {
 
     interface DeleteExpenseRequest extends Request {
         body: {
-            id: string
+            id: number
         },
         session: any
     }
 
-    expenseRouter.delete("/expense/:id", async (
+    expenseRouter.delete("/expense", async (
         req: DeleteExpenseRequest,
         res: Response<string>
     ) => {
@@ -80,8 +80,7 @@ export function expenseRouter(expenseService: ExpenseService): Router {
                 return;
             }
             const id = req.body.id
-            console.log(`Deleting expense with ID: ${id}`);
-            await expenseService.removeExpense(req.session.username, id);
+            await expenseService.removeExpense(id);
             res.status(200).send("Expense deleted successfully.");
         } catch (e: any) {
             res.status(500).send(e.message);

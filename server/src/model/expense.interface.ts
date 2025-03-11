@@ -1,6 +1,6 @@
 export interface Expense {
-    id: string;
-    category : string;
-    cost : number;
-    description : string;
+    id: number;
+    budgetRowId: number;
+    cost: number;
+    description: string;
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-import { Budget } from "../api/api";
+import { Expense } from "../api/api";
 import { logout } from "../api/apiLogin";
 import { updateBudgets } from '../api/api';
 
@@ -11,18 +11,18 @@ import ExpenseModal from "./ExpenseModal";
 import BudgetItemModal from "./BudgetModal";
 import { PieChart } from "@mui/x-charts";
 
-
 interface SidebarProps {
-    addBudget: (budget: Budget) => void;
     loadBudgets: () => void;
-    budgets: Budget[];
+    expenses: {
+        [budget_id: number]: Expense[];
+    }
     editedBudgets: Budget[];
     setEditedBudgets: React.Dispatch<React.SetStateAction<Budget[]>>;
     isEditing: boolean,
     setIsEditing: (editing: boolean) => void,
 }
 
-export function Sidebar({ editedBudgets, setEditedBudgets, addBudget, loadBudgets, budgets, isEditing, setIsEditing }: SidebarProps) {
+export function Sidebar({ loadBudgets, expenses, editedBudgets, setEditedBudgets, isEditing, setIsEditing }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     
@@ -34,9 +34,9 @@ export function Sidebar({ editedBudgets, setEditedBudgets, addBudget, loadBudget
         navigate('/');
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         setEditedBudgets(budgets);
-    }, [budgets]);
+    }, [budgets]);*/
 
     useEffect(() => {
         if (isEditing) {
@@ -64,18 +64,11 @@ export function Sidebar({ editedBudgets, setEditedBudgets, addBudget, loadBudget
         }
     };
 
-    const totalExpenses = budgets.reduce((sum, budget) =>
-        sum + budget.expenses.reduce((total, expense) => total + expense.cost, 0),
-        0);
-
-    const expenseData = budgets.map(budget => {
-        const categoryTotal = budget.expenses.reduce((total, expense) => total + expense.cost, 0);
-        return {
-            id: budget.category,
-            value: totalExpenses > 0 ? parseFloat(((categoryTotal / totalExpenses) * 100).toFixed(1)) : 0,
-            label: budget.category,
-        };
-    });
+    const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => ({
+        id: Number(budgetRowId),
+        value: expenseList.reduce((sum, expense) => sum + expense.cost, 0),
+        label: `Category ${budgetRowId}`
+    }));
 
     return (
         <Container className="bg-light-subtle rounded-3 h-100">
@@ -106,7 +99,7 @@ export function Sidebar({ editedBudgets, setEditedBudgets, addBudget, loadBudget
                                 cornerRadius: 3,
                                 paddingAngle: 1,
                                 cx: 200,
-                                valueFormatter: item => `${item.value}%`,
+                                valueFormatter: item => `${item.value}`,
                                 highlightScope: { fade: 'global', highlight: 'item' },
                                 faded: { innerRadius: 100, additionalRadius: -10, color: 'gray' },
                             },
@@ -124,9 +117,9 @@ export function Sidebar({ editedBudgets, setEditedBudgets, addBudget, loadBudget
                 setShowExpenseModal(false);
                 loadBudgets();
             }} />
-            <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={(newBudget) => {
-                addBudget(newBudget);
+            <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={() => {
                 setShowBudgetModal(false);
+                loadBudgets();
             }}
             />
         </Container>
