@@ -60,7 +60,7 @@ tbody > tr > td:last-child {
 
 .budget-table th {
   background-color: var(--main-accent-color) !important;
-  color: rgb(112, 99, 1) !important;
+  color: rgb(112, 99, 1);
   font-weight: bold !important;
   font-size: larger !important;
   border-top: none !important;
@@ -136,7 +136,7 @@ tbody > tr > td:last-child {
 .expense-table thead th {
   background-color: transparent !important; 
   border-radius: 0px !important;
-  border-color: #337B9F !important;
+  color: black !important;
 
 }
 .expense-table{
