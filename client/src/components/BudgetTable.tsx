@@ -1,7 +1,8 @@
 import { Table } from "react-bootstrap";
-
+import { useState } from "react";
 import { Budget, Expense } from "../api/api";
 import { BudgetRowComponent } from "./BudgetRowComponent";
+import BudgetItemModal from "./BudgetModal";
 
 interface BudgetTableProps {
     budgets: Budget[];
@@ -16,10 +17,13 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: Bu
     const totalExpenses = Object.values(expenses).flat().reduce((total, expense) => total + expense.cost, 0);
     const result = totalBudget - totalExpenses;
 
+    const [showBudgeteModal, setShowBudgetModal] = useState(false);
+    
+
     return (
         <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
-                <Table striped bordered hover className="budget-table p-2  text-center">
+                <Table striped  className="budget-table p-2  text-center">
                     <thead>
                         <tr>
                             <th>
@@ -34,12 +38,31 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: Bu
                             <th>
                                 <div className="w-75 m-auto py-2">Result</div>
                             </th>
+                            <th>
+                                </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {budgets.map(budget => (
-                            <BudgetRowComponent key={budget.category} budget={budget} loadBudgets={loadBudgets} loadExpenses={loadExpenses} expenses={expenses[budget.id] || []} /> //TODO Change back to index?
-                        ))}
+                        {budgets.length === 0 ? (
+                            <tr>
+                                <td colSpan={5} className="text-center p-3">
+                                    <p>Create Your First Budget!</p>
+                                    <button onClick={() => setShowBudgetModal(true)} className="expense-row-btn">
+                                        Add Budget +
+                                    </button>
+                                </td>
+                            </tr>
+                        ) : (
+                            budgets.map(budget => (
+                                <BudgetRowComponent
+                                    key={budget.id} 
+                                    budget={budget}
+                                    loadBudgets={loadBudgets}
+                                    loadExpenses={loadExpenses}
+                                    expenses={expenses[budget.id] || []}
+                                />
+                            ))
+                        )}
                     </tbody>
                 </Table>
             </div>
@@ -50,6 +73,9 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: Bu
                 <div className="flex-fill">{totalExpenses} :-</div>
                 <div className="flex-fill">{result} :-</div>
             </div>
+
+            <BudgetItemModal show={showBudgeteModal} handleClose={() => setShowBudgetModal(false)} onSave={loadBudgets} />
+        
         </section>
     );
 }

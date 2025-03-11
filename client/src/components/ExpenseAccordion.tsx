@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { deleteExpense, Expense} from "../api/api";
+import { deleteExpense, Expense, deleteBudget} from "../api/api";
 import '../routes/App.css';
 import { useState } from "react";
 import ExpenseModal from "./ExpenseModal";
@@ -10,9 +10,11 @@ interface ExpenseAccordionProps {
     handleClose: () => void;
     expenses: Expense[];
     loadExpenses: () => void;
+    deleteBudget: (id: number) => void;  // Accept function
+    budgetId: number; // Accept budget ID
 }
 
-export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses }: ExpenseAccordionProps) {
+export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , deleteBudget, budgetId}: ExpenseAccordionProps) {
     if (!show) return null;
 
     const [showExpenseModal, setShowExpenseModal] = useState(false);
@@ -56,7 +58,7 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses }: 
                                 <td>{expense.cost} :-</td>
                                 <td>{expense.description}</td>
                                 {isEditing && (
-                                    <td style={{ padding: "0px", backgroundColor: "inherit", textAlign: "center" }}>
+                                <td style={{ padding: "0px", backgroundColor: "inherit", textAlign: "center" }}>
                                     <img 
                                         src="/images/bin-svgrepo-com.svg" 
                                         alt="Delete" 
@@ -73,15 +75,41 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses }: 
                 </Table>
             )}
 
-            <div className="d-flex justify-content-between p-3">
+            <div className="d-flex justify-content-start p-3 gap-2">
+                {expenses.length > 0 && (
+                    <button 
+                        onClick={() => setIsEditing(!isEditing)} 
+                        className={`edit-budget-btn ${isEditing ? "editing-mode" : ""}`}
+                    >
+                        <img
+                            src="/images/edit-budget.svg"
+                            alt="Edit"
+                            width="15"
+                            height="15"
+                        />
+                        {isEditing ? "Done" : "Edit"}
+                    </button>
+                )}
+
                 <button 
-                    onClick={() => setIsEditing(!isEditing)} 
-                    className="btn expense-row-btn"
+                    onClick={() => {
+                        deleteBudget(budgetId);
+                        handleClose();
+                    }} 
+                    className="delete-budget-btn"
                 >
-                    {isEditing ? "Done" : "Edit"}
+                    <img
+                        src="/images/trash-delete-budget.svg"
+                        alt="Delete"
+                        width="15"
+                        height="15"
+                    />
+                    Delete Budget
                 </button>
-                
             </div>
+
+
+
 
             <ExpenseModal 
                 show={showExpenseModal} 

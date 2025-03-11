@@ -22,11 +22,11 @@
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td {
-  background-color: #F1F1F1;
+  background-color: #fdfdfd;
 }
 
 .table-striped > tbody > tr:nth-child(even) > td {
-  background-color: #f5f5f5;
+  background-color: #fefefe;
 }
 
 #total-row {
@@ -60,8 +60,9 @@ tbody > tr > td:last-child {
 
 .budget-table th {
   background-color: var(--main-accent-color) !important;
-  color: black !important;
+  color: rgb(112, 99, 1) !important;
   font-weight: bold !important;
+  font-size: larger !important;
   border-top: none !important;
   border-bottom: 4px solid white !important;
   border-right: none!important;
@@ -85,7 +86,7 @@ tbody > tr > td:last-child {
   vertical-align: middle;
   padding: 10px; 
   cursor: pointer;
-  font-size: medium;
+  font-size: larger;
   border: white 1px solid;
 }
 
@@ -99,8 +100,10 @@ tbody > tr > td:last-child {
 /* Align first column (Category) to the left */
 .budget-row td:first-child {
   font-size: larger;
+  text-align: left;
   padding-left: 30px;
 }
+
 
 /* Center budget, expenses, and result columns */
 .budget-row td:nth-child(2),
@@ -108,7 +111,7 @@ tbody > tr > td:last-child {
 .budget-row td:nth-child(4) {
   text-align: center;
 }
-
+/* Accordion Edit Button*/
 .expense-row-btn{
   background-color: var(--main-secondary-color);
   color: white;
@@ -118,18 +121,66 @@ tbody > tr > td:last-child {
   padding: 0.4em;
   padding-right: 1em;
   padding-left: 1em;
-  
+}
 
-
+.editing-mode {
+  background-color: white !important;
+  color: var(--main-secondary-color) !important;
 }
 
 .expense-row-btn:hover{
   background-color: #337B9F;
 }
 
+/*Expense Table*/
+.expense-table thead th {
+  background-color: transparent !important; 
+  border-radius: 0px !important;
+  border-color: #337B9F !important;
+
+}
 .expense-table{
   background-color: inherit !important;
   color: black !important;
-  font-weight: bold !important;
+  font-weight: normal !important;
   padding: 4px;
+  border-spacing: 0 8px;
+  
+}
+
+.expense-table td{
+  border: rgb(219, 217, 217) 4px solid;
+
+}
+
+.expense-table td:first-child {
+  border-top-left-radius: 8px ; 
+  border-bottom-left-radius: 8px; 
+  border-right-color: none;
+}
+
+.expense-table td:last-child {
+  border-top-right-radius: 8px; 
+  border-bottom-right-radius: 8px; 
+  border-left-color: none;
+}
+
+.delete-budget-btn{
+  background-color: inherit !important;
+  color: red;
+  text-decoration: underline;
+}
+
+.delete-budget-btn:hover{
+  color: #900000;
+}
+
+.edit-budget-btn{
+  background-color: inherit !important;
+  color: #337B9F;
+  text-decoration: underline;
+}
+
+.edit-budget-btn:hover{
+  color: #004C6D;
 }
