@@ -16,7 +16,7 @@ export class BudgetRowService implements IBudgetRowService {
             console.error("Invalid input: username");
             return undefined;
         }
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -30,7 +30,7 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -45,7 +45,7 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -59,7 +59,7 @@ export class BudgetRowService implements IBudgetRowService {
             return false;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return false;
@@ -76,44 +76,47 @@ export class BudgetRowService implements IBudgetRowService {
         return true;
     }
 
-    async updateBudget(username: string, category: string, cost: number): Promise<Budget | undefined> {
+    async updateBudgetRow(username: string, id: number, category: string, amount: number): Promise<BudgetRow | undefined> { //add id argument,
+        if (!username || !category || amount < 0) {
+            console.error("Invalid input: username, category, or amount");
+            return undefined;
+        }
+        
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
+            console.warn(`User not found: ${username}`);
             return undefined;
         }
 
-        const budget = user.budgets.find(budget => budget.category === category);
-        if (!budget) {
+        const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });
+        if (!budgetRow) {
             return undefined;
         }
+        await BudgetRowModel.update({ userId: user.id, category: category, amount: amount }, { where: { id: id } });
 
-        budget.cost = cost;
-        budget.result = cost - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
+        return budgetRow; //TODO Check if this is the old or new budgetRow
         
-        return { ...budget };
     }
 
-    async updateAllBudgets(username: string, categories: string[], amounts: number[]): Promise<Budget[] | undefined> {
-        console.log("reached hereeeeee2")
+    async updateAllBudgetRows(username: string, ids: number[], categories: string[], amounts: number[]): Promise<BudgetRow[] | undefined> {
+        
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
+            console.warn(`User not found: ${username}`);
             return undefined;
         }
         
-
-        let newBudgets: Budget[] = [];
+        let newBudgets: BudgetRow[] = [];
         
-
-        categories.forEach((c, i) => {
-            console.log("reached here")
-            const budget = user.budgets.find(budget => budget.category === c);
-            if (!budget) {
+        ids.forEach(async (id, i) => {
+            const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });
+            if (!budgetRow) {
                 return undefined;
             }
-            budget.cost = amounts[i];
-            console.log(budget.cost);
-            budget.result = amounts[i] - budget.expenses.reduce((sum, expense) => sum + expense.cost, 0);
-            newBudgets.push(budget);
+            const category = categories[i];
+            const amount = amounts[i];
+            await BudgetRowModel.update({ userId: user.id, category: category, amount: amount }, { where: { id: id } });
+            newBudgets.push(budgetRow);
         });
 
         return { ...newBudgets };

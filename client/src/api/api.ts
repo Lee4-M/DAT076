@@ -89,9 +89,9 @@ export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     }
 }
 
-export async function updateBudget(category: string, amount: number): Promise<Budget | undefined> {
+export async function updateBudgetRow(id: number, category: string, amount: number): Promise<Budget | undefined> {
     try {
-        const response = await axios.put(`${BASE_URL}/budget`, { category: category, cost: amount });
+        const response = await axios.put(`${BASE_URL}/budget`, { id: id, category: category, amount: amount });
         return response.data;
     } catch (e: any) {
         console.log(e);
@@ -99,16 +99,18 @@ export async function updateBudget(category: string, amount: number): Promise<Bu
     }
 }
 
-export async function updateBudgets(budgets : Budget[]): Promise<Budget[] | undefined> {
+export async function updateBudgetRows(budgets : Budget[]): Promise<Budget[] | undefined> {
     try {
+        let ids: number[] = [];
         let categories: string[] = [];
         let amounts: number[] = [];
 
         for (let budget of budgets) {
+            ids.push(budget.id);
             categories.push(budget.category);
-            amounts.push(budget.cost);
+            amounts.push(budget.amount);
         }
-        const response = await axios.put(`${BASE_URL}/budgets`, { categories: categories, costs: amounts });
+        const response = await axios.put(`${BASE_URL}/budgets`, { ids: ids, categories: categories, amounts: amounts });
         return response.data;
     } catch (e: any) {
         console.log(e);

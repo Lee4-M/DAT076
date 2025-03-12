@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import './App.css'
-import { Budget, Expense, getBudgets, getExpenses, updateBudget } from '../api/api';
+import { Budget, Expense, getBudgets, getExpenses, updateBudgetRow } from '../api/api';
 
 import { Sidebar } from '../components/Sidebar'
 import { BudgetTable } from '../components/BudgetTable'
@@ -34,8 +34,8 @@ function App() {
     setExpenses(expensesMap);
   }, [budgets]);
 
-  async function updateBudgetCost(category: string, amount: number) {
-    await updateBudget(category, amount);
+  async function updateBudgetCost(id: number, category: string, amount: number) {
+    await updateBudgetRow(id, category, amount);
 
     budgets.map(budget => {
       if (budget.category === category) {

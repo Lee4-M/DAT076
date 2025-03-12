@@ -9,7 +9,7 @@ interface BudgetTableProps {
     loadBudgets: () => void;
     expenses: { [budget_id: number]: Expense[] };
     loadExpenses: () => void;
-    updateBudgetCost: (category: string, amount: number) => void;
+    updateBudgetCost: (id: number, category: string, amount: number) => void;
     isEditing: boolean;
 }
 

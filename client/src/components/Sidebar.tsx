@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
+import { Budget } from "../api/api";
 import { Expense } from "../api/api";
 import { logout } from "../api/apiLogin";
-import { updateBudgets } from '../api/api';
+import { updateBudgetRows } from '../api/api';
 
 import '../routes/App.css'
 import ExpenseModal from "./ExpenseModal";
@@ -59,7 +60,7 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, setEditedBudgets
     const handleEdit = () => {
         setIsEditing(!isEditing);
         if (isEditing) {
-            updateBudgets(editedBudgets);
+            updateBudgetRows(editedBudgets);
             loadBudgets();
         }
     };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 
@@ -12,19 +12,19 @@ interface BudgetRowComponentProps {
     expenses: Expense[];
     loadExpenses: () => void;
     isEditing: boolean;
-    updateBudgetCost: (category: string, amount: number) => void;
+    updateBudgetCost: (id: number, category: string, amount: number) => void;
 }
 
 export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, updateBudgetCost }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateBudgetCost(budget.category, Number(e.target.value));
+        updateBudgetCost(budget.id, budget.category, Number(e.target.value));
     };
 
-    useEffect(() => {
-        setExpenses(budget.expenses);
-    }, [budget]);
+    // useEffect(() => {
+    //     setExpenses(budget.expenses);
+    // }, [budget]);
     
     async function removeBudget(id: number) {
         const success = await deleteBudget(id);
