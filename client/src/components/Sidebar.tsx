@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-import { Budget } from "../api/api";
-import { Expense } from "../api/api";
+import { Budget, Expense } from "../api/api";
 import { logout } from "../api/apiLogin";
 import { updateBudgetRows } from '../api/api';
 
@@ -14,6 +13,7 @@ import { PieChart } from "@mui/x-charts";
 
 interface SidebarProps {
     loadBudgets: () => void;
+    budgets: Budget[];
     expenses: {
         [budget_id: number]: Expense[];
     }
@@ -22,7 +22,7 @@ interface SidebarProps {
     setIsEditing: (editing: boolean) => void,
 }
 
-export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIsEditing }: SidebarProps) {
+export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIsEditing, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     
@@ -64,11 +64,14 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
         }
     };
 
-    const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => ({
-        id: Number(budgetRowId),
-        value: expenseList.reduce((sum, expense) => sum + expense.cost, 0),
-        label: `Category ${budgetRowId}`
-    }));
+    const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
+        const budget = budgets.find(b => b.id === Number(budgetRowId));
+        return {
+            id: Number(budgetRowId),
+            value: expenseList.reduce((sum, expense) => sum + expense.cost, 0),
+            label: budget ? budget.category : 'Unknown'
+        };
+    });
 
     return (
         <Container className="bg-light-subtle rounded-3 h-100">
