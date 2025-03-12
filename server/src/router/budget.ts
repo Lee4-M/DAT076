@@ -103,7 +103,6 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         res: Response<BudgetRow | string>
     ) => {
         try {
-            console.log("bbbbb")
             if (!req.session.username) {
                 res.status(401).send("Not logged in");
                 return;
@@ -144,7 +143,6 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
             const categories = req.body.categories;
             const amounts = req.body.costs;
             const ids = req.body.ids;
-            console.log("reached hereeeeee1")
             const newBudgets: BudgetRow[] | undefined = await budgetRowService.updateAllBudgetRows(req.session.username, ids, categories, amounts);
             res.status(201).send(newBudgets);
         } catch (e: any) {
