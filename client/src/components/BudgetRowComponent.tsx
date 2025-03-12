@@ -47,15 +47,12 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                     height="15" 
                     style={{ display: "block", margin: "auto" }}
                 />
-                    {/*<Button variant='transparent' aria-label="Delete budget item" onClick={() => removeBudget(budget.id)}>
-                        <Image src="/images/delete-budget-item.png" alt="Icon 1" width="40" height="40" />
-                    </Button>*/}
                 </td>
             </tr>
 
             {showExpenseAccordion && (
                 <tr>
-                    <td colSpan={4}>
+                    <td  className="border border-primary" colSpan={4}>
                         <ExpenseAccordion
                             show={showExpenseAccordion}
                             expenses={expenses}

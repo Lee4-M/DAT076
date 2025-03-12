@@ -9,6 +9,7 @@
   --main-bg-color: #e6da6a;
   --main-secondary-color: #409BC9;
   --main-accent-color: #FFE72F;
+  --main-border-color: #b9cde1;
 }
 
 .table-container {
@@ -67,11 +68,20 @@ tbody > tr > td:last-child {
   border-bottom: 4px solid white !important;
   border-right: none!important;
   border-left:none!important;
-  padding: 4px;
+  padding: 0px;
   
 }
 
+@media (max-width: 600px) {
+  .budget-table th {
+    font-size: medium !important;
+    padding: 5px; 
+  }
+}
+
 .budget-table th:first-child {
+  text-align: left;
+  padding-left: 3%;
   border-top-left-radius: 8px; 
 
 }
@@ -99,7 +109,6 @@ tbody > tr > td:last-child {
 
 /* Align first column (Category) to the left */
 .budget-row td:first-child {
-  font-size: larger;
   text-align: left;
   padding-left: 30px;
 }
@@ -123,10 +132,6 @@ tbody > tr > td:last-child {
   padding-left: 1em;
 }
 
-.editing-mode {
-  background-color: white !important;
-  color: var(--main-secondary-color) !important;
-}
 
 .expense-row-btn:hover{
   background-color: #337B9F;
@@ -136,9 +141,11 @@ tbody > tr > td:last-child {
 .expense-table thead th {
   background-color: transparent !important; 
   font-weight: normal !important;
-  border-radius: 0px !important;
+  font-size: medium !important;
   color: black !important;
-  border-bottom: #cfcfcf 1px solid !important;
+  border-bottom: none !important;
+  text-align: left;
+  padding-left: 15px;
 
 }
 .expense-table{
@@ -151,14 +158,29 @@ tbody > tr > td:last-child {
 }
 
 .expense-table td{
-  border: rgb(219, 217, 217) 4px solid;
-
+  border-top: rgb(219, 217, 217) 2px solid;
+  border-bottom: rgb(219, 217, 217) 2px solid;
 }
 
 .expense-table td:first-child {
+  text-align: left;
+  padding-left: 20px;
+
   border-top-left-radius: 8px ; 
   border-bottom-left-radius: 8px; 
   border-right-color: none;
+  border-left: rgb(219, 217, 217) 2px solid;
+
+}
+
+.expense-table td:nth-child(2){
+  border-top-right-radius: 8px;
+  text-align: left;
+  padding-left: 20px;
+  border-bottom-right-radius: 8px;
+  border-left-color: none;
+  border-right: rgb(219, 217, 217) 2px solid;
+
 }
 
 .expense-table td:last-child {
@@ -167,13 +189,8 @@ tbody > tr > td:last-child {
   border-left-color: none;
 }
 
-.expense-table td:nth-child(2){
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-left-color: none;
-}
-
 .delete-budget-btn{
+  font-size: 14px;
   background-color: inherit !important;
   color: red;
   text-decoration: underline;
@@ -184,6 +201,7 @@ tbody > tr > td:last-child {
 }
 
 .edit-budget-btn{
+  font-size: 14px;
   background-color: inherit !important;
   color: #337B9F;
   text-decoration: underline;

@@ -33,7 +33,6 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , d
 
     return (
         <section>
-            <h5 className="text-left mb-3">Expenses</h5>
             {expenses.length === 0 ? (
                 // If there are no expenses
                 <div className="text-center p-3">
@@ -47,7 +46,7 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , d
                 <Table className="p-2 expense-table">
                     <thead>
                         <tr>
-                            <th>Cost</th>
+                            <th>Amount</th>
                             <th>Description</th>
 
                         </tr>
@@ -76,38 +75,54 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , d
                 </Table>
             )}
 
-            <div className="d-flex justify-content-start p-3 gap-2">
-                {expenses.length > 0 && (
-                    <button 
-                        onClick={() => setIsEditing(!isEditing)} 
-                        className={`edit-budget-btn ${isEditing ? "editing-mode" : ""}`}
-                    >
-                        <img
-                            src="/images/edit-budget.svg"
-                            alt="Edit"
-                            width="15"
-                            height="15"
-                        />
-                        {isEditing ? "Done" : "Edit"}
-                    </button>
-                )}
 
-                <button 
-                    onClick={() => {
-                        deleteBudget(budgetId);
-                        handleClose();
-                    }} 
-                    className="delete-budget-btn"
-                >
-                    <img
-                        src="/images/trash-delete-budget.svg"
-                        alt="Delete"
-                        width="15"
-                        height="15"
-                    />
-                    Delete Budget
-                </button>
-            </div>
+            <div className="d-flex justify-content-start p-3 gap-2 w-100">
+    <button 
+        onClick={() => {
+            deleteBudget(budgetId);
+            handleClose();
+        }} 
+        className="delete-budget-btn"
+    >
+        <img
+            src="/images/trash-delete-budget.svg"
+            alt="Delete"
+            width="15"
+            height="15"
+        />
+        Delete Budget
+    </button>
+
+    {expenses.length > 0 && (
+        <button 
+            onClick={() => setIsEditing(!isEditing)} 
+            className={`edit-budget-btn ${isEditing ? "editing-mode" : ""}`}
+        >
+            <img
+                src="/images/edit-budget.svg"
+                alt="Edit"
+                width="15"
+                height="15"
+            />
+            {isEditing ? "Done" : "Edit"}
+        </button>
+    )}
+
+    {/* Close Button at the End */}
+    <button 
+        onClick={handleClose} 
+        className="close-budget-btn ms-auto"
+    >
+        <img
+            src="/images/close-icon.svg" 
+            alt="Close"
+            width="15" 
+            height="15"
+        />
+        Close
+    </button>
+</div>
+
 
 
 

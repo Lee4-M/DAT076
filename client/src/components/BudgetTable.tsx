@@ -27,7 +27,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: Bu
                     <thead>
                         <tr>
                             <th>
-                                <div className="w-75 m-auto py-2">Category</div>
+                                <div className="m-auto py-2">Category</div>
                             </th>
                             <th>
                                 <div className="w-75 m-auto py-2">Budget</div>
