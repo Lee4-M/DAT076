@@ -43,8 +43,8 @@ describe('App Component', () => {
     expect(expenseModal).toBeInTheDocument();
   });
 
-  test('renders the edit expense button', () => {
-    const editExpenseButton = screen.getByRole('button', { name: "Edit expense" });
+  test('renders the edit budget button', () => {
+    const editExpenseButton = screen.getByRole('button', { name: "Edit budget" });
     expect(editExpenseButton).toBeInTheDocument();
   });
 

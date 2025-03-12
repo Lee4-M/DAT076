@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 import { Budget, Expense } from "../api/api";
 import { logout } from "../api/apiLogin";
+import { updateBudgetRows } from '../api/api';
 
 import '../routes/App.css'
 import ExpenseModal from "./ExpenseModal";
@@ -12,15 +13,19 @@ import { PieChart } from "@mui/x-charts";
 
 interface SidebarProps {
     loadBudgets: () => void;
+    budgets: Budget[];
     expenses: {
         [budget_id: number]: Expense[];
-    };
-    budgets: Budget[];
+    }
+    editedBudgets: Budget[];
+    isEditing: boolean,
+    setIsEditing: (editing: boolean) => void,
 }
 
-export function Sidebar({ loadBudgets, expenses, budgets }: SidebarProps) {
+export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIsEditing, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
+    
 
     const navigate = useNavigate();
 
@@ -28,6 +33,36 @@ export function Sidebar({ loadBudgets, expenses, budgets }: SidebarProps) {
         await logout();
         navigate('/');
     }
+
+    // useEffect(() => {
+    //     setEditedBudgets(budgets);
+    // }, [budgets]);
+
+    useEffect(() => {
+        if (isEditing) {
+            window.addEventListener("keydown", handleKeyDown);
+        } else {
+            window.removeEventListener("keydown", handleKeyDown);
+        }
+        
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isEditing]);
+
+    
+    // Allows user to press enter to save changes
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Enter" && isEditing) {
+            handleEdit();
+        }
+    };
+
+    const handleEdit = () => {
+        setIsEditing(!isEditing);
+        if (isEditing) {
+            updateBudgetRows(editedBudgets);
+            loadBudgets();
+        }
+    };
 
     const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
         const budget = budgets.find(b => b.id === Number(budgetRowId));
@@ -50,7 +85,7 @@ export function Sidebar({ loadBudgets, expenses, budgets }: SidebarProps) {
                 <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
             <Row className="px-3 py-3">
-                <button className="sidebar-button">Edit expense</button>
+                <button className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save changes" : "Edit budget"}</button>
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">

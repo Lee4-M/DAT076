@@ -16,7 +16,7 @@ export class BudgetRowService implements IBudgetRowService {
             console.error("Invalid input: username");
             return undefined;
         }
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -30,7 +30,7 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -45,7 +45,7 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return undefined;
@@ -59,7 +59,7 @@ export class BudgetRowService implements IBudgetRowService {
             return false;
         }
 
-        const user: User | null = await this.userService.findUser(username);
+        const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
             return false;
@@ -74,6 +74,53 @@ export class BudgetRowService implements IBudgetRowService {
         await budgetRow.destroy();
 
         return true;
+    }
+
+    async updateBudgetRow(username: string, id: number, category: string, amount: number): Promise<BudgetRow | undefined> { //add id argument,
+        if (!username || !category || amount < 0) {
+            console.error("Invalid input: username, category, or amount");
+            return undefined;
+        }
+        
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            console.warn(`User not found: ${username}`);
+            return undefined;
+        }
+
+        const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });
+        if (!budgetRow) {
+            return undefined;
+        }
+        await BudgetRowModel.update({ userId: user.id, category: category, amount: amount }, { where: { id: id } });
+
+        return budgetRow; //TODO Check if this is the old or new budgetRow
+        
+    }
+
+    async updateAllBudgetRows(username: string, ids: number[], categories: string[], amounts: number[]): Promise<BudgetRow[] | undefined> {
+        
+        const user: User | undefined = await this.userService.findUser(username);
+        if (!user) {
+            console.warn(`User not found: ${username}`);
+            return undefined;
+        }
+        
+        const newBudgets: BudgetRow[] = [];
+        
+        for (let i = 0; i < ids.length; i++) {
+            const id = ids[i];
+            const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });
+            if (!budgetRow) {
+                return undefined;
+            }
+            const category = categories[i];
+            const amount = amounts[i];
+            await BudgetRowModel.update({ userId: user.id, category: category, amount: amount }, { where: { id: id } });
+            newBudgets.push(budgetRow);
+        }
+
+        return newBudgets;
     }
 }
 
