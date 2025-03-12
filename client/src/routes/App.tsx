@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [editedBudgets, setEditedBudgets] = useState<Budget[]>(budgets);
+  const [editedBudgets] = useState<Budget[]>(budgets);
   const [expenses, setExpenses] = useState<{ [budget_id: number]: Expense[] }>([]);
 
   const loadBudgets = useCallback(async () => {
