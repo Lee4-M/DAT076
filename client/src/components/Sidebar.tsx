@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-import { Expense } from "../api/api";
+import { Budget, Expense } from "../api/api";
 import { logout } from "../api/apiLogin";
 
 import '../routes/App.css'
@@ -14,10 +14,11 @@ interface SidebarProps {
     loadBudgets: () => void;
     expenses: {
         [budget_id: number]: Expense[];
-    }
+    };
+    budgets: Budget[];
 }
 
-export function Sidebar({ loadBudgets, expenses }: SidebarProps) {
+export function Sidebar({ loadBudgets, expenses, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
 
@@ -28,11 +29,14 @@ export function Sidebar({ loadBudgets, expenses }: SidebarProps) {
         navigate('/');
     }
 
-    const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => ({
-        id: Number(budgetRowId),
-        value: expenseList.reduce((sum, expense) => sum + expense.cost, 0),
-        label: `Category ${budgetRowId}`
-    }));
+    const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
+        const budget = budgets.find(b => b.id === Number(budgetRowId));
+        return {
+            id: Number(budgetRowId),
+            value: expenseList.reduce((sum, expense) => sum + expense.cost, 0),
+            label: budget ? budget.category : 'Unknown'
+        };
+    });
 
     return (
         <Container className="bg-light-subtle rounded-3 h-100">

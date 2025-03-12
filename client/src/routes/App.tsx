@@ -43,7 +43,7 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} /></Col>
+          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} budgets={budgets}/></Col>
           <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={budgets} expenses={expenses} /></Col>
         </Row>
       </Container>
