@@ -36,7 +36,6 @@ function App() {
 
   async function updateBudgetCost(id: number, category: string, amount: number) {
     await updateBudgetRow(id, category, amount);
-
     budgets.map(budget => {
       if (budget.category === category) {
         budget.amount = amount; //Var budget.cost
@@ -61,7 +60,7 @@ function App() {
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
           <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} editedBudgets={editedBudgets} setEditedBudgets={setEditedBudgets} isEditing={isEditing} setIsEditing={setIsEditing}/></Col>
-          <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={editedBudgets} expenses={expenses} updateBudgetCost={updateBudgetCost} isEditing={isEditing}/></Col>
+          <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={budgets} expenses={expenses} updateBudgetCost={updateBudgetCost} isEditing={isEditing}/></Col>
         </Row>
       </Container>
     </>

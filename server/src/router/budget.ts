@@ -92,7 +92,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     interface EditBudgetRequest extends Request {
         body: {
             category: string,
-            cost: number,
+            amount: number,
             id: number
         },
         session: any
@@ -103,18 +103,20 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         res: Response<BudgetRow | string>
     ) => {
         try {
+            console.log("bbbbb")
             if (!req.session.username) {
                 res.status(401).send("Not logged in");
                 return;
             }
+            
             const category = req.body.category;
-            const cost = req.body.cost;
+            const amount = req.body.amount;
             const budgetId = req.body.id;
-            if ((typeof (category) !== "string") || (typeof (cost) !== "number")) {
+            if ((typeof (category) !== "string") || (typeof (amount) !== "number")) {
                 res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
                 return;
             }
-            const newBudget: BudgetRow | undefined = await budgetRowService.updateBudgetRow(req.session.username, budgetId, category, cost);
+            const newBudget: BudgetRow | undefined = await budgetRowService.updateBudgetRow(req.session.username, budgetId, category, amount);
             res.status(201).send(newBudget);
         } catch (e: any) {
             res.status(500).send(e.message);

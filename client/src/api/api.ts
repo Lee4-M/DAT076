@@ -91,6 +91,7 @@ export async function deleteBudget(budgetRowId: number): Promise<boolean> {
 
 export async function updateBudgetRow(id: number, category: string, amount: number): Promise<Budget | undefined> {
     try {
+        console.log("router before")
         const response = await axios.put(`${BASE_URL}/budget`, { id: id, category: category, amount: amount });
         return response.data;
     } catch (e: any) {

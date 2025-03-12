@@ -35,9 +35,9 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, setEditedBudgets
         navigate('/');
     }
 
-    /*useEffect(() => {
-        setEditedBudgets(budgets);
-    }, [budgets]);*/
+    // useEffect(() => {
+    //     setEditedBudgets(budgets);
+    // }, [budgets]);
 
     useEffect(() => {
         if (isEditing) {
