@@ -82,7 +82,7 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
                 <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
             <Row className="px-3 py-3">
-                <button className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save Changes" : "Edit Budget"}</button>
+                <button className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save changes" : "Edit budget"}</button>
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">

@@ -108,7 +108,8 @@ export class BudgetRowService implements IBudgetRowService {
         
         const newBudgets: BudgetRow[] = [];
         
-        ids.forEach(async (id, i) => {
+        for (let i = 0; i < ids.length; i++) {
+            const id = ids[i];
             const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });
             if (!budgetRow) {
                 return undefined;
@@ -117,9 +118,9 @@ export class BudgetRowService implements IBudgetRowService {
             const amount = amounts[i];
             await BudgetRowModel.update({ userId: user.id, category: category, amount: amount }, { where: { id: id } });
             newBudgets.push(budgetRow);
-        });
+        }
 
-        return { ...newBudgets };
+        return newBudgets;
     }
 }
 
