@@ -52,7 +52,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
 
             {showExpenseAccordion && (
                 <tr>
-                    <td  className="border border-primary" colSpan={4}>
+                    <td colSpan={4}>
                         <ExpenseAccordion
                             show={showExpenseAccordion}
                             expenses={expenses}
