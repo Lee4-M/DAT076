@@ -1,12 +1,15 @@
-import { sequelize } from "./src/db/conn";
+import { db, sequelize } from "./src/db/conn";
+
+let backup: ReturnType<typeof db.backup>;
 
 beforeAll(async () => {
   await import('./src/db/associations');
   await sequelize.sync({ force: true });
+  backup = db.backup();
 });
 
 beforeEach(async () => {
-  await sequelize.truncate({ cascade: true, restartIdentity: true });
+  backup.restore()
 });
 
 afterAll(async () => {

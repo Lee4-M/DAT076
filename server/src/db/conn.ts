@@ -7,14 +7,15 @@ dotenv.config();
 
 let sequelize: Sequelize;
 
+let db: any;
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
-  const db = newDb();
+  db = newDb();
   const pool = db.adapters.createPg();
 
   sequelize = new Sequelize({
     dialect: "postgres",
     dialectModule: pool,
-    logging: (msg) => console.log(msg),
+    logging: true,
   });
 
   console.log("Using in-memory database for testing/development");
@@ -44,8 +45,7 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
 
   console.log("Using PostgreSQL database for development/production");
 }
-
-export { sequelize };
+export { sequelize, db };
 
 export async function initDB() {
   try {

@@ -37,6 +37,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+
     agent = request.agent(app);
     await agent.post("/user").send({ username, password }).expect(201);
     await agent.post("/user/login").send({ username, password }).expect(200);
@@ -50,20 +51,23 @@ describe("Expense API Tests", () => {
             const cost = 1000;
             const description = "Bought some groceries";
 
-            await agent.post("/budget").send({ category, amount }).expect(201);
-            await agent.post("/expense").send({ category, cost, description }).expect(201);
+            const addBudgetResponse = await agent.post("/budget").send({ category, amount }).expect(201);
+
+            const addExpenseResponse = await agent.post("/expense").send({ category, cost, description }).expect(201);
 
             const response = await agent.get("/expense").query({ budgetRowId: 1 }).expect(200);
             expect(response.body).toEqual([
-                { id: 1, budgetRowId: 1, cost, description },
+                { id: addExpenseResponse.body.id, budgetRowId: addBudgetResponse.body.id, cost, description },
             ]);
         });
 
-        test("Unsuccessfully get empty expenses for user", async () => { 
+        test("Unsuccessfully get empty expenses for user", async () => {
+            const response1 = await agent.get("/budget").expect(200);
+            expect(response1.body).toEqual([]);
             await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
 
             const response = await agent.get("/expense").query({ budgetRowId: 1 });
-            expect(response.text).toEqual("No expenses found for budget row");
+            expect(response.body).toEqual([]);
         });
 
         test("Unsuccessfully get expenses if budgetRowId is not a number", async () => {
@@ -79,11 +83,11 @@ describe("Expense API Tests", () => {
 
         test("Handle internal server error gracefully", async () => {
             jest.spyOn(expenseService, "getExpenses").mockRejectedValue(new Error("Database error"));
-        
-            const response = await agent.get("/expense").query({budgetRowId: 1}).expect(500);
-        
+
+            const response = await agent.get("/expense").query({ budgetRowId: 1 }).expect(500);
+
             expect(response.text).toBe("Database error");
-        
+
             (expenseService.getExpenses as jest.Mock).mockRestore();
         });
     });
@@ -118,11 +122,11 @@ describe("Expense API Tests", () => {
             const cost = 1000;
             const description = "Bought some groceries";
             jest.spyOn(expenseService, "addExpense").mockRejectedValue(new Error("Database error"));
-        
+
             const response = await agent.post("/expense").send({ category, cost, description }).expect(500);
-        
+
             expect(response.text).toBe("Database error");
-        
+
             (expenseService.addExpense as jest.Mock).mockRestore();
         });
     });

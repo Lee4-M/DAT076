@@ -27,10 +27,6 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 return;
             }
             const expenses: Expense[] | undefined = await expenseService.getExpenses(budgetRowId);
-            if(!expenses) {
-                res.status(404).send("No expenses found for budget row");
-                return;
-            }
             res.status(200).send(expenses);
         } catch (e: any) {
             res.status(500).send(e.message);
