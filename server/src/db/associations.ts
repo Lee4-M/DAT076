@@ -10,4 +10,5 @@ BudgetRowModel.hasMany(ExpenseModel, {
 
 ExpenseModel.belongsTo(BudgetRowModel, {
     foreignKey: "budgetRowId",
+    onDelete: "CASCADE",
 });

@@ -43,9 +43,10 @@ export async function addExpense(category: string, cost: number, description: st
     }
 }
 
-export async function addBudget(category: string, cost: number): Promise<Budget | undefined> {
+export async function addBudget(category: string, amount: number): Promise<Budget | undefined> {
     try {
-        const response = await axios.post<Budget>(`${BASE_URL}/budget`, { category: category, cost: cost });
+        console.log("Sending POST request to:", `${BASE_URL}/budget`, { category: category, amount: amount });
+        const response = await axios.post<Budget>(`${BASE_URL}/budget`, { category: category, amount: amount });
         return response.data;
     } catch (e: any) {
         console.log(e);

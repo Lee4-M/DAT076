@@ -5,8 +5,8 @@ import { IExpenseService } from "../service/interface/IExpenseService";
 export function expenseRouter(expenseService: IExpenseService): Router {
     const expenseRouter = express.Router();
 
-    interface ExpenseRequest {
-        query: {
+    interface ExpenseRequest extends Request {
+        params: {
             budgetRowId: string
         }
         session: any
@@ -21,10 +21,16 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-
-            const budgetRowId = parseInt(req.query.budgetRowId, 10);
-
+            const budgetRowId = Number(req.query.budgetRowId);
+            if (isNaN(budgetRowId)) {
+                res.status(400).send(`Bad GET call to ${req.originalUrl} --- budgetRowId is missing or not a number`);
+                return;
+            }
             const expenses: Expense[] | undefined = await expenseService.getExpenses(budgetRowId);
+            if(!expenses) {
+                res.status(404).send("No expenses found for budget row");
+                return;
+            }
             res.status(200).send(expenses);
         } catch (e: any) {
             res.status(500).send(e.message);
@@ -53,7 +59,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
             const cost = req.body.cost;
             const description = req.body.description;
             if ((typeof (category) !== "string") || (typeof (cost) !== "number") || (typeof (description) !== "string")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)} or cost has type ${typeof (cost)} or description has type ${typeof (description)}`);
                 return;
             }
             const newExpense: Expense | undefined = await expenseService.addExpense(req.session.username, category, cost, description);

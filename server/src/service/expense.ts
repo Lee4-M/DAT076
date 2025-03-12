@@ -17,7 +17,13 @@ export class ExpenseService implements IExpenseService {
             console.error(`Budget row not found: ${budgetRowId}`);
             return undefined;
         }
-        return await ExpenseModel.findAll({where: { budgetRowId: budgetRowId }});
+
+        const expenses = await ExpenseModel.findAll({ where: { budgetRowId: budgetRowId }});
+        if (!expenses) {
+            console.warn(`No expenses found for budget row: ${budgetRowId}`);
+            return undefined;
+        }
+        return expenses;
     }
 
     async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {

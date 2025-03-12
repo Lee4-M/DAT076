@@ -1,5 +1,5 @@
-import { BudgetRow } from "../model/budgetRow.interface"
-import { Expense } from "../model/expense.interface"
+import { BudgetRow } from "../../model/budgetRow.interface"
+import { Expense } from "../../model/expense.interface"
 
 export interface IBudgetRowService {
 

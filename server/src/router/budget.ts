@@ -5,7 +5,7 @@ import { IBudgetRowService } from "../service/interface/IBudgetRowService";
 export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     const budgetRowRouter = express.Router();
 
-    interface BudgetRowRequest {
+    interface BudgetRowRequest extends Request {
         session: any
     }
 
@@ -51,7 +51,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
             const category = req.body.category;
             const amount = req.body.amount;
             if ((typeof (category) !== "string") || (typeof (amount) !== "number")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)} or amount has type ${typeof (amount)}`);
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)} or amount has type ${typeof (amount)}`);
                 return;
             }
             const newBudgetRow: BudgetRow | undefined = await budgetRowService.addBudgetRow(req.session.username, category, amount);

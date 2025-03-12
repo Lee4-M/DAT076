@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
   sequelize = new Sequelize({
     dialect: "postgres",
     dialectModule: pool,
-    logging: false,
+    logging: (msg) => console.log(msg),
   });
 
   console.log("Using in-memory database for testing/development");
