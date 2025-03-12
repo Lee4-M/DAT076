@@ -15,6 +15,7 @@ const Register: React.FC = () => {
     return /^[a-z0-9]+$/i.test(str);
   };
 
+  //TODO remove comments as they are irrelevant?
   //All characters should be allowed according to OWASP
   //const isAlphanumericPlus = (str: string) => {
   //  return /^[a-z0-9_-]+$/i.test(str);
