@@ -18,12 +18,11 @@ interface SidebarProps {
         [budget_id: number]: Expense[];
     }
     editedBudgets: Budget[];
-    setEditedBudgets: React.Dispatch<React.SetStateAction<Budget[]>>;
     isEditing: boolean,
     setIsEditing: (editing: boolean) => void,
 }
 
-export function Sidebar({ loadBudgets, expenses, editedBudgets, setEditedBudgets, isEditing, setIsEditing }: SidebarProps) {
+export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIsEditing }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     

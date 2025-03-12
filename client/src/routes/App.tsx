@@ -59,7 +59,7 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} editedBudgets={editedBudgets} setEditedBudgets={setEditedBudgets} isEditing={isEditing} setIsEditing={setIsEditing}/></Col>
+          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} editedBudgets={editedBudgets} isEditing={isEditing} setIsEditing={setIsEditing}/></Col>
           <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={budgets} expenses={expenses} updateBudgetCost={updateBudgetCost} isEditing={isEditing}/></Col>
         </Row>
       </Container>

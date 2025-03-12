@@ -106,7 +106,7 @@ export class BudgetRowService implements IBudgetRowService {
             return undefined;
         }
         
-        let newBudgets: BudgetRow[] = [];
+        const newBudgets: BudgetRow[] = [];
         
         ids.forEach(async (id, i) => {
             const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });

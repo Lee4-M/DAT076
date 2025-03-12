@@ -101,11 +101,11 @@ export async function updateBudgetRow(id: number, category: string, amount: numb
 
 export async function updateBudgetRows(budgets : Budget[]): Promise<Budget[] | undefined> {
     try {
-        let ids: number[] = [];
-        let categories: string[] = [];
-        let amounts: number[] = [];
+        const ids: number[] = [];
+        const categories: string[] = [];
+        const amounts: number[] = [];
 
-        for (let budget of budgets) {
+        for (const budget of budgets) {
             ids.push(budget.id);
             categories.push(budget.category);
             amounts.push(budget.amount);
