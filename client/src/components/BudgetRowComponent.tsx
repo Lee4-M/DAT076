@@ -12,20 +12,27 @@ interface BudgetRowComponentProps {
     expenses: Expense[];
     loadExpenses: () => void;
     isEditing: boolean;
-    updateBudgetCost: (id: number, category: string, amount: number) => void;
+    onEdit: (id: number, category: string, amount: number) => void;
+    onSave: () => void;
 }
 
-export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, updateBudgetCost }: BudgetRowComponentProps) {
+export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, onEdit, onSave }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("handleChange budgetrowcomponent", e.target.value);
-        updateBudgetCost(budget.id, budget.category, Number(e.target.value));
-    };
 
     // useEffect(() => {
     //     setExpenses(budget.expenses);
     // }, [budget]);
+
+    const handleChangeBudgetCost = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onEdit(budget.id, budget.category, Number(e.target.value));
+    };
+
+    const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault
+            onSave();
+        }
+    };
     
     async function removeBudget(id: number) {
         const success = await deleteBudget(id);
@@ -50,8 +57,10 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                         <input
                             type="number"
                             value={budget.amount}
-                            onChange={handleChange}
-                            autoFocus
+                            onChange={handleChangeBudgetCost}
+                            onKeyDown={handleSaveOnEnter}
+                            onBlur={onSave}
+                            // autoFocus
                         />
                     ) : (
                          <span>{budget.amount} :-</span>
@@ -60,7 +69,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                 <td>{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
                 <td>{budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
                 <td className='text-center col-1 ps-0'>
-                    <Button variant='transparent' aria-label="Delete budget item" onClick={() => removeBudget(budget.id)}>
+                    <Button variant='transparent' aria-label="Delete budget item" onClick={() => removeBudget(budget.id)} >
                         <Image src="/images/delete-budget-item.png" alt="Icon 1" width="40" height="40" />
                     </Button>
                 </td>
@@ -81,3 +90,5 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
         </>
     );
 }
+
+

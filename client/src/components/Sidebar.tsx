@@ -12,21 +12,19 @@ import BudgetItemModal from "./BudgetModal";
 import { PieChart } from "@mui/x-charts";
 
 interface SidebarProps {
-    loadBudgets: () => void;
-    budgets: Budget[];
+    loadBudgets: () => void,
     expenses: {
         [budget_id: number]: Expense[];
-    }
-    editedBudgets: Budget[];
+    },
+    onSave: () => void,
     isEditing: boolean,
-    setIsEditing: (editing: boolean) => void,
+    budgets: Budget[],
 }
 
-export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIsEditing, budgets }: SidebarProps) {
+export function Sidebar({ loadBudgets, expenses, onSave, isEditing, budgets}: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     
-
     const navigate = useNavigate();
 
     async function handleLogout() {
@@ -38,38 +36,36 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
     //     setEditedBudgets(budgets);
     // }, [budgets]);
 
-    useEffect(() => {
-        if (isEditing) {
-            window.addEventListener("keydown", handleKeyDown);
-        } else {
-            window.removeEventListener("keydown", handleKeyDown);
-        }
+    // useEffect(() => {
+    //     if (isEditing) {
+    //         window.addEventListener("keydown", handleKeyDown);
+    //     } else {
+    //         window.removeEventListener("keydown", handleKeyDown);
+    //     }
         
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isEditing]);
+    //     return () => window.removeEventListener("keydown", handleKeyDown);
+    // }, [isEditing]);
 
     
-    // Allows user to press enter to save changes
-    const handleKeyDown = async (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            console.log("Before saving enter, editedBudgets =", editedBudgets);
-            await handleEdit();
-            console.log("After saving enter, editedBudgets =", editedBudgets);
-        }
-    };
+    // // Allows user to press enter to save changes
+    // const handleKeyDown = async (e: KeyboardEvent) => {
+    //     if (e.key === "Enter") {
+    //         e.preventDefault();
+    //         console.log("Before saving enter, editedBudgets =", editedBudgets);
+    //         await handleEdit();
+    //         console.log("After saving enter, editedBudgets =", editedBudgets);
+    //     }
+    // };
 
-    const handleEdit = async () => {
-        setIsEditing(!isEditing);
-        //console.log(isEditing);
-        if (isEditing) {
-            await updateBudgetRows(editedBudgets);
-            await loadBudgets();
-        }
-    };
+    // const handleEdit = async () => {
+    //     setIsEditing(!isEditing);
+    //     //console.log(isEditing);
+    //     if (isEditing) {
+    //         await updateBudgetRows(editedBudgets);
+    //         await loadBudgets();
+    //     }
+    // };
     
-    
-
     const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
         const budget = budgets.find(b => b.id === Number(budgetRowId));
         return {
@@ -91,7 +87,7 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
                 <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
             <Row className="px-3 py-3">
-                <button className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save changes" : "Edit budget"}</button>
+                <button className="sidebar-button" onClick={(onSave)}>{isEditing ? "Save changes" : "Edit budget"}</button>
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">
