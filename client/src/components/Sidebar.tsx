@@ -51,11 +51,8 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
     
     // Allows user to press enter to save changes
     const handleKeyDown = async (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            console.log("Before saving enter, editedBudgets =", editedBudgets);
-            await handleEdit();
-            console.log("After saving enter, editedBudgets =", editedBudgets);
+        if (e.key === "Enter" && isEditing) {
+            document.getElementById('saveButton')?.click();
         }
     };
 
@@ -91,7 +88,7 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
                 <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
             <Row className="px-3 py-3">
-                <button className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save changes" : "Edit budget"}</button>
+                <button id="saveButton" className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save changes" : "Edit budget"}</button>
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">
