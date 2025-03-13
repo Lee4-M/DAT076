@@ -29,63 +29,56 @@ beforeEach(async () => {
     agent = request.agent(app);
 });
 
+afterEach(() => {
+    jest.restoreAllMocks(); 
+});
+
 describe("User API Tests", () => {
     describe("POST /user", () => {
         test("Successfully register a user", async () => {
-            const response = await agent.post("/user").send({ username, password }).expect(201);
-            expect(response.text).toEqual("User registered successfully as: " + username);
+            await agent.post("/user").send({ username, password }).expect(201, "User registered successfully as: " + username);
         });
 
         test("Fail to register a user with bad input", async () => {
-            const response = await agent.post("/user").send({ username: 1, password: 1 }).expect(400);
-            expect(response.text).toEqual("Bad POST call to /user --- username has type number or password has type number");
+            await agent.post("/user").send({ username: 1, password: 1 }).expect(400, 
+                "Bad POST call to /user --- username has type number or password has type number");
         });
 
         test("Fail to register a user that already exists", async () => {
             await agent.post("/user").send({ username, password }).expect(201);
-            const response = await agent.post("/user").send({ username, password }).expect(500);
-            expect(response.text).toEqual("Failed to register user: User already exists");
+            await agent.post("/user").send({ username, password }).expect(500, "Failed to register user: User already exists");
         });
 
         test("Handle internal server error gracefully", async () => {
-            const spy = jest.spyOn(userService, "createUser").mockImplementation(() => {
-                throw new Error("Internal server error");
-            });
-            const response = await agent.post("/user").send({ username, password }).expect(500);
-            expect(response.text).toEqual("Failed to register user: Internal server error");
-            spy.mockRestore();
+            jest.spyOn(userService, "createUser").mockRejectedValue(new Error("Internal server error"));
+            await agent.post("/user").send({ username, password }).expect(500, "Failed to register user: Internal server error");
         });
     });
 
     describe("POST /user/login", () => {
         test("Successfully login a user", async () => {
             await agent.post("/user").send({ username, password }).expect(201);
-            const response = await agent.post("/user/login").send({ username, password }).expect(200);
-            expect(response.text).toEqual("Logged in as: " + username);
+            await agent.post("/user/login").send({ username, password }).expect(200, "Logged in as: " + username);
         });
 
         test("Fail to login a user with bad input", async () => {
-            const response = await agent.post("/user/login").send({ username: 1, password: 1 }).expect(400);
-            expect(response.text).toEqual("Bad POST call to /user/login --- username has type number or password has type number");
+            await agent.post("/user/login").send({ username: 1, password: 1 }).expect(400,
+                "Bad POST call to /user/login --- username has type number or password has type number");
         });
 
         test("Fail to login a user that does not exist", async () => {
-            const response = await agent.post("/user/login").send({ username, password }).expect(401);
-            expect(response.text).toEqual("No such username or password");
+            const response = await agent.post("/user/login").send({ username, password }).expect(401, "No such username or password");
         });
 
         test("Fail to login a user that is already logged in", async () => {
             await agent.post("/user").send({ username, password }).expect(201);
             await agent.post("/user/login").send({ username, password }).expect(200);
-            const response = await agent.post("/user/login").send({ username, password }).expect(400);
-            expect(response.text).toEqual("Already logged in");
+            await agent.post("/user/login").send({ username, password }).expect(400, "Already logged in");
         });
 
         test("Handle internal server error gracefully", async () => {
-            const spy = jest.spyOn(userService, "findUser").mockRejectedValue(new Error("Internal server error"));
-            const response = await agent.post("/user/login").send({ username, password }).expect(500);
-            expect(response.text).toEqual("Failed to login: Internal server error");
-            spy.mockRestore();
+            jest.spyOn(userService, "findUser").mockRejectedValue(new Error("Internal server error"));
+            await agent.post("/user/login").send({ username, password }).expect(500, "Failed to login: Internal server error");
         });
     });
 
@@ -93,13 +86,11 @@ describe("User API Tests", () => {
         test("Successfully logout a user", async () => {
             await agent.post("/user").send({ username, password }).expect(201);
             await agent.post("/user/login").send({ username, password }).expect(200);
-            const response = await agent.post("/user/logout").expect(200);
-            expect(response.text).toEqual("Logged out successfully");
+            await agent.post("/user/logout").expect(200, "Logged out successfully");
         });
 
         test("Fail to logout a user that is not logged in", async () => {
-            const response = await agent.post("/user/logout").expect(401);
-            expect(response.text).toEqual("Not logged in");
+            await agent.post("/user/logout").expect(401, "Not logged in");
         });
     });
 });
