@@ -49,17 +49,6 @@ function App() {
     );
   }
 
-  // function updateBudgetCost(id: number, category: string, amount: number) {
-  //   setEditedBudgets(prevBudgets =>
-  //       prevBudgets.map(budget =>
-  //           budget.id === id ? { ...budget, category, amount } : budget
-  //       )
-  //   );
-  //   //let a = editedBudgets;
-  //   console.log("amount updateBudgetCost", amount);
-  //   console.log("App updateBudgetCost", editedBudgets);
-  // }
-
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
@@ -71,7 +60,6 @@ function App() {
   }, [budgets, loadExpenses]);
 
   useEffect(() => {
-    console.log("App useeffect budgets", budgets);
     setEditedBudgets(budgets);
   }, [budgets]);
 

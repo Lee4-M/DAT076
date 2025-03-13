@@ -19,10 +19,6 @@ interface BudgetRowComponentProps {
 export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, onEdit, onSave }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
 
-    // useEffect(() => {
-    //     setExpenses(budget.expenses);
-    // }, [budget]);
-
     const handleChangeBudgetCost = (e: React.ChangeEvent<HTMLInputElement>) => {
         onEdit(budget.id, budget.category, Number(e.target.value));
     };
@@ -59,8 +55,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                             value={budget.amount}
                             onChange={handleChangeBudgetCost}
                             onKeyDown={handleSaveOnEnter}
-                            onBlur={onSave}
-                            // autoFocus
+                            autoFocus
                         />
                     ) : (
                          <span>{budget.amount} :-</span>

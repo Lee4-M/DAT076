@@ -30,40 +30,6 @@ export function Sidebar({ loadBudgets, expenses, onSave, isEditing, budgets}: Si
         await logout();
         navigate('/');
     }
-
-    // useEffect(() => {
-    //     setEditedBudgets(budgets);
-    // }, [budgets]);
-
-    // useEffect(() => {
-    //     if (isEditing) {
-    //         window.addEventListener("keydown", handleKeyDown);
-    //     } else {
-    //         window.removeEventListener("keydown", handleKeyDown);
-    //     }
-        
-    //     return () => window.removeEventListener("keydown", handleKeyDown);
-    // }, [isEditing]);
-
-    
-    // // Allows user to press enter to save changes
-    // const handleKeyDown = async (e: KeyboardEvent) => {
-    //     if (e.key === "Enter") {
-    //         e.preventDefault();
-    //         console.log("Before saving enter, editedBudgets =", editedBudgets);
-    //         await handleEdit();
-    //         console.log("After saving enter, editedBudgets =", editedBudgets);
-    //     }
-    // };
-
-    // const handleEdit = async () => {
-    //     setIsEditing(!isEditing);
-    //     //console.log(isEditing);
-    //     if (isEditing) {
-    //         await updateBudgetRows(editedBudgets);
-    //         await loadBudgets();
-    //     }
-    // };
     
     const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
         const budget = budgets.find(b => b.id === Number(budgetRowId));
