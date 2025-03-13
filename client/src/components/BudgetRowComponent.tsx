@@ -25,7 +25,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
 
     const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            e.preventDefault
+            e.preventDefault();
             onSave();
         }
     };
