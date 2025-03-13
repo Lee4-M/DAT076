@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ interface SidebarProps {
 export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIsEditing, budgets }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
-    
+    const saveButtonRef = useRef<HTMLButtonElement>(null);
 
     const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
     // Allows user to press enter to save changes
     const handleKeyDown = async (e: KeyboardEvent) => {
         if (e.key === "Enter" && isEditing) {
-            document.getElementById('saveButton')?.click();
+            saveButtonRef.current?.click();
         }
     };
 
@@ -65,8 +65,6 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
         }
     };
     
-    
-
     const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
         const budget = budgets.find(b => b.id === Number(budgetRowId));
         return {
@@ -88,7 +86,7 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
                 <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
             <Row className="px-3 py-3">
-                <button id="saveButton" className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save changes" : "Edit budget"}</button>
+                <button id="saveButton" ref={saveButtonRef} className="sidebar-button" onClick={handleEdit}>{isEditing ? "Save changes" : "Edit budget"}</button>
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">
