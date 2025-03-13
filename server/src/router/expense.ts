@@ -82,6 +82,10 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 return;
             }
             const id = req.body.id
+            if(typeof(id) !== "number") {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof(id)}`);
+                return;
+            }
             await expenseService.deleteExpense(id);
             res.status(200).send("Expense deleted successfully.");
         } catch (e: any) {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn --pretty --transpile-only src/index.ts",
     "dev-online": "cross-env NODE_ENV=online-database-development ts-node-dev --respawn --pretty --transpile-only src/index.ts",
-    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test": "cross-env NODE_ENV=test jest",
     "lint": "eslint ."
   },
   "author": "Kevin Collins, Liam Mayor, Annelie Waithira Hansson, Philip Öhman",

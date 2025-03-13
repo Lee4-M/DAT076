@@ -37,7 +37,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-
     agent = request.agent(app);
     await agent.post("/user").send({ username, password }).expect(201);
     await agent.post("/user/login").send({ username, password }).expect(200);
@@ -99,9 +98,9 @@ describe("Expense API Tests", () => {
             const cost = 1000;
             const description = "Bought some groceries";
 
-            await agent.post("/budget").send({ category, amount }).expect(201);
-            const response = await agent.post("/expense").send({ category, cost, description }).expect(201);
-            expect(response.body).toEqual({ id: 1, budgetRowId: 1, cost, description });
+            const addBudgetResponse = await agent.post("/budget").send({ category, amount }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category, cost, description }).expect(201);
+            expect(addExpenseResponse.body).toEqual({ id: addExpenseResponse.body.id, budgetRowId: addBudgetResponse.body.id, cost, description });
         });
 
         test("Unsuccessfully add an expense if category is not a string", async () => {
@@ -128,6 +127,48 @@ describe("Expense API Tests", () => {
             expect(response.text).toBe("Database error");
 
             (expenseService.addExpense as jest.Mock).mockRestore();
+        });
+    });
+
+    describe("DELETE /expense", () => {
+        test("Successfully delete an expense", async () => {
+            const category = "Groceries";
+            const amount = 1000;
+            const cost = 1000;
+            const description = "Bought some groceries";
+
+            await agent.post("/budget").send({ category, amount }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category, cost, description }).expect(201);
+
+            await agent.delete("/expense").send({ id: addExpenseResponse.body.id }).expect(200);
+        });
+
+        test("Unsuccessfully delete an expense if id is not a number", async () => {
+            const response = await agent.delete("/expense").send({ id: "a" }).expect(400);
+            expect(response.text).toEqual("Bad DELETE call to /expense --- id has type string");
+        });
+
+        test("Unsuccessfully delete an expense if user is not logged in", async () => {
+            await agent.post("/user/logout").expect(200);
+            const response = await agent.delete("/expense").send({ id: 1 }).expect(401);
+            expect(response.text).toEqual("Not logged in");
+        });
+
+        test("Handle internal server error gracefully", async () => {
+            const category = "Groceries";
+            const cost = 1000;
+            const amount = 1000;
+            const description = "Bought some groceries";
+            jest.spyOn(expenseService, "deleteExpense").mockRejectedValue(new Error("Database error"));
+
+            await agent.post("/budget").send({ category, amount }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category, cost, description }).expect(201);
+
+            const response = await agent.delete("/expense").send({ id: addExpenseResponse.body.id }).expect(500);
+
+            expect(response.text).toBe("Database error");
+
+            (expenseService.deleteExpense as jest.Mock).mockRestore();
         });
     });
 });
