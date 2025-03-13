@@ -8,13 +8,16 @@ import BudgetItemModal from "./BudgetModal";
 
 interface BudgetTableProps {
     budgets: Budget[];
+  
     loadBudgets: () => void;
     expenses: { [budget_id: number]: Expense[] };
     loadExpenses: () => void;
+    updateBudgetCost: (id: number, category: string, amount: number) => void;
+    isEditing: boolean;
 }
 
-export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: BudgetTableProps) {
-    
+export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, updateBudgetCost, isEditing }: BudgetTableProps) {
+
     const totalBudget = budgets.reduce((total, budget) => total + budget.amount, 0);
     const totalExpenses = Object.values(expenses).flat().reduce((total, expense) => total + expense.cost, 0);
     const result = totalBudget - totalExpenses;
@@ -62,6 +65,8 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses }: Bu
                                     loadBudgets={loadBudgets}
                                     loadExpenses={loadExpenses}
                                     expenses={expenses[budget.id] || []}
+                                    isEditing={isEditing} 
+                                    updateBudgetCost={updateBudgetCost}
                                 />
                             ))
                         )}

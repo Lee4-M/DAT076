@@ -14,6 +14,10 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
     const [amount, setAmount] = useState<number | ''>('');
 
     async function saveBudgetRow() {
+        if (category.length > 20 || amount.toString().length > 20) {
+            alert('Character limit of 20 exceeded.');
+            return;
+        }
         if (!category) {
             alert('Please fill in a category name.');
             return;

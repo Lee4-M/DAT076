@@ -57,6 +57,10 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
             alert('Please fill in all fields correctly.');
             return;
         }
+        if (expenseName.length > 20 || description.length > 20 || cost.length > 20) {
+            alert('Character limit of 20 exceeded.');
+            return;
+        }
 
         const newExpense: Expense | undefined = await addExpense(expenseName, expenseCost, description);
         if (newExpense) {

@@ -11,11 +11,21 @@ interface BudgetRowComponentProps {
     loadBudgets: () => void;
     expenses: Expense[];
     loadExpenses: () => void;
+    isEditing: boolean;
+    updateBudgetCost: (id: number, category: string, amount: number) => void;
 }
 
-export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses }: BudgetRowComponentProps) {
+export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, updateBudgetCost }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        updateBudgetCost(budget.id, budget.category, Number(e.target.value));
+    };
+
+    // useEffect(() => {
+    //     setExpenses(budget.expenses);
+    // }, [budget]);
+    
     async function removeBudget(id: number) {
         const success = await deleteBudget(id);
         if (success) {
@@ -34,7 +44,18 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
         <>
             <tr className="budget-row hovering" onClick={handleOpenAccordion}>
                 <td>{budget.category}</td>
-                <td>{budget.amount} :-</td>
+                <td>
+                    {isEditing ? (
+                        <input
+                            type="number"
+                            value={budget.amount}
+                            onChange={handleChange}
+                            autoFocus
+                        />
+                    ) : (
+                         <span>{budget.amount} :-</span>
+                    )}
+                </td>
                 <td>{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
                 <td 
                     style={{ color: (budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)) < 0 ? 'red' : 'black' }}
