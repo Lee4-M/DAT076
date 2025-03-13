@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [editedBudgets] = useState<Budget[]>(budgets);
+  const [editedBudgets, setEditedBudgets] = useState<Budget[]>(budgets);
   const [expenses, setExpenses] = useState<{ [budget_id: number]: Expense[] }>([]);
 
   const loadBudgets = useCallback(async () => {
@@ -34,20 +34,21 @@ function App() {
     setExpenses(expensesMap);
   }, [budgets]);
 
-  async function updateBudgetCost(id: number, category: string, amount: number) {
-    await updateBudgetRow(id, category, amount);
-    budgets.map(budget => {
-      if (budget.category === category) {
-        budget.amount = amount; //Var budget.cost
-      }
-      loadBudgets();
-      return budget;
-    });    
+  function updateBudgetCost(id: number, category: string, amount: number) {
+    setEditedBudgets(prevBudgets =>
+        prevBudgets.map(budget =>
+            budget.id === id ? { ...budget, category, amount } : budget
+        )
+    );
+    //let a = editedBudgets;
+    console.log("amount updateBudgetCost", amount);
+    console.log("App updateBudgetCost", editedBudgets);
   }
 
   // Som onMount i Svelte, körs när komponenten renderas.
   // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
+    console.log("App useeffect loadbudgets", budgets);
     loadBudgets();
   }, [loadBudgets]);
 
@@ -55,12 +56,18 @@ function App() {
     loadExpenses();
   }, [budgets, loadExpenses]);
 
+  useEffect(() => {
+    console.log("App useeffect budgets", budgets);
+    setEditedBudgets(budgets);
+  }, [budgets]);
+
+
   return (
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
           <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} budgets={budgets} editedBudgets={editedBudgets} isEditing={isEditing} setIsEditing={setIsEditing}/></Col>
-          <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={budgets} expenses={expenses} updateBudgetCost={updateBudgetCost} isEditing={isEditing}/></Col>
+          <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={editedBudgets} expenses={expenses} updateBudgetCost={updateBudgetCost} isEditing={isEditing}/></Col>
         </Row>
       </Container>
     </>

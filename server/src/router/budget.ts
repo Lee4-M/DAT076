@@ -126,7 +126,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         body: {
             ids: [number],
             categories: [string],
-            costs: [number]
+            amounts: [number]
         },
         session: any
     }
@@ -135,13 +135,14 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         req: EditBudgetsRequest,
         res: Response<BudgetRow[] | string>
     ) => {
+        console.log(req.body);
         try {
             if (!req.session.username) {
                 res.status(401).send("Not logged in");
                 return;
             }
             const categories = req.body.categories;
-            const amounts = req.body.costs;
+            const amounts = req.body.amounts;
             const ids = req.body.ids;
             const newBudgets: BudgetRow[] | undefined = await budgetRowService.updateAllBudgetRows(req.session.username, ids, categories, amounts);
             res.status(201).send(newBudgets);

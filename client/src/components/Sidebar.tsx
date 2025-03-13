@@ -50,19 +50,25 @@ export function Sidebar({ loadBudgets, expenses, editedBudgets, isEditing, setIs
 
     
     // Allows user to press enter to save changes
-    const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter" && isEditing) {
-            handleEdit();
+    const handleKeyDown = async (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            console.log("Before saving enter, editedBudgets =", editedBudgets);
+            await handleEdit();
+            console.log("After saving enter, editedBudgets =", editedBudgets);
         }
     };
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
         setIsEditing(!isEditing);
+        //console.log(isEditing);
         if (isEditing) {
-            updateBudgetRows(editedBudgets);
-            loadBudgets();
+            await updateBudgetRows(editedBudgets);
+            await loadBudgets();
         }
     };
+    
+    
 
     const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
         const budget = budgets.find(b => b.id === Number(budgetRowId));

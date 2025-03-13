@@ -19,6 +19,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("handleChange budgetrowcomponent", e.target.value);
         updateBudgetCost(budget.id, budget.category, Number(e.target.value));
     };
 
