@@ -1,7 +1,7 @@
 import { User } from "../model/user.interface";
 import { UserModel } from "../db/user.db";
+import { IUserService } from "./interface/IUserService";
 import bcrypt from "bcrypt";
-import { IUserService } from "./IUserService";
 
 export class UserService implements IUserService {
     async createUser(username: string, password: string): Promise<UserModel | undefined> {

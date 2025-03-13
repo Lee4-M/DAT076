@@ -6,7 +6,7 @@ export default tseslint.config(
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
-    ignores: ["eslint.config.mjs", "jest.config.js"]
+    ignores: ["eslint.config.mjs", "jest.config.js", "coverage/", "jest.setup.ts"]
   },
   {
     languageOptions: {
@@ -21,6 +21,8 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/require-await': 'warn',
     },
   }

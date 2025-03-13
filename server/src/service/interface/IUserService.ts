@@ -1,4 +1,5 @@
-import { User } from "../model/user.interface";
+import { User } from "../../model/user.interface"
+
 
 export interface IUserService {
 
