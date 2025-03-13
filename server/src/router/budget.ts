@@ -93,6 +93,68 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         }
     });
 
+    interface EditBudgetRequest extends Request {
+        body: {
+            category: string,
+            amount: number,
+            id: number
+        },
+        session: any
+    }
+
+    budgetRowRouter.put("/budget", async (
+        req: EditBudgetRequest,
+        res: Response<BudgetRow | string>
+    ) => {
+        try {
+            if (!req.session.username) {
+                res.status(401).send("Not logged in");
+                return;
+            }
+            
+            const category = req.body.category;
+            const amount = req.body.amount;
+            const budgetId = req.body.id;
+            if ((typeof (category) !== "string") || (typeof (amount) !== "number")) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
+                return;
+            }
+            const newBudget: BudgetRow | undefined = await budgetRowService.updateBudgetRow(req.session.username, budgetId, category, amount);
+            res.status(201).send(newBudget);
+        } catch (e: any) {
+            res.status(500).send(e.message);
+        }
+    });
+
+    interface EditBudgetsRequest extends Request {
+        body: {
+            ids: [number],
+            categories: [string],
+            costs: [number]
+        },
+        session: any
+    }
+
+    budgetRowRouter.put("/budgets", async (
+        req: EditBudgetsRequest,
+        res: Response<BudgetRow[] | string>
+    ) => {
+        try {
+            if (!req.session.username) {
+                res.status(401).send("Not logged in");
+                return;
+            }
+            const categories = req.body.categories;
+            const amounts = req.body.costs;
+            const ids = req.body.ids;
+            const newBudgets: BudgetRow[] | undefined = await budgetRowService.updateAllBudgetRows(req.session.username, ids, categories, amounts);
+            res.status(201).send(newBudgets);
+        } catch (e: any) {
+            res.status(500).send(e.message);
+        }
+    });
+    
+    
     return budgetRowRouter;
 }
 

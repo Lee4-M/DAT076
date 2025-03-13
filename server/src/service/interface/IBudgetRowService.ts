@@ -9,4 +9,8 @@ export interface IBudgetRowService {
 
   deleteBudgetRow(username: string, id: number): Promise<boolean>
 
+  updateBudgetRow(username: string, id: number, category: string, cost: number): Promise<BudgetRow | undefined>
+
+  updateAllBudgetRows(username: string, ids: number[], categories: string[], amounts: number[]): Promise<BudgetRow[] | undefined>
+
 }

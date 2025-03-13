@@ -11,27 +11,54 @@ const Register: React.FC = () => {
   const [, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const isAlphanumeric = (str: string) => {
+    return /^[a-z0-9]+$/i.test(str);
+  };
+
+  //TODO remove comments as they are irrelevant?
+  //All characters should be allowed according to OWASP
+  //const isAlphanumericPlus = (str: string) => {
+  //  return /^[a-z0-9_-]+$/i.test(str);
+  //};
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // What does setLoading do? 
-    // The loading state is unused here. -Liam
     setLoading(true);
     setError(null); // Reset error message on new submit
 
     if (!username || !password) {
       setError("Please fill all fields");
+      setLoading(false);
       return;
     }
 
-    // TODO: If the user already exists, display an error message
+    if (username.length < 3  || username.length > 128 || password.length < 12 || password.length > 128) {
+      setError("Username must be between 3 and 128 characters and password must be between 12 and 128 characters");
+      setLoading(false);
+      return;
+    }
+
+    if (!isAlphanumeric(username)) {
+      setError("Username must be alphanumeric");
+      setLoading(false);
+      return;
+    }
+
+    //See explanation in function declaration
+    //if (!isAlphanumericPlus(password)) {
+    //  setError('Password can only contain a-z, 0-9 and "-_+!#¤%&/()=?"');
+    //  setLoading(false);
+    //  return;
+    //}
+
     try {
       await registerUser(username, password);
       navigate('/');
     } catch (error: any) {
       setError(error.response?.data?.error || 'Unknown error occurred');
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   };
 
