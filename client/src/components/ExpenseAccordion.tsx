@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { deleteExpense, Expense, deleteBudget} from "../api/api";
+import { deleteExpense, Expense} from "../api/api";
 import '../routes/App.css';
 import { useState } from "react";
 import ExpenseModal from "./ExpenseModal";
@@ -46,7 +46,7 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , d
                 <Table className="p-2 expense-table">
                     <thead>
                         <tr>
-                            <th>Amount</th>
+                            <th>Cost</th>
                             <th>Description</th>
 
                         </tr>
@@ -75,54 +75,38 @@ export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , d
                 </Table>
             )}
 
+           
+<div className="d-flex justify-content-between p-3">
+                {/* Left-side buttons: Delete & Edit */}
+                <div className="d-flex gap-2">
+                    <button
+                        onClick={() => {
+                            deleteBudget(budgetId);
+                            handleClose();
+                        }}
+                        className="delete-budget-btn"
+                    >
+                        <img src="/images/trash-delete-budget.svg" alt="Delete" width="15" height="15" />
+                        Delete Budget
+                    </button>
 
-            <div className="d-flex justify-content-start p-3 gap-2 w-100">
-    <button 
-        onClick={() => {
-            deleteBudget(budgetId);
-            handleClose();
-        }} 
-        className="delete-budget-btn"
-    >
-        <img
-            src="/images/trash-delete-budget.svg"
-            alt="Delete"
-            width="15"
-            height="15"
-        />
-        Delete Budget
-    </button>
+                    {expenses.length > 0 && (
+                        <button
+                            onClick={() => setIsEditing(!isEditing)}
+                            className={`edit-budget-btn ${isEditing ? "editing-mode" : ""}`}
+                        >
+                            <img src="/images/edit-budget.svg" alt="Edit" width="15" height="15" />
+                            {isEditing ? "Done" : "Edit"}
+                        </button>
+                    )}
+                </div>
 
-    {expenses.length > 0 && (
-        <button 
-            onClick={() => setIsEditing(!isEditing)} 
-            className={`edit-budget-btn ${isEditing ? "editing-mode" : ""}`}
-        >
-            <img
-                src="/images/edit-budget.svg"
-                alt="Edit"
-                width="15"
-                height="15"
-            />
-            {isEditing ? "Done" : "Edit"}
-        </button>
-    )}
 
-    {/* Close Button at the End */}
-    <button 
-        onClick={handleClose} 
-        className="close-budget-btn ms-auto"
-    >
-        <img
-            src="/images/close-icon.svg" 
-            alt="Close"
-            width="15" 
-            height="15"
-        />
-        Close
-    </button>
-</div>
-
+                <button onClick={handleClose} className="close-budget-btn">
+                    <img src="/images/arrow-up.svg" alt="Close" width="15" height="15" />
+                    Close
+                </button>
+            </div>
 
 
 

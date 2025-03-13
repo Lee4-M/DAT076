@@ -81,7 +81,7 @@ tbody > tr > td:last-child {
 
 .budget-table th:first-child {
   text-align: left;
-  padding-left: 3%;
+  padding-left: 20px;
   border-top-left-radius: 8px; 
 
 }
@@ -209,5 +209,17 @@ tbody > tr > td:last-child {
 
 .edit-budget-btn:hover{
   color: #004C6D;
+}
+
+
+.close-budget-btn{
+  font-size: 14px;
+  background-color: inherit !important;
+  color: #737373;
+  text-decoration: underline;
+}
+
+.close-budget-btn:hover{
+  color: #424546;
 }
 
