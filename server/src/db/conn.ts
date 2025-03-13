@@ -1,13 +1,14 @@
 import { readFileSync } from 'fs';
 import { Sequelize } from 'sequelize';
-import { newDb } from 'pg-mem';
+import { IMemoryDb, newDb } from 'pg-mem';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 let sequelize: Sequelize;
 
-let db: any;
+let db: IMemoryDb;
+
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
   db = newDb();
   const pool = db.adapters.createPg();

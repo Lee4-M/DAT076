@@ -12,7 +12,7 @@ export class ExpenseService implements IExpenseService {
     }
 
     async getExpenses(budgetRowId: number): Promise<Expense[] | undefined> {
-        let budgetRow = await this.budgetRowService.findBudgetRowById(budgetRowId);
+        const budgetRow = await this.budgetRowService.findBudgetRowById(budgetRowId);
         if (!budgetRow) {
             console.error(`Budget row not found: ${budgetRowId}`);
             return undefined;

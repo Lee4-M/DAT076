@@ -5,7 +5,6 @@ import { BudgetRowService } from "../service/budget";
 import { budgetRowRouter } from "./budget";
 import { UserService } from "../service/user";
 import { userRouter } from "./user";
-import { get } from "http";
 
 let app: express.Application;
 let budgetRowService: BudgetRowService;
@@ -14,7 +13,7 @@ let agent: ReturnType<typeof request.agent>;
 
 const testUser = { username: "User", password: "Password" };
 
-beforeAll(async () => {
+beforeAll(() => {
     userService = new UserService();
     budgetRowService = new BudgetRowService(userService);
 

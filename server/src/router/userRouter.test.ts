@@ -11,7 +11,7 @@ let agent: ReturnType<typeof request.agent>;
 const username = "User";
 const password = "Password";
 
-beforeAll(async () => {
+beforeAll(() => {
     userService = new UserService();
     app = express();
     app.use(express.json());
@@ -25,7 +25,7 @@ beforeAll(async () => {
     app.use(userRouter(userService));
 });
 
-beforeEach(async () => {
+beforeEach(() => {
     agent = request.agent(app);
 });
 
@@ -67,7 +67,7 @@ describe("User API Tests", () => {
         });
 
         test("Fail to login a user that does not exist", async () => {
-            const response = await agent.post("/user/login").send({ username, password }).expect(401, "No such username or password");
+            await agent.post("/user/login").send({ username, password }).expect(401, "No such username or password");
         });
 
         test("Fail to login a user that is already logged in", async () => {

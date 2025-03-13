@@ -16,7 +16,7 @@ let agent: ReturnType<typeof request.agent>;
 
 const testUser = { username: "User", password: "Password" };
 
-beforeAll(async () => {
+beforeAll(() => {
     userService = new UserService();
     budgetRowService = new BudgetRowService(userService);
     expenseService = new ExpenseService(budgetRowService);
