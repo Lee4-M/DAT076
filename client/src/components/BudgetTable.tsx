@@ -23,6 +23,29 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, upda
     const result = totalBudget - totalExpenses;
 
     const [showBudgeteModal, setShowBudgetModal] = useState(false);
+
+    const [sortStates, setSortStates] = useState<{ [key: string]: boolean | null }>({
+        Budget: null,
+        Expense: null,
+        Result: null
+    });
+
+    //TEMPORARY: Replace with sort function
+    const handleSort = (column: string) => {
+        setSortStates((prevState) => ({
+            ...prevState,
+            [column]: prevState[column] === null ? true : !prevState[column]
+        }));
+        console.log(`Sorting by: ${column}`);
+    };
+
+
+    const getSortIcon = (column: string) => {
+        if (sortStates[column] === null) return "/images/Filter-Base.svg"; 
+        return sortStates[column] ? "/images/Filter-Up.svg" : "/images/Filter-Down.svg";
+    };
+
+
     
 
     return (
@@ -35,13 +58,42 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, upda
                                 <div className="m-auto py-2">Category</div>
                             </th>
                             <th>
-                                <div className="w-75 m-auto py-2">Budget</div>
+                                <div onClick={() => handleSort("Budget")}  className="w-75 m-auto py-2">Budget 
+                                <img 
+                                        src={getSortIcon("Budget")} 
+                                        alt="Sort" 
+                                        width="15" 
+                                        height="15" 
+                                        className="ms-1"
+                                    />
+
+
+                                </div>
                             </th>
                             <th>
-                                <div className="w-75 m-auto py-2">Expense</div>
+                                <div onClick={() => handleSort("Expense")} className="w-75 m-auto py-2">Expense
+                                <img 
+                                        src={getSortIcon("Expense")} 
+                                        alt="Sort" 
+                                        width="15" 
+                                        height="15" 
+                                        className="ms-1"
+                                    />
+
+                                </div>
                             </th>
                             <th>
-                                <div className="w-75 m-auto py-2">Result</div>
+                                <div onClick={() => handleSort("Result")} className="w-75 m-auto py-2">Result
+                                <img 
+                                        src={getSortIcon("Result")} 
+                                        alt="Sort" 
+                                        width="15" 
+                                        height="15" 
+                                        className="ms-1"
+                                    />
+
+
+                                </div>
                             </th>
                             <th>
                                 </th>
