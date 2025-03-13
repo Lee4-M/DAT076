@@ -4,6 +4,7 @@ import '../routes/App.css';
 import { useState } from "react";
 import ExpenseModal from "./ExpenseModal";
 
+//Annelie
 
 interface ExpenseAccordionProps {
     show: boolean;

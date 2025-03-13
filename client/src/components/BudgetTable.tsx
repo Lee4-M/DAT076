@@ -4,6 +4,8 @@ import { Budget, Expense } from "../api/api";
 import { BudgetRowComponent } from "./BudgetRowComponent";
 import BudgetItemModal from "./BudgetModal";
 
+//Annelie
+
 interface BudgetTableProps {
     budgets: Budget[];
     loadBudgets: () => void;

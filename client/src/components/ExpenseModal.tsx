@@ -2,7 +2,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { addExpense, Expense, getBudgets } from "../api/api";
 import { useState, useEffect } from 'react';
 import { Budget } from '../api/api';
-
+//Annelie
 // Define the types for the props
 interface ExpenseModalProps {
     show: boolean;

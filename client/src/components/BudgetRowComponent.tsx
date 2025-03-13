@@ -4,6 +4,8 @@ import '../routes/App.css'
 import { Budget, deleteBudget, Expense } from '../api/api';
 import { ExpenseAccordion } from './ExpenseAccordion';
 
+//Annelie
+
 interface BudgetRowComponentProps {
     budget: Budget;
     loadBudgets: () => void;
