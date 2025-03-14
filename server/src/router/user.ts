@@ -18,7 +18,7 @@ export function userRouter(userService: IUserService): Router {
                 return;
             }
             if(await userService.findUser(username, password)) {
-                res.status(500).send("Failed to register user: User already exists");
+                res.status(400).send("Failed to register user: User already exists");
                 return;
             }
             await userService.createUser(req.body.username, req.body.password);

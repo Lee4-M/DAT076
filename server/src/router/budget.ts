@@ -147,7 +147,6 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         req: EditBudgetsRequest,
         res: Response<BudgetRow[] | string>
     ) => {
-        console.log(req.body);
         try {
             if (!req.session.username) {
                 res.status(401).send("Not logged in");

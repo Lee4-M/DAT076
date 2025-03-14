@@ -8,6 +8,8 @@
 :root {
   --main-bg-color: #e6da6a;
   --main-secondary-color: #409BC9;
+  --main-accent-color: #FFE72F;
+  --main-border-color: #b9cde1;
 }
 
 .table-container {
@@ -21,40 +23,11 @@
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td {
-  background-color: #dedede;
+  background-color: #fdfdfd;
 }
 
 .table-striped > tbody > tr:nth-child(even) > td {
-  background-color: #f5f5f5;
-}
-th {
-  border: none !important; 
-  background-color: transparent !important; 
-  font-weight: normal;
-}
-
-th > div {
-  color: white;
-  background-color: #646464;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-td {
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-}
-
-/* Välj första och sista cell i varje rad och applicera rundade hörn */
-td:first-child {
-  font-weight: bold;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-
-td:last-child {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
+  background-color: #fefefe;
 }
 
 #total-row {
@@ -84,3 +57,175 @@ button {
 tbody > tr > td:last-child {
   border: none !important;
 }
+
+
+.budget-table th {
+  background-color: var(--main-accent-color) !important;
+  color: #706301;
+  font-weight: bold !important;
+  font-size: larger !important;
+  border-top: none !important;
+  border-bottom: 4px solid white !important;
+  border-right: none!important;
+  border-left:none!important;
+  padding: 0px;
+  
+}
+
+.budget-table th:hover {
+  background-color: #cab519 !important;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .budget-table th {
+    font-size: medium !important;
+    padding: 5px; 
+  }
+}
+
+.budget-table th:first-child {
+  text-align: left;
+  padding-left: 20px;
+  border-top-left-radius: 8px; 
+
+}
+
+.budget-table th:last-child {
+  border-top-right-radius: 8px; 
+}
+
+
+.budget-row td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px; 
+  cursor: pointer;
+  font-size: larger;
+  border: white 1px solid;
+}
+
+@media (max-width: 600px) {
+  .budget-row td {
+    font-size: 12px;
+  }
+}
+
+
+/* Align first column (Category) to the left */
+.budget-row td:first-child {
+  text-align: left;
+  padding-left: 30px;
+}
+
+
+/* Center budget, expenses, and result columns */
+.budget-row td:nth-child(2),
+.budget-row td:nth-child(3),
+.budget-row td:nth-child(4) {
+  text-align: center;
+}
+/* Accordion Edit Button*/
+.expense-row-btn{
+  background-color: var(--main-secondary-color);
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.4em;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+.expense-row-btn:hover{
+  background-color: #337B9F;
+}
+
+/*Expense Table*/
+.expense-table thead th {
+  background-color: transparent !important; 
+  font-weight: normal !important;
+  font-size: medium !important;
+  color: black !important;
+  border-bottom: none !important;
+  text-align: left;
+  padding-left: 15px;
+
+}
+.expense-table{
+  background-color: inherit !important;
+  color: black !important;
+  font-weight: normal !important;
+  padding: 4px;
+  border-spacing: 0 8px;
+  
+}
+
+.expense-table td{
+  border-top: rgb(219, 217, 217) 2px solid;
+  border-bottom: rgb(219, 217, 217) 2px solid;
+}
+
+.expense-table td:first-child {
+  text-align: left;
+  padding-left: 20px;
+
+  border-top-left-radius: 8px ; 
+  border-bottom-left-radius: 8px; 
+  border-right-color: none;
+  border-left: rgb(219, 217, 217) 2px solid;
+
+}
+
+.expense-table td:nth-child(2){
+  border-top-right-radius: 8px;
+  text-align: left;
+  padding-left: 20px;
+  border-bottom-right-radius: 8px;
+  border-left-color: none;
+  border-right: rgb(219, 217, 217) 2px solid;
+
+}
+
+.expense-table td:last-child {
+  border-top-right-radius: 8px; 
+  border-bottom-right-radius: 8px; 
+  border-left-color: none;
+}
+
+.delete-budget-btn{
+  font-size: 14px;
+  background-color: inherit !important;
+  color: red;
+  text-decoration: underline;
+}
+
+.delete-budget-btn:hover{
+  color: #900000;
+}
+
+.edit-budget-btn{
+  font-size: 14px;
+  background-color: inherit !important;
+  color: #337B9F;
+  text-decoration: underline;
+}
+
+.edit-budget-btn:hover{
+  color: #004C6D;
+}
+
+
+.close-budget-btn{
+  font-size: 14px;
+  background-color: inherit !important;
+  color: #737373;
+  text-decoration: underline;
+}
+
+.close-budget-btn:hover{
+  color: #424546;
+}
+

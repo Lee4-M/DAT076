@@ -25,7 +25,7 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     setLoading(true);
-    setError(null); // Reset error message on new submit
+    setError(""); // Reset error message on new submit
 
     if (!username || !password) {
       setError("Please fill all fields");
@@ -56,9 +56,15 @@ const Register: React.FC = () => {
       await registerUser(username, password);
       navigate('/');
     } catch (error: any) {
-      setError(error.response?.data?.error || 'Unknown error occurred');
+      console.error("Error during registration:", error);
+      
+      if (error.response) {
+        setError(error.response.data || "Unknown error occurred");
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 

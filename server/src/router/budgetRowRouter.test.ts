@@ -56,7 +56,7 @@ describe("BudgetRow API Tests", () => {
             expect(response.body).toEqual([]);
         });
 
-        test("Unsuccesfully get budget rows if user no longer exists", async () => {
+        test("Unsuccessfully get budget rows if user no longer exists", async () => {
             jest.spyOn(userService, "findUser").mockResolvedValueOnce(undefined);
             await agent.get("/budget").expect(401, "Not logged in");
         });
