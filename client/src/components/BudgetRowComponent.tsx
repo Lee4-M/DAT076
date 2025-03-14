@@ -12,19 +12,23 @@ interface BudgetRowComponentProps {
     expenses: Expense[];
     loadExpenses: () => void;
     isEditing: boolean;
-    updateBudgetCost: (id: number, category: string, amount: number) => void;
+    onEdit: (id: number, category: string, amount: number) => void;
+    onSave: () => void;
 }
 
-export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, updateBudgetCost }: BudgetRowComponentProps) {
+export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, onEdit, onSave }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateBudgetCost(budget.id, budget.category, Number(e.target.value));
+    const handleChangeBudgetCost = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onEdit(budget.id, budget.category, Number(e.target.value));
     };
 
-    // useEffect(() => {
-    //     setExpenses(budget.expenses);
-    // }, [budget]);
+    const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            onSave();
+        }
+    };
     
     async function removeBudget(id: number) {
         const success = await deleteBudget(id);
@@ -49,7 +53,8 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                         <input
                             type="number"
                             value={budget.amount}
-                            onChange={handleChange}
+                            onChange={handleChangeBudgetCost}
+                            onKeyDown={handleSaveOnEnter}
                             autoFocus
                         />
                     ) : (
@@ -63,13 +68,14 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                     {budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-
                 </td>
                 <td className='text-center col-1 ps-0'>
-                <img 
-                    src={showExpenseAccordion ? "/images/arrow-down.svg" : "/images/arrow-left.svg"} 
-                    alt="Toggle Arrow" 
-                    width="15" 
-                    height="15" 
-                    style={{ display: "block", margin: "auto" }}
-                />
+                  <img 
+                      src={showExpenseAccordion ? "/images/arrow-down.svg" : "/images/arrow-left.svg"} 
+                      alt="Toggle Arrow" 
+                      width="15" 
+                      height="15" 
+                      style={{ display: "block", margin: "auto" }}
+                  />
+
                 </td>
             </tr>
 
@@ -90,3 +96,5 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
         </>
     );
 }
+
+

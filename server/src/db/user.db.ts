@@ -42,5 +42,6 @@ UserModel.init(
 UserModel.hasMany(BudgetRowModel, {
   sourceKey: 'id',
   foreignKey: 'userId',
-  as: 'budgetRows'
+  as: 'budgetRows',
+  onDelete: 'CASCADE'
 });

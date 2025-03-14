@@ -5,19 +5,18 @@ import { BudgetRowComponent } from "./BudgetRowComponent";
 import BudgetItemModal from "./BudgetModal";
 import _ from "lodash";
 
-//Annelie
-
 interface BudgetTableProps {
     budgets: Budget[];
-  
     loadBudgets: () => void;
     expenses: { [budget_id: number]: Expense[] };
     loadExpenses: () => void;
-    updateBudgetCost: (id: number, category: string, amount: number) => void;
     isEditing: boolean;
+    onEdit: (id: number, category: string, amount: number) => void;
+    onSave: () => void;
 }
 
-export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, updateBudgetCost, isEditing }: BudgetTableProps) {
+
+export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEdit, onSave, isEditing }: BudgetTableProps) {
     const [sortBy, setSortBy] = useState<string>('category');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -123,10 +122,12 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, upda
                                     loadExpenses={loadExpenses}
                                     expenses={expenses[budget.id] || []}
                                     isEditing={isEditing} 
-                                    updateBudgetCost={updateBudgetCost}
+                                    onEdit={onEdit} 
+                                    onSave={onSave}
                                 />
                             ))
                         )}
+                      
                     </tbody>
                 </Table>
             </div>

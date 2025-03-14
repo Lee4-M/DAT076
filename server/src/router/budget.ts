@@ -1,11 +1,11 @@
 import express, { Request, Response, Router } from "express";
 import { BudgetRow } from "../model/budgetRow.interface";
-import { IBudgetRowService } from "../service/IBudgetRowService";
+import { IBudgetRowService } from "../service/interface/IBudgetRowService";
 
 export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     const budgetRowRouter = express.Router();
 
-    interface BudgetRowRequest {
+    interface BudgetRowRequest extends Request {
         session: any
     }
 
@@ -34,7 +34,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     interface AddBudgetRowRequest extends Request {
         body: {
             category: string,
-            cost: number
+            amount: number
         },
         session: any
     }
@@ -49,12 +49,12 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 return;
             }
             const category = req.body.category;
-            const cost = req.body.cost;
-            if ((typeof (category) !== "string") || (typeof (cost) !== "number")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- description has type ${typeof (category)}`);
+            const amount = req.body.amount;
+            if ((typeof (category) !== "string") || (typeof (amount) !== "number")) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)} or amount has type ${typeof (amount)}`);
                 return;
             }
-            const newBudgetRow: BudgetRow | undefined = await budgetRowService.addBudgetRow(req.session.username, category, cost);
+            const newBudgetRow: BudgetRow | undefined = await budgetRowService.addBudgetRow(req.session.username, category, amount);
             res.status(201).send(newBudgetRow);
         } catch (e: any) {
             res.status(500).send(e.message);
@@ -78,6 +78,10 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 return;
             }
             const id = req.body.id;
+            if (typeof (id) !== "number") {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof (id)}`);
+                return;
+            }
             const success = await budgetRowService.deleteBudgetRow(req.session.username, id);
             if (success) {
                 res.status(200).send("Budget row deleted");
@@ -126,7 +130,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         body: {
             ids: [number],
             categories: [string],
-            costs: [number]
+            amounts: [number]
         },
         session: any
     }
@@ -135,13 +139,14 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         req: EditBudgetsRequest,
         res: Response<BudgetRow[] | string>
     ) => {
+        console.log(req.body);
         try {
             if (!req.session.username) {
                 res.status(401).send("Not logged in");
                 return;
             }
             const categories = req.body.categories;
-            const amounts = req.body.costs;
+            const amounts = req.body.amounts;
             const ids = req.body.ids;
             const newBudgets: BudgetRow[] | undefined = await budgetRowService.updateAllBudgetRows(req.session.username, ids, categories, amounts);
             res.status(201).send(newBudgets);
