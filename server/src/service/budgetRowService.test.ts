@@ -150,6 +150,15 @@ describe("Budget Service", () => {
             expect(result).toBe(false);
         });
     });
+
+    describe("Updating a budget row", () => { 
+        test("Updating a budget row should reflect in the budgetRows database table", async () => {
+            const budget = await budgetService.addBudgetRow("User", "Clothes", 500);
+            await budgetService.updateBudgetRow(budget!.id, "Clothes", 1000);
+
+            const updatedBudget = await budgetService.findBudgetRowById(budget!.id);
+            expect(updatedBudget).toEqual(expect.objectContaining({ category: "Clothes", amount: 1000 }));
+        }
 });
 
 

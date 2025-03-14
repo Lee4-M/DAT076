@@ -12,8 +12,7 @@ export function userRouter(userService: IUserService): Router {
 
     userRouter.post("/user", async (req: UserRequest, res: Response) => {
         try {
-            const username = req.body.username;
-            const password = req.body.password;
+            const { username, password } = req.body;
             if((typeof(username) !== "string") || (typeof(password) !== "string")) {
                 res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof(username)} or password has type ${typeof(password)}`);
                 return;
@@ -35,8 +34,7 @@ export function userRouter(userService: IUserService): Router {
                 res.status(400).send("Already logged in");
                 return;
             }
-            const username = req.body.username;
-            const password = req.body.password;
+            const { username, password } = req.body;
             if((typeof(username) !== "string") || (typeof(password) !== "string")) {
                 res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof(username)} or password has type ${typeof(password)}`);
                 return;

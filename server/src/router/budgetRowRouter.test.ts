@@ -120,4 +120,75 @@ describe("BudgetRow API Tests", () => {
             await agent.delete("/budget").send({ id: 1 }).expect(500, "Database error");
         });
     });
+
+    describe("PUT /budget", () => {
+        test("Successfully update a budget row", async () => {
+            const addResponse = await agent.post("/budget").send({ category: "Groceries", amount: 1000 });
+            await agent.put("/budget").send({ id: addResponse.body.id, category: "Groceries", amount: 500 }).expect(201);
+        });
+
+        test("Unsuccessfully update a budget row with invalid id", async () => {
+            await agent.put("/budget").send({ id: "1", category: "Groceries", amount: 500 }).expect(400);
+        });
+
+        test("Unsuccessfully update a budget row with invalid category", async () => {
+            await agent.put("/budget").send({ id: 1, category: 1, amount: 500 }).expect(400);
+        });
+
+        test("Unsuccessfully update a budget row with invalid amount", async () => {
+            await agent.put("/budget").send({ id: 1, category: "Groceries", amount: "500" }).expect(400);
+        });
+
+        test("Unsuccessfully update a budget row if user is not logged in", async () => {
+            await agent.post("/user/logout").expect(200);
+            await agent.put("/budget").send({ id: 1, category: "Groceries", amount: 500 }).expect(401);
+        });
+
+        test("Unsuccessfully update a non-existent budget row", async () => {
+            await agent.put("/budget").send({ id: 999, category: "Groceries", amount: 500 }).expect(404);
+        });
+
+        test("Handle internal server error gracefully", async () => {
+            jest.spyOn(budgetRowService, "updateBudgetRow").mockRejectedValue(new Error("Database error"));
+            await agent.put("/budget").send({ id: 1, category: "Groceries", amount: 500 }).expect(500, "Database error");
+        });
+    });
+
+    describe("PUT /budgets", () => {
+        test("Successfully update multiple budget rows", async () => {
+            const addResponse = await agent.post("/budget").send({ category: "Groceries", amount: 1000 });
+            const addResponse2 = await agent.post("/budget").send({ category: "Clothes", amount: 500 });
+            await agent.put("/budgets").send({
+                ids: [addResponse.body.id, addResponse2.body.id],
+                categories: ["Groceries", "Clothes"],
+                amounts: [500, 1000],
+            }).expect(201);
+        });
+
+        test("Unsuccessfully update multiple budget rows with invalid categories", async () => {
+            await agent.put("/budgets").send({ ids: [1], categories: [1], amounts: [500] }).expect(400);
+        });
+
+        test("Unsuccessfully update multiple budget rows with invalid amounts", async () => {
+            await agent.put("/budgets").send({ ids: [1], categories: ["Groceries"], amounts: ["500"] }).expect(400);
+        });   
+
+        test("Unsuccessfully update multiple budget rows with invalid ids", async () => {
+            await agent.put("/budgets").send({ ids: ["1"], categories: ["Groceries"], amounts: [500] }).expect(400);
+        });
+
+        test("Unsuccessfully update multiple budget rows if user is not logged in", async () => {
+            await agent.post("/user/logout").expect(200);
+            await agent.put("/budgets").send({ ids: [1], categories: ["Groceries"], amounts: [500] }).expect(401, "Not logged in");
+        });
+
+        test("Unsuccessfully update multiple non-existent budget rows", async () => {
+            await agent.put("/budgets").send({ ids: [999], categories: ["Groceries"], amounts: [500] }).expect(404);
+        });
+
+        test("Handle internal server error gracefully", async () => {
+            jest.spyOn(budgetRowService, "updateAllBudgetRows").mockRejectedValue(new Error("Database error"));
+            await agent.put("/budgets").send({ ids: [1], categories: ["Groceries"], amounts: [500] }).expect(500, "Database error");
+        });
+    });
 });
