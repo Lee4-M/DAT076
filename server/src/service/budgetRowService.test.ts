@@ -129,7 +129,6 @@ describe("Budget Service", () => {
         });
 
         test("Deleting a budget row for a non-existent user should return false", async () => {
-            console.log(budgetService.getBudgetRows("User"));
             const budget = await budgetService.addBudgetRow("User", "Clothes", 500);
             const result = await budgetService.deleteBudgetRow("NonExistentUser", budget!.id);
             expect(result).toBe(false);

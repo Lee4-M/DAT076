@@ -15,7 +15,7 @@ export const app = express();
 
 dotenv.config();
 if (!process.env.SESSION_SECRET) {
-  console.log("Could not find SESSION_SECRET in .env file");
+  console.error("Could not find SESSION_SECRET in .env file");
   process.exit();
 }
 app.use(session({

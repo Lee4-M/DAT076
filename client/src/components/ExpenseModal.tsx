@@ -2,8 +2,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { addExpense, Expense, getBudgets } from "../api/api";
 import { useState, useEffect } from 'react';
 import { Budget } from '../api/api';
-//Annelie
-// Define the types for the props
+
 interface ExpenseModalProps {
     show: boolean;
     handleClose: () => void;
@@ -15,8 +14,6 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     const [budgets, setBudgets] = useState<Budget[]>([]);
     const [customCategory, setCustomCategory] = useState<string>('');
     const [isCustomCategory, setIsCustomCategory] = useState(false);
-
-
 
     const [expenseName, setExpenseName] = useState('');
     const [cost, setCost] = useState('');
@@ -45,11 +42,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
         }
     }
 
-
-
-
     async function saveExpense() {
-        // Convert cost to a number
         const expenseCost = parseFloat(cost);
         const categoryToUse = isCustomCategory ? customCategory : expenseName;
 
@@ -62,7 +55,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
             return;
         }
 
-        const newExpense: Expense | undefined = await addExpense(expenseName, expenseCost, description);
+        const newExpense: Expense | undefined = await addExpense(categoryToUse, expenseCost, description);
         if (newExpense) {
             handleClose();
             onSave();

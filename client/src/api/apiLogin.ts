@@ -6,10 +6,11 @@ axios.defaults.withCredentials = true;
 
 export async function registerUser(username: string, password: string): Promise<void> {
   try {
-    const response = await axios.post(`${BASE_URL}/user`, { username: username, password: password });
+    const response = await axios.post(`${BASE_URL}/user`, { username, password });
     return response.data;
-  } catch (e: unknown) {
-    console.log(e);
+  } catch (error: any) {
+    console.error("Registration failed:", error);
+    throw error;
   }
 }
 
