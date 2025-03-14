@@ -15,7 +15,6 @@ interface BudgetTableProps {
     onSave: () => void;
 }
 
-
 export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEdit, onSave, isEditing }: BudgetTableProps) {
     const [sortBy, setSortBy] = useState<string>('category');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -114,9 +113,9 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                 </td>
                             </tr>
                         ) : (
-                            sortedBudgets.map(budget => (
+                            sortedBudgets.map((budget, index) => (
                                 <BudgetRowComponent
-                                    key={budget.id} 
+                                    key={index}
                                     budget={budget}
                                     loadBudgets={loadBudgets}
                                     loadExpenses={loadExpenses}

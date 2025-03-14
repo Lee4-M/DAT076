@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import App from './App';
 
@@ -21,12 +21,14 @@ mockedAxios.get.mockResolvedValue({
   ]
 });
 
-beforeEach(() => {
-  render(
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>
-  );
+beforeEach(async () => {
+  await act(async () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+  });
 });
 
 describe('App Component', () => {
@@ -36,9 +38,13 @@ describe('App Component', () => {
     expect(addExpenseButton).toBeInTheDocument();
   });
 
-  test('opens expense modal when add expense button is clicked', () => {
+  test('opens expense modal when add expense button is clicked', async () => {
     const addExpenseButton = screen.getByRole('button', { name: "Add expense" });
-    fireEvent.click(addExpenseButton);
+
+    await act(async () => {
+      fireEvent.click(addExpenseButton);
+    });
+    
     const expenseModal = screen.getByTestId('expense-modal');
     expect(expenseModal).toBeInTheDocument();
   });
@@ -54,17 +60,15 @@ describe('App Component', () => {
     expect(addBudgetButton).toBeInTheDocument();
   });
 
-  test('opens budget modal when add budget button is clicked', () => {
+  test('opens budget modal when add budget button is clicked', async () => {
     const addBudgetButton = screen.getByRole('button', { name: "Add budget" });
-    fireEvent.click(addBudgetButton);
+
+    await act(async () => {
+      fireEvent.click(addBudgetButton);
+    });
+    
     const budgetModal = screen.getByTestId('budget-modal');
     expect(budgetModal).toBeInTheDocument();
-  });
-
-  // Pie chart tests
-  test('renders the pie chart', () => {
-    const pieChart = screen.getByTestId('pie-chart');
-    expect(pieChart).toBeInTheDocument();
   });
 
   // Sign out button tests

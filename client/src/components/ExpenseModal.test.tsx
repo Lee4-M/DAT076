@@ -1,6 +1,7 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import ExpenseModal from './ExpenseModal';
 
+
 describe('ExpenseModal Component', () => {
     test('changing inputs work', () => {
         const handleClose = jest.fn();
