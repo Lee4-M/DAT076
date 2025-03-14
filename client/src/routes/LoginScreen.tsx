@@ -76,7 +76,7 @@ const Login = () => {
                 />
               </div>
               <button type="submit" className="btn login-button mb-3">
-                Login
+                Log In
               </button>
               <div className="text-center">
                 <span>Don't have an account yet? </span>
