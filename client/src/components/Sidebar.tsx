@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
@@ -31,14 +31,21 @@ export function Sidebar({ loadBudgets, expenses, onSave, isEditing, budgets}: Si
         navigate('/');
     }
     
-    const expenseData = Object.entries(expenses).map(([budgetRowId, expenseList]) => {
-        const budget = budgets.find(b => b.id === Number(budgetRowId));
-        return {
-            id: Number(budgetRowId),
-            value: expenseList.reduce((sum, expense) => sum + expense.cost, 0),
-            label: budget ? budget.category : 'Unknown'
-        };
-    });
+    const expenseData = useMemo(() => 
+        Object.entries(expenses)
+            .map(([budgetRowId, expenseList]) => {
+                const budget = budgets.find(b => b.id === Number(budgetRowId));
+                const totalCost = expenseList.reduce((sum, expense) => sum + (expense.cost || 0), 0); 
+    
+                return {
+                    id: isNaN(Number(budgetRowId)) ? -1 : Number(budgetRowId), 
+                    value: isNaN(totalCost) ? 0 : totalCost,
+                    label: budget ? budget.category : "Unknown",
+                };
+            })
+            .filter(item => item.id !== -1 && item.value > 0),
+        [expenses, budgets]
+    );
 
     return (
         <Container className="bg-light-subtle rounded-3 h-100">

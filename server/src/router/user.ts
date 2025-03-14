@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { User } from "../model/user.interface";
-import { IUserService } from "../service/IUserService";
+import { IUserService } from "../service/interface/IUserService";
 
 export function userRouter(userService: IUserService): Router {
     const userRouter = express.Router();
@@ -12,21 +12,45 @@ export function userRouter(userService: IUserService): Router {
 
     userRouter.post("/user", async (req: UserRequest, res: Response) => {
         try {
+            const username = req.body.username;
+            const password = req.body.password;
+            if((typeof(username) !== "string") || (typeof(password) !== "string")) {
+                res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof(username)} or password has type ${typeof(password)}`);
+                return;
+            }
+            if(await userService.findUser(username, password)) {
+                res.status(500).send("Failed to register user: User already exists");
+                return;
+            }
             await userService.createUser(req.body.username, req.body.password);
-            res.status(201).send("User registered sucessfully as: " + req.body.username);
+            res.status(201).send("User registered successfully as: " + req.body.username);
         } catch (error: any) {
-            res.status(400).send("Failed to register user: " + error.message);
+            res.status(500).send("Failed to register user: " + error.message);
         }
     });
 
     userRouter.post("/user/login", async (req: UserRequest, res: Response) => {
-        const user: User | undefined = await userService.findUser(req.body.username, req.body.password);
-        if (!user) {
-            res.status(401).send("No such username or password");
-            return;
+        try {
+            if (req.session.username) {
+                res.status(400).send("Already logged in");
+                return;
+            }
+            const username = req.body.username;
+            const password = req.body.password;
+            if((typeof(username) !== "string") || (typeof(password) !== "string")) {
+                res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof(username)} or password has type ${typeof(password)}`);
+                return;
+            }
+            const user: User | undefined = await userService.findUser(username, password);
+            if (!user) {
+                res.status(401).send("No such username or password");
+                return;
+            }
+            req.session.username = req.body.username;
+            res.status(200).send("Logged in as: " + req.body.username);
+        } catch (error: any) {
+            res.status(500).send("Failed to login: " + error.message);
         }
-        req.session.username = req.body.username;
-        res.status(200).send("Logged in as: " + req.body.username);
     });
 
     userRouter.post("/user/logout", (req: UserRequest, res: Response) => {
@@ -37,6 +61,6 @@ export function userRouter(userService: IUserService): Router {
         delete req.session.username;
         res.status(200).send("Logged out successfully");
     });
-
+    
     return userRouter;
 }

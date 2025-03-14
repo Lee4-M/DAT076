@@ -1,19 +1,21 @@
 import { readFileSync } from 'fs';
 import { Sequelize } from 'sequelize';
-import { newDb } from 'pg-mem';
+import { IMemoryDb, newDb } from 'pg-mem';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 let sequelize: Sequelize;
 
+let db: IMemoryDb;
+
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
-  const db = newDb();
+  db = newDb();
   const pool = db.adapters.createPg();
 
   sequelize = new Sequelize({
     dialect: "postgres",
-    dialectModule: pool, 
+    dialectModule: pool,
     logging: false,
   });
 
@@ -44,17 +46,16 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
 
   console.log("Using PostgreSQL database for development/production");
 }
-
-export { sequelize };
+export { sequelize, db };
 
 export async function initDB() {
-    try {
-        await import('./associations');
-        await sequelize.sync({ alter: true, force: false });
-        console.log('Database synced successfully');
-    } catch (error) {
-        console.error('Failed to initialize the database:', error);
-        throw error; 
-    }
+  try {
+    await import('./associations');
+    await sequelize.sync({ alter: true, force: false });
+    console.log('Database synced successfully');
+  } catch (error) {
+    console.error('Failed to initialize the database:', error);
+    throw error;
+  }
 }
 

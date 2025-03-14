@@ -21,7 +21,7 @@ if (!process.env.SESSION_SECRET) {
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true, // TODO -- Double check? -Kev
+  saveUninitialized: true,
 }));
 app.use(cors({
   origin: true,
