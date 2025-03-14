@@ -16,11 +16,10 @@ interface ExpenseAccordionProps {
 }
 
 export function ExpenseAccordion({ show, expenses, handleClose, loadExpenses , deleteBudget, budgetId}: ExpenseAccordionProps) {
-    if (!show) return null;
-
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
 
+    if (!show) return null;
 
     async function removeExpense(id: number) {
         const success = await deleteExpense(id);
