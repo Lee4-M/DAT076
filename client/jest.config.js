@@ -4,6 +4,9 @@ export default {
   transform: {
     "^.+.tsx?$": ["ts-jest",{}],
   },
+  coveragePathIgnorePatterns: [
+    "node_modules",
+  ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",

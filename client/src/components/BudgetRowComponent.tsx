@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
 
 import '../routes/App.css'
 import { Budget, deleteBudget, Expense } from '../api/api';
 import { ExpenseAccordion } from './ExpenseAccordion';
+
+//Annelie
 
 interface BudgetRowComponentProps {
     budget: Budget;
@@ -41,12 +41,12 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
     }
 
     const handleOpenAccordion = () => {
-        setShowExpenseAccordion(true);
+        setShowExpenseAccordion((prev) => !prev);
     };
 
     return (
         <>
-            <tr onClick={handleOpenAccordion}>
+            <tr className="budget-row hovering" onClick={handleOpenAccordion}>
                 <td>{budget.category}</td>
                 <td>
                     {isEditing ? (
@@ -62,11 +62,20 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                     )}
                 </td>
                 <td>{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
-                <td>{budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
+                <td 
+                    style={{ color: (budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)) < 0 ? 'red' : 'black' }}
+                >
+                    {budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-
+                </td>
                 <td className='text-center col-1 ps-0'>
-                    <Button variant='transparent' aria-label="Delete budget item" onClick={() => removeBudget(budget.id)} >
-                        <Image src="/images/delete-budget-item.png" alt="Icon 1" width="40" height="40" />
-                    </Button>
+                  <img 
+                      src={showExpenseAccordion ? "/images/arrow-down.svg" : "/images/arrow-left.svg"} 
+                      alt="Toggle Arrow" 
+                      width="15" 
+                      height="15" 
+                      style={{ display: "block", margin: "auto" }}
+                  />
+
                 </td>
             </tr>
 
@@ -78,6 +87,8 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                             expenses={expenses}
                             handleClose={() => setShowExpenseAccordion(false)}
                             loadExpenses={loadExpenses}
+                            deleteBudget={removeBudget}
+                            budgetId={budget.id}
                         />
                     </td>
                 </tr>
