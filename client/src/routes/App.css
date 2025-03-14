@@ -72,6 +72,12 @@ tbody > tr > td:last-child {
   
 }
 
+.budget-table th:hover {
+  background-color: #cab519 !important;
+  color: white;
+  cursor: pointer;
+}
+
 @media (max-width: 600px) {
   .budget-table th {
     font-size: medium !important;
