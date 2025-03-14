@@ -20,7 +20,8 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
 
     const handleChangeBudgetCost = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onEdit(budget.id, budget.category, Number(e.target.value));
+        const value = e.target.value;
+        onEdit(budget.id, budget.category, value === "" ? NaN : Number(value));
     };
 
     const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
