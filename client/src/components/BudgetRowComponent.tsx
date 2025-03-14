@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import '../routes/App.css'
 import { Budget, deleteBudget, Expense } from '../api/api';
@@ -18,6 +18,11 @@ interface BudgetRowComponentProps {
 
 export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, onEdit, onSave }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
+    const categoryInputRef = useRef<HTMLInputElement>(null);
+
+    const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onEdit(budget.id, e.target.value, budget.amount);
+    };
 
     const handleChangeBudgetCost = (e: React.ChangeEvent<HTMLInputElement>) => {
         onEdit(budget.id, budget.category, Number(e.target.value));
@@ -29,7 +34,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
             onSave();
         }
     };
-    
+
     async function removeBudget(id: number) {
         const success = await deleteBudget(id);
         if (success) {
@@ -47,7 +52,19 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
     return (
         <>
             <tr className="budget-row hovering" onClick={handleOpenAccordion}>
-                <td>{budget.category}</td>
+            <td>
+                    {isEditing ? (
+                        <input
+                            type="text"
+                            ref={categoryInputRef}
+                            value={budget.category}
+                            onChange={handleChangeCategory}
+                            onKeyDown={handleSaveOnEnter}
+                        />
+                    ) : (
+                         <span>{budget.category} :-</span>
+                    )}
+                </td>
                 <td>
                     {isEditing ? (
                         <input
