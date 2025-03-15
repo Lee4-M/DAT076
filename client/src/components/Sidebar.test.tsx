@@ -34,6 +34,11 @@ describe('Sidebar Component', () => {
     rerender = renderResult.rerender;
   });
 
+  test('renders Sidebar component', () => {
+    const sidebar = screen.getByTestId('sidebar');
+    expect(sidebar).toBeInTheDocument();
+  });
+
   // Expense related tests
   test('renders the add expense button', () => {
     const addExpenseButton = screen.getByRole('button', { name: "Add expense" });
