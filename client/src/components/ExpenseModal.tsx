@@ -62,12 +62,6 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                 return;
             }
         }
-        
-        // if (!isNaN(expenseCost)) {
-        //     alert('Please enter a number as the cost.');
-        //     return;
-        // }
-
 
         if (expenseName.length > 20 || description.length > 20 || cost.length > 20) {
             alert('Character limit of 20 exceeded.');
