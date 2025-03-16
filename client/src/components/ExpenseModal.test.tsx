@@ -16,10 +16,9 @@ describe('ExpenseModal Component', () => {
     const mockHandleClose = jest.fn();
     const mockOnSave = jest.fn();
 
-    jest.clearAllMocks();
-    mockedAxios.get.mockResolvedValue({ data: [] });
-
     beforeEach(() => {
+        jest.clearAllMocks();
+        mockedAxios.get.mockResolvedValue({ data: [] });
         render(
             <ExpenseModal 
                 show={true}

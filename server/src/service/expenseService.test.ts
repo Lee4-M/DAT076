@@ -80,4 +80,64 @@ describe("Expense Service", () => {
             expect(result).toBe(false);
         });
     });
+
+    describe("Updating expenses", () => {
+        test("Updating an existing expense should reflect in the expense database table", async () => {
+            const expense = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
+            const updatedExpense = await expenseService.updateExpense(expense!.id, 200, "Jacket");
+            expect(updatedExpense).toEqual(expect.objectContaining({ cost: 200, description: "Jacket" }));
+        });
+
+        test("Updating a non-existent expense should return undefined", async () => {
+            const updatedExpense = await expenseService.updateExpense(999, 200, "Jacket");
+            expect(updatedExpense).toBeUndefined();
+        });
+
+        test("Updating an expense with a negative id should return undefined", async () => {
+            const updatedExpense = await expenseService.updateExpense(-1, 200, "Jacket");
+            expect(updatedExpense).toBeUndefined();
+        });
+
+        test("Updating an expense with a negative cost should return undefined", async () => {
+            const expense = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
+            const updatedExpense = await expenseService.updateExpense(expense!.id, -200, "Jacket");
+            expect(updatedExpense).toBeUndefined();
+        });
+
+        test("Updating an expense with an empty description should return undefined", async () => {
+            const expense = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
+            const updatedExpense = await expenseService.updateExpense(expense!.id, 200, "");
+            expect(updatedExpense).toBeUndefined();
+        });
+
+        test("Updating an expense with a non-existent id should return undefined", async () => {
+            const updatedExpense = await expenseService.updateExpense(999, 200, "Jacket");
+            expect(updatedExpense).toBeUndefined();
+        });
+    });
+
+    describe("Updating all expenses", () => {
+        test("Updating all expenses should reflect in the expense database table", async () => {
+            const expense1 = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
+            const expense2 = await expenseService.addExpense("User", "Clothes", 200, "Pants");
+            const updatedExpenses = await expenseService.updateAllExpenses([expense1!.id, expense2!.id], [150, 250], ["T-Shirt", "Jeans"]);
+            expect(updatedExpenses).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({ cost: 150, description: "T-Shirt" }),
+                    expect.objectContaining({ cost: 250, description: "Jeans" }),
+                ])
+            );
+        });
+
+        test("Updating all expenses with different array lengths should return undefined", async () => {
+            const expense1 = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
+            const updatedExpenses = await expenseService.updateAllExpenses([expense1!.id], [150, 250], ["T-Shirt", "Jeans"]);
+            expect(updatedExpenses).toBeUndefined();
+        });
+
+        test("Updating all expenses with non-existent ids should return undefined", async () => {
+            const updatedExpenses = await expenseService.updateAllExpenses([999], [150], ["T-Shirt"]);
+            expect(updatedExpenses).toBeUndefined();
+        });
+    });
 });

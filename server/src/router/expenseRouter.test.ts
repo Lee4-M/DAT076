@@ -128,4 +128,103 @@ describe("Expense API Tests", () => {
             await agent.delete("/expense").send({ id: addExpenseResponse.body.id }).expect(500, "Database error");
         });
     });
+
+    describe("PUT /expense", () => {
+        test("Successfully update an expense", async () => {
+            await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category: "Groceries", cost: 1000, description: "Bought some groceries" }).expect(201);
+            const updateExpenseResponse = await agent.put("/expense").send({ id: addExpenseResponse.body.id, cost: 2000, description: "Bought more groceries" }).expect(200);
+            expect(updateExpenseResponse.body).toEqual({ id: addExpenseResponse.body.id, budgetRowId: addExpenseResponse.body.budgetRowId, cost: 2000, description: "Bought more groceries" });
+        });
+
+        test("Unsuccessfully update an expense with invalid id", async () => {
+            await agent.put("/expense").send({ id: "a", cost: 2000, description: "Bought more groceries" }).expect(400, 
+                "Bad PUT call to /expense --- id has type string or cost has type number or description has type string");
+        });
+
+        test("Unsuccessfully update an expense with invalid cost", async () => {
+            await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category: "Groceries", cost: 1000, description: "Bought some groceries" }).expect(201);
+            await agent.put("/expense").send({ id: addExpenseResponse.body.id, cost: "a", description: "Bought more groceries" }).expect(400,
+                "Bad PUT call to /expense --- id has type number or cost has type string or description has type string");
+        });
+
+        test("Unsuccessfully update an expense with invalid description", async () => {
+            await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category: "Groceries", cost: 1000, description: "Bought some groceries" }).expect(201);
+            await agent.put("/expense").send({ id: addExpenseResponse.body.id, cost: 2000, description: 1 }).expect(400,
+                "Bad PUT call to /expense --- id has type number or cost has type number or description has type number");
+        });
+
+        test("Unsuccessfully update an expense if user is not logged in", async () => {
+            await agent.post("/user/logout").expect(200);
+            await agent.put("/expense").send({ id: 1, cost: 2000, description: "Bought more groceries" }).expect(401, "Not logged in");
+        });
+
+        test("Unsuccessfully update a non-existent expense", async () => {
+            await agent.put("/expense").send({ id: 999, cost: 2000, description: "Bought more groceries" }).expect(404, "Expense not found");
+        });
+
+        test("Handle internal server error gracefully", async () => {
+            jest.spyOn(expenseService, "updateExpense").mockRejectedValue(new Error("Database error"));
+            await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category: "Groceries", cost: 1000, description: "Bought some groceries" }).expect(201);
+            await agent.put("/expense").send({ id: addExpenseResponse.body.id, cost: 2000, description: "Bought more groceries" }).expect(500, "Database error");
+        });
+    });
+
+    describe("PUT /expenses", () => {
+        test("Successfully update multiple expenses", async () => {
+            await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category: "Groceries", cost: 1000, description: "Bought some groceries" }).expect(201);
+            const addExpenseResponse2 = await agent.post("/expense").send({ category: "Groceries", cost: 500, description: "Bought some clothes" }).expect(201);
+            await agent.put("/expenses").send({
+                ids: [addExpenseResponse.body.id, addExpenseResponse2.body.id],
+                costs: [2000, 1000],
+                descriptions: ["Bought more groceries", "Bought some clothes"],
+            }).expect(201);
+        });
+
+        test("Unsuccessfully update multiple expenses with mismatched arrays", async () => {
+            await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category: "Groceries", cost: 1000, description: "Bought some groceries" }).expect(201);
+            await agent.put("/expenses").send({ ids: [addExpenseResponse.body.id], costs: [2000], descriptions: ["Bought more groceries", "Bought some clothes"] }).expect(400);
+        });
+
+        test("Unsuccessfully update multiple expenses with invalid ids", async () => {
+            await agent.put("/expenses").send({ ids: ["1"], costs: [2000], descriptions: ["Bought more groceries"] }).expect(400);
+        });
+
+        test("Unsuccessfully update multiple expenses with invalid costs", async () => {
+            await agent.put("/expenses").send({ ids: [1], costs: ["2000"], descriptions: ["Bought more groceries"] }).expect(400);
+        });
+
+        test("Unsuccessfully update multiple expenses with invalid descriptions", async () => {
+            await agent.put("/expenses").send({ ids: [1], costs: [2000], descriptions: [1] }).expect(400);
+        });
+
+        test("Unsuccessfully update multiple expenses if user is not logged in", async () => {
+            await agent.post("/user/logout").expect(200);
+            await agent.put("/expenses").send({ ids: [1], costs: [2000], descriptions: ["Bought more groceries"] }).expect(401, "Not logged in");
+        });
+
+        test("Unsuccessfully update multiple non-existent expenses", async () => {
+            await agent.put("/expenses").send({ ids: [999], costs: [2000], descriptions: ["Bought more groceries"] }).expect(404);
+        });
+
+        test("Unsuccessfully update multiple expenses with invalid request body", async () => {
+            await agent.put("/expenses").send([]).expect(400, "Bad PUT call to /expenses --- invalid request body");
+        });
+
+        test("Unsuccessfully update multiple expenses rows with missing properties", async () => {
+            await agent.put("/expenses").send({}).expect(400, "Bad PUT call to /expenses --- invalid request body");
+        });
+
+        test("Handle internal server error gracefully", async () => {
+            jest.spyOn(expenseService, "updateAllExpenses").mockRejectedValue(new Error("Database error"));
+            await agent.post("/budget").send({ category: "Groceries", amount: 1000 }).expect(201);
+            const addExpenseResponse = await agent.post("/expense").send({ category: "Groceries", cost: 1000, description: "Bought some groceries" }).expect(201);
+            await agent.put("/expenses").send({ ids: [addExpenseResponse.body.id], costs: [2000], descriptions: ["Bought more groceries"] }).expect(500, "Database error");
+        });
+    });
 });
