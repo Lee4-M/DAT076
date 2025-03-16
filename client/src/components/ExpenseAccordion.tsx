@@ -99,7 +99,7 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
                                         onKeyDown={handleSaveOnEnter}
                                     />
                                 ) : (
-                                    <span>${expense.cost}</span>
+                                    <span>{expense.cost}</span>
                                 )}
                                 </td>
                                 <td>
