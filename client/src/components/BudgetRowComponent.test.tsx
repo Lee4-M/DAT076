@@ -27,7 +27,7 @@ describe('BudgetRowComponent', () => {
 
     const expenses = [
         { id: 1, budgetRowId: 1,  cost: 30, description: "desc-1" },
-        { id: 2, budgetRowId: 1,  cost: 40, description: "desc-2" },
+        { id: 2, budgetRowId: 1,  cost: 80, description: "desc-2" },
     ];
 
     let isEditing: boolean;
@@ -80,6 +80,21 @@ describe('BudgetRowComponent', () => {
     test('renders variance', () => {
         const variance = screen.getByTestId('variance');
         expect(variance).toBeInTheDocument();
+    });
+
+    test('renders correct total expenses', () => {
+        const totalExpenses = screen.getByTestId('total-expenses');
+        expect(totalExpenses).toHaveTextContent('110 :-');
+    });
+
+    test('renders correct variance', () => {
+        const variance = screen.getByTestId('variance');
+        expect(variance).toHaveTextContent('-10 :-');
+    });
+
+    test('variance is red when expenses exceed budget', () => {
+        const variance = screen.getByTestId('variance');
+        expect(variance).toHaveStyle('color: red');
     });
 
     test('can toggle editing state', () => {
