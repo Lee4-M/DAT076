@@ -148,14 +148,6 @@ describe("BudgetRow API Tests", () => {
             await agent.put("/budget").send({ id: 999, category: "Groceries", amount: 500 }).expect(404);
         });
 
-        test("Returns 400 when body is not an object", async () => {
-            await agent.put("/budgets").send([]).expect(400, "Bad PUT call to /budgets --- invalid request body");
-        });
-    
-        test("Returns 400 when required properties are missing", async () => {
-            await agent.put("/budgets").send({}).expect(400, "Bad PUT call to /budgets --- invalid request body");
-        });
-
         test("Handle internal server error gracefully", async () => {
             jest.spyOn(budgetRowService, "updateBudgetRow").mockRejectedValue(new Error("Database error"));
             await agent.put("/budget").send({ id: 1, category: "Groceries", amount: 500 }).expect(500, "Database error");
@@ -171,6 +163,11 @@ describe("BudgetRow API Tests", () => {
                 categories: ["Groceries", "Clothes"],
                 amounts: [500, 1000],
             }).expect(201);
+        });
+
+        test("Unsuccessfully update multiple budget rows with mismatched arrays", async () => {
+            const addResponse = await agent.post("/budget").send({ category: "Groceries", amount: 1000 });
+            await agent.put("/budgets").send({ ids: [addResponse.body.id], categories: ["Groceries"], amounts: [500, 1000] }).expect(400);
         });
 
         test("Unsuccessfully update multiple budget rows with invalid categories", async () => {
@@ -192,6 +189,14 @@ describe("BudgetRow API Tests", () => {
 
         test("Unsuccessfully update multiple non-existent budget rows", async () => {
             await agent.put("/budgets").send({ ids: [999], categories: ["Groceries"], amounts: [500] }).expect(404);
+        });
+
+        test("Unsuccessfully update multiple budget rows with invalid request body", async () => {
+            await agent.put("/budgets").send([]).expect(400, "Bad PUT call to /budgets --- invalid request body");
+        });
+    
+        test("Unsuccessfully update multiple budget rows with missing properties", async () => {
+            await agent.put("/budgets").send({}).expect(400, "Bad PUT call to /budgets --- invalid request body");
         });
 
         test("Handle internal server error gracefully", async () => {

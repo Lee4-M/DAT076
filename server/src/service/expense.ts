@@ -52,4 +52,39 @@ export class ExpenseService implements IExpenseService {
         await expense.destroy();
         return true;
     }
+
+    async updateExpense(id: number, cost: number, description: string): Promise<Expense | undefined> {
+        if (id < 0 || cost < 0 || !description) {
+            console.error("Invalid input: id, cost, or description");
+            return undefined;
+        }
+
+        const expense = await ExpenseModel.findOne({ where: { id: id } });
+        if (!expense) {
+            console.warn(`Expense not found: ${id}`);
+            return undefined;
+        }
+
+        await expense.update({ cost: cost, description: description });
+
+        return expense;
+    }
+
+    async updateAllExpenses(ids: number[], costs: number[], descriptions: string[]): Promise<Expense[] | undefined> {
+        if (ids.length !== costs.length || ids.length !== descriptions.length) {
+            console.error("Invalid input: ids, costs, or descriptions");
+            return undefined;
+        }
+
+        const expenses: Expense[] = [];
+        for (let i = 0; i < ids.length; i++) {
+            const expense = await this.updateExpense(ids[i], costs[i], descriptions[i]);
+            if (!expense){
+                return undefined;
+            } 
+            expenses.push(expense);
+        }
+
+        return expenses;
+    }
 }

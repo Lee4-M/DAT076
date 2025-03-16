@@ -102,10 +102,10 @@ export class BudgetRowService implements IBudgetRowService {
         if (!budgetRow) {
             return undefined;
         }
-        await BudgetRowModel.update({ userId: user.id, category: category, amount: amount }, { where: { id: id } });
+
+        await budgetRow.update({ userId: user.id, category: category, amount: amount });
 
         return budgetRow; //TODO Check if this is the old or new budgetRow
-        
     }
 
     async updateAllBudgetRows(username: string, ids: number[], categories: string[], amounts: number[]): Promise<BudgetRow[] | undefined> {
@@ -123,15 +123,11 @@ export class BudgetRowService implements IBudgetRowService {
         const newBudgets: BudgetRow[] = [];
         
         for (let i = 0; i < ids.length; i++) {
-            const id = ids[i];
-            const budgetRow = await BudgetRowModel.findOne({ where: { userId: user.id, id: id } });
-            if (!budgetRow) {
+            const newBudget: BudgetRow | undefined = await this.updateBudgetRow(username, ids[i], categories[i], amounts[i]);
+            if (!newBudget) {
                 return undefined;
             }
-            const category = categories[i];
-            const amount = amounts[i];
-            await BudgetRowModel.update({ userId: user.id, category: category, amount: amount }, { where: { id: id } });
-            newBudgets.push(budgetRow);
+            newBudgets.push(newBudget);
         }
 
         return newBudgets;

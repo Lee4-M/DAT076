@@ -4,39 +4,28 @@ import '../routes/App.css'
 import { Budget, deleteBudget, Expense } from '../api/api';
 import { ExpenseAccordion } from './ExpenseAccordion';
 
-//Annelie
-
 interface BudgetRowComponentProps {
     budget: Budget;
-    loadBudgets: () => void;
     expenses: Expense[];
-    loadExpenses: () => void;
     isEditing: boolean;
-    onEdit: (id: number, category: string, amount: number) => void;
-    onSave: () => void;
+    loadBudgets: () => void;
+    loadExpenses: () => void;
+    handleChangeBudgets: (id: number, changes: Partial<Budget>) => void;
+    handleSaveBudgetRows: () => void;
 }
 
-export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses, isEditing, onEdit, onSave }: BudgetRowComponentProps) {
+export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, loadExpenses, handleChangeBudgets, handleSaveBudgetRows }: BudgetRowComponentProps) {
     const [showExpenseAccordion, setShowExpenseAccordion] = useState(false);
     const categoryInputRef = useRef<HTMLInputElement>(null);
-
-    const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onEdit(budget.id, e.target.value, budget.amount);
-    };
-
-    const handleChangeBudgetCost = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        onEdit(budget.id, budget.category, value === "" ? NaN : Number(value));
-    };
 
     const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            onSave();
+            handleSaveBudgetRows();
         }
     };
 
-    async function removeBudget(id: number) {
+    async function handleDeleteBudget(id: number) {
         const success = await deleteBudget(id);
         if (success) {
             loadBudgets();
@@ -59,7 +48,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                             type="text"
                             ref={categoryInputRef}
                             value={budget.category}
-                            onChange={handleChangeCategory}
+                            onChange={(e) => handleChangeBudgets(budget.id, { category: e.target.value })}
                             onKeyDown={handleSaveOnEnter}
                         />
                     ) : (
@@ -71,7 +60,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                         <input
                             type="number"
                             value={budget.amount}
-                            onChange={handleChangeBudgetCost}
+                            onChange={(e) => handleChangeBudgets(budget.id, { amount: parseInt(e.target.value) })}
                             onKeyDown={handleSaveOnEnter}
                             autoFocus
                         />
@@ -101,11 +90,10 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                 <tr>
                     <td colSpan={4}>
                         <ExpenseAccordion
-                            show={showExpenseAccordion}
                             expenses={expenses}
                             handleClose={() => setShowExpenseAccordion(false)}
                             loadExpenses={loadExpenses}
-                            deleteBudget={removeBudget}
+                            deleteBudget={handleDeleteBudget}
                             budgetId={budget.id}
                         />
                     </td>
