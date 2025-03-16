@@ -94,7 +94,7 @@ describe('BudgetRowComponent', () => {
 
     test('variance is red when expenses exceed budget', () => {
         const variance = screen.getByTestId('variance');
-        expect(variance).toHaveStyle('color: red');
+        expect(variance).toHaveStyle('color: rgb(184, 0, 0)');
     });
 
     test('can toggle editing state', () => {

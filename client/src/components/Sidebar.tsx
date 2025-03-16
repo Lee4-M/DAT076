@@ -48,7 +48,7 @@ export function Sidebar({ loadBudgets, expenses, handleSaveBudgetRows, isEditing
     );
 
     return (
-        <Container data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
+        <Container as="nav" data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
             <Row>
                 <Image src="/images/Budgie_Logo.svg" alt="Budgie" className="img-fluid w-25 h-auto mx-auto d-block" />
             </Row>
@@ -88,7 +88,7 @@ export function Sidebar({ loadBudgets, expenses, handleSaveBudgetRows, isEditing
                 </Card>
             </Row>
             <Row className="p-3">
-                <button className="sidebar-button" onClick={handleLogout}>Sign out</button>
+                <button role="button" className="sidebar-button" onClick={handleLogout}>Sign out</button>
             </Row>
             <ExpenseModal show={showExpenseModal} handleClose={() => setShowExpenseModal(false)} onSave={() => {
                 setShowExpenseModal(false);

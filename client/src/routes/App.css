@@ -7,7 +7,7 @@
 
 :root {
   --main-bg-color: #e6da6a;
-  --main-secondary-color: #409BC9;
+  --main-secondary-color: #317a9f;
   --main-accent-color: #FFE72F;
   --main-border-color: #b9cde1;
 }
@@ -51,7 +51,7 @@ button {
 }
 
 .sidebar-button:hover{
-  background-color: #337B9F;
+  background-color: #245771;
 }
 
 tbody > tr > td:last-child {
@@ -199,12 +199,12 @@ tbody > tr > td:last-child {
 .delete-budget-btn{
   font-size: 14px;
   background-color: inherit !important;
-  color: red;
+  color: #b80000;
   text-decoration: underline;
 }
 
 .delete-budget-btn:hover{
-  color: #900000;
+  color: #640000;
 }
 
 .edit-budget-btn{
@@ -228,5 +228,10 @@ tbody > tr > td:last-child {
 
 .close-budget-btn:hover{
   color: #424546;
+}
+
+/* Text color to contrast the blue main color */
+.blue-contrast-text{
+  color:rgb(255, 255, 255);
 }
 

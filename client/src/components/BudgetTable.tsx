@@ -49,12 +49,12 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
     }], [sortOrder]);
 
     return (
-        <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
+        <section role="main" className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
                 <Table striped data-testid="budget-table" className="budget-table p-2  text-center">
                     <thead>
                         <tr>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("category")} className="m-auto py-2">Category
                                     <img 
                                             src={getSortIcon("category")} 
@@ -65,7 +65,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                         />
                                 </div>
                             </th>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("amount")}  className="m-auto py-2">Budget 
                                 <img 
                                         src={getSortIcon("amount")} 
@@ -76,7 +76,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                     />
                                 </div>
                             </th>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("totalExpenses")} className="m-auto py-2">Expense
                                     <img 
                                             src={getSortIcon("totalExpenses")} 
@@ -87,7 +87,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                         />
                                 </div>
                             </th>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("result")} className="m-auto py-2">Result
                                     <img 
                                             src={getSortIcon("result")} 
@@ -98,8 +98,8 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                         />
                                 </div>
                             </th>
-                            <th>
-                            </th>
+                            <th scope="col">
+                                </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,15 +126,16 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                 />
                             ))
                         )}
+
                     </tbody>
                 </Table>
             </div>
 
             <div data-testid="total-row" className="p-4 m-2 rounded text-center d-flex fw-bold justify-content-between text-white" id="total-row">
-                <div className="flex-fill">Total</div>
-                <div className="flex-fill">{totalBudget} :-</div>
-                <div className="flex-fill">{totalExpenses} :-</div>
-                <div className="flex-fill">{result} :-</div>
+                <div className="flex-fill blue-contrast-text">Total</div>
+                <div className="flex-fill blue-contrast-text">{totalBudget} :-</div>
+                <div className="flex-fill blue-contrast-text">{totalExpenses} :-</div>
+                <div className="flex-fill blue-contrast-text">{result} :-</div>
             </div>
 
             <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={loadBudgets} />

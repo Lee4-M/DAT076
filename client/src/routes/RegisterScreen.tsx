@@ -72,7 +72,7 @@ const Register: React.FC = () => {
     <div className="container-fluid vh-100">
       <div className="row h-100">
         {/* Left Side*/}
-        <div
+        <header
           className="col-md-6 d-none d-md-flex left-section"
         >
           <div className="text-center p-5">
@@ -89,10 +89,10 @@ const Register: React.FC = () => {
               Register for Budgie to start budgeting your money. Keep track of your expenses and income.
             </p>
           </div>
-        </div>
+        </header>
 
         {/*Right Side */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center">
+        <main className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="w-75 mx-auto">
             <h2 className="text-center mb-4">Sign Up</h2>
             {error && <div className="error-message">{error}</div>}
@@ -127,7 +127,7 @@ const Register: React.FC = () => {
               </div>
             </form>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
