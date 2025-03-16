@@ -41,3 +41,9 @@ BudgetRowModel.init(
     ]
   }
 );
+
+BudgetRowModel.hasMany(ExpenseModel, {
+  foreignKey: "budgetRowId",
+  as: "expenses",
+  onDelete: "CASCADE",
+});

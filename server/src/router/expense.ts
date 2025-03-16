@@ -51,9 +51,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const category = req.body.category;
-            const cost = req.body.cost;
-            const description = req.body.description;
+            const { category, cost, description } = req.body;
             if ((typeof (category) !== "string") || (typeof (cost) !== "number") || (typeof (description) !== "string")) {
                 res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)} or cost has type ${typeof (cost)} or description has type ${typeof (description)}`);
                 return;
