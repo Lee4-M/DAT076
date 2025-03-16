@@ -49,7 +49,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
     }], [sortOrder]);
 
     return (
-        <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
+        <section role="main" className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
                 <Table striped  className="budget-table p-2  text-center">
                     <thead>
@@ -126,16 +126,16 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                 />
                             ))
                         )}
-                      
+                    
                     </tbody>
                 </Table>
             </div>
 
             <div className="p-4 m-2 rounded text-center d-flex fw-bold justify-content-between text-white" id="total-row">
-                <div className="flex-fill">Total</div>
-                <div className="flex-fill">{totalBudget} :-</div>
-                <div className="flex-fill">{totalExpenses} :-</div>
-                <div className="flex-fill">{result} :-</div>
+                <div className="flex-fill blue-contrast-text">Total</div>
+                <div className="flex-fill blue-contrast-text">{totalBudget} :-</div>
+                <div className="flex-fill blue-contrast-text">{totalExpenses} :-</div>
+                <div className="flex-fill blue-contrast-text">{result} :-</div>
             </div>
 
             <BudgetItemModal show={showBudgeteModal} handleClose={() => setShowBudgetModal(false)} onSave={loadBudgets} />

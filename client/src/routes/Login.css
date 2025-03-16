@@ -9,7 +9,7 @@
 }
 
 .login-btn{
-  background: #409BC9;
+  background: #245771;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
@@ -18,7 +18,7 @@
 }
 
 .login-button, .register-button {
-  background-color: #409bc9; 
+  background-color: #245771; 
   color: #fff;             
   font-size: 16px;          
   font-weight: bold;       
@@ -30,7 +30,7 @@
 }
 
 .login-button:hover, .register-button:hover {
-  background-color: rgb(19, 81, 126); 
+  background-color: rgb(14, 59, 92); 
   color: #fff;
   cursor: pointer;           
 }

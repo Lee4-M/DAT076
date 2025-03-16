@@ -81,7 +81,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                 </td>
                 <td>{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
                 <td 
-                    style={{ color: (budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)) < 0 ? 'red' : 'black' }}
+                    style={{ color: (budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)) < 0 ? "#b80000" : 'black' }}
                 >
                     {budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-
                 </td>
