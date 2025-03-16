@@ -63,7 +63,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
             }
         }
 
-        if (expenseName.length > 20 || description.length > 20 || cost.length > 20) {
+        if (expenseName.length > 20 || description.length > 50 || cost.length > 20) {
             alert('Character limit of 20 exceeded.');
             return;
         }
