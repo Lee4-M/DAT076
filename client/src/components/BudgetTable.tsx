@@ -7,15 +7,15 @@ import _ from "lodash";
 
 interface BudgetTableProps {
     budgets: Budget[];
-    loadBudgets: () => void;
     expenses: { [budget_id: number]: Expense[] };
-    loadExpenses: () => void;
     isEditing: boolean;
-    onEdit: (id: number, category: string, amount: number) => void;
-    onSave: () => void;
+    loadBudgets: () => void;
+    loadExpenses: () => void;
+    handleChangeBudgets: (id: number, changes: Partial<Budget>) => void;
+    handleSaveBudgetRows: () => void;
 }
 
-export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEdit, onSave, isEditing }: BudgetTableProps) {
+export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadExpenses, handleChangeBudgets, handleSaveBudgetRows }: BudgetTableProps) {
     const [sortBy, setSortBy] = useState<string>('category');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -23,7 +23,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
     const totalExpenses = Object.values(expenses).flat().reduce((total, expense) => total + expense.cost, 0);
     const result = totalBudget - totalExpenses;
 
-    const [showBudgeteModal, setShowBudgetModal] = useState(false);
+    const [showBudgetModal, setShowBudgetModal] = useState(false);
 
     const getSortIcon = (column: string) => {
         if (sortBy !== column) return "/images/Filter-Base.svg"; 
@@ -99,7 +99,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                 </div>
                             </th>
                             <th>
-                                </th>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -121,12 +121,11 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                     loadExpenses={loadExpenses}
                                     expenses={expenses[budget.id] || []}
                                     isEditing={isEditing} 
-                                    onEdit={onEdit} 
-                                    onSave={onSave}
+                                    handleChangeBudgets={handleChangeBudgets} 
+                                    handleSaveBudgetRows={handleSaveBudgetRows}
                                 />
                             ))
                         )}
-                      
                     </tbody>
                 </Table>
             </div>
@@ -138,7 +137,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                 <div className="flex-fill">{result} :-</div>
             </div>
 
-            <BudgetItemModal show={showBudgeteModal} handleClose={() => setShowBudgetModal(false)} onSave={loadBudgets} />
+            <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={loadBudgets} />
         
         </section>
     );

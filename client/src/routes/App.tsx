@@ -33,7 +33,7 @@ function App() {
     setExpenses(expensesMap);
   }, [budgets]);
 
-  async function handleSave() {
+  async function handleSaveBudgetRows() {
     setIsEditing(!isEditing);
     if(isEditing) {
       await updateBudgetRows(editedBudgets);
@@ -41,16 +41,14 @@ function App() {
     }
   }
 
-  async function handleUpdateBudget(id: number, category: string, amount: number) {
-    setEditedBudgets(prevBudgets => 
-      prevBudgets.map(budget => 
-        budget.id === id ? { ...budget, category, amount } : budget
+  async function handleChangeBudgets(id: number, changes: Partial<Budget>) {
+    setEditedBudgets(prevBudgets =>
+      prevBudgets.map(budget =>
+        budget.id === id ? { ...budget, ...changes } : budget
       )
     );
   }
 
-  // Som onMount i Svelte, körs när komponenten renderas.
-  // Inte helt säker om detta funkar som tänkt
   useEffect(() => {
     loadBudgets();
   }, [loadBudgets]);
@@ -68,8 +66,8 @@ function App() {
     <>
       <Container fluid className="bg-body-secondary h-100 w-100">
         <Row className='h-100'>
-          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} budgets={budgets} isEditing={isEditing} onSave={handleSave}/></Col>
-          <Col lg="9" className='p-3'><BudgetTable loadBudgets={loadBudgets} loadExpenses={loadExpenses} budgets={editedBudgets} expenses={expenses} isEditing={isEditing} onEdit={handleUpdateBudget} onSave={handleSave}/></Col>
+          <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} budgets={budgets} isEditing={isEditing} handleSaveBudgetRows={handleSaveBudgetRows}/></Col>
+          <Col lg="9" className='p-3'><BudgetTable budgets={editedBudgets} expenses={expenses} isEditing={isEditing} loadBudgets={loadBudgets} loadExpenses={loadExpenses} handleChangeBudgets={handleChangeBudgets} handleSaveBudgetRows={handleSaveBudgetRows}/></Col>
         </Row>
       </Container>
     </>

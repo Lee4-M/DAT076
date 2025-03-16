@@ -100,6 +100,16 @@ export async function updateBudgetRow(id: number, category: string, amount: numb
     }
 }
 
+export async function updateExpense(id: number, cost: number, description: string): Promise<Expense | undefined> {
+    try {
+        const response = await axios.put(`${BASE_URL}/expense`, { id: id, cost: cost, description: description });
+        return response.data;
+    } catch (e: any) {
+        console.log(e);
+        return undefined;
+    }
+}
+
 export async function updateBudgetRows(budgets : Budget[]): Promise<Budget[] | undefined> {
     try {
         const ids: number[] = [];
@@ -112,6 +122,16 @@ export async function updateBudgetRows(budgets : Budget[]): Promise<Budget[] | u
             amounts.push(budget.amount);
         }
         const response = await axios.put(`${BASE_URL}/budgets`, { ids: ids, categories: categories, amounts: amounts });
+        return response.data;
+    } catch (e: any) {
+        console.log(e);
+        return undefined;
+    }
+}
+
+export async function updateExpenses(ids: number[], costs: number[], descriptions: string[]): Promise<Expense[] | undefined> {
+    try {
+        const response = await axios.put(`${BASE_URL}/expenses`, { ids: ids, costs: costs, descriptions: descriptions });
         return response.data;
     } catch (e: any) {
         console.log(e);
