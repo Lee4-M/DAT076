@@ -109,6 +109,10 @@ export class BudgetRowService implements IBudgetRowService {
     }
 
     async updateAllBudgetRows(username: string, ids: number[], categories: string[], amounts: number[]): Promise<BudgetRow[] | undefined> {
+        if (ids.length !== categories.length || ids.length !== amounts.length) {
+            console.warn("Mismatched array lengths.");
+            return undefined;
+        }
         
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
