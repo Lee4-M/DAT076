@@ -1,7 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { Expense } from "../model/expense.interface";
 import { IExpenseService } from "../service/interface/IExpenseService";
-import exp from "constants";
 
 export function expenseRouter(expenseService: IExpenseService): Router {
     const expenseRouter = express.Router();
