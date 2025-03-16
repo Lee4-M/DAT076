@@ -41,8 +41,8 @@ describe('BudgetTable', () => {
                 expenses={expenses}
                 loadExpenses={mockLoadExpenses}
                 isEditing={isEditing}
-                onEdit={mockOnEdit}
-                onSave={mockOnSave}
+                handleChangeBudgets={mockOnEdit}
+                handleSaveBudgetRows={mockOnSave}
             />
         );
     };
@@ -113,8 +113,8 @@ describe('BudgetTable', () => {
                 expenses={expenses}
                 loadExpenses={mockLoadExpenses}
                 isEditing={isEditing}
-                onEdit={mockOnEdit}
-                onSave={mockOnSave}
+                handleChangeBudgets={mockOnEdit}
+                handleSaveBudgetRows={mockOnSave}
             />
         );
         const noBudgetsMessage = screen.getByText('Create Your First Budget!');
@@ -194,7 +194,7 @@ describe('BudgetTable', () => {
         const categoryInput = screen.getByDisplayValue('Food');
         fireEvent.change(categoryInput, { target: { value: 'Groceries' } });
 
-        expect(mockOnEdit).toHaveBeenCalledWith(1, 'Groceries', 100);
+        expect(mockOnEdit).toHaveBeenCalledWith(1, { category: 'Groceries' });
     });
 
     test('calls onSave when Enter key is pressed in BudgetRowComponent', () => {

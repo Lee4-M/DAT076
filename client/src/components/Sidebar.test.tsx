@@ -26,7 +26,7 @@ describe('Sidebar Component', () => {
           expenses={{}} 
           budgets={[]} 
           isEditing={false} 
-          onSave={mockOnSave}  
+          handleSaveBudgetRows={mockOnSave}  
         />
       </MemoryRouter>
     );
@@ -92,7 +92,7 @@ describe('Sidebar Component', () => {
           expenses={{}} 
           budgets={[]} 
           isEditing={isEditing}
-          onSave={mockOnSave}  
+          handleSaveBudgetRows={mockOnSave}  
         />
       </MemoryRouter>
     );

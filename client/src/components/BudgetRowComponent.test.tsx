@@ -40,8 +40,8 @@ describe('BudgetRowComponent', () => {
                 expenses={expenses}
                 loadExpenses={mockLoadExpenses}
                 isEditing={isEditing}
-                onEdit={mockOnEdit}
-                onSave={mockOnSave}
+                handleChangeBudgets={mockOnEdit}
+                handleSaveBudgetRows={mockOnSave}
             />
         );
     };
@@ -112,7 +112,7 @@ describe('BudgetRowComponent', () => {
         const categoryInput = screen.getByDisplayValue('Food');
         fireEvent.change(categoryInput, { target: { value: 'Groceries' } });
 
-        expect(mockOnEdit).toHaveBeenCalledWith(1, 'Groceries', 100);
+        expect(mockOnEdit).toHaveBeenCalledWith(1, { category: 'Groceries' });
     });
 
     test('calls onEdit when budget amount input is changed', () => {
@@ -122,7 +122,7 @@ describe('BudgetRowComponent', () => {
         const amountInput = screen.getByDisplayValue('100');
         fireEvent.change(amountInput, { target: { value: '150' } });
 
-        expect(mockOnEdit).toHaveBeenCalledWith(1, 'Food', 150);
+        expect(mockOnEdit).toHaveBeenCalledWith(1, { amount: 150 });
     });
 
     test('calls onSave when Enter key is pressed in amount input', () => {
