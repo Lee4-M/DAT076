@@ -51,7 +51,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
     return (
         <section className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
             <div className="flex-grow-1 overflow-auto table-responsive">
-                <Table striped  className="budget-table p-2  text-center">
+                <Table striped data-testid="budget-table" className="budget-table p-2  text-center">
                     <thead>
                         <tr>
                             <th className="budget-table-hover">
@@ -130,7 +130,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                 </Table>
             </div>
 
-            <div className="p-4 m-2 rounded text-center d-flex fw-bold justify-content-between text-white" id="total-row">
+            <div data-testid="total-row" className="p-4 m-2 rounded text-center d-flex fw-bold justify-content-between text-white" id="total-row">
                 <div className="flex-fill">Total</div>
                 <div className="flex-fill">{totalBudget} :-</div>
                 <div className="flex-fill">{totalExpenses} :-</div>
