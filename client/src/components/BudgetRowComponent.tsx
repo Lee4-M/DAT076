@@ -52,7 +52,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
 
     return (
         <>
-            <tr className="budget-row hovering" onClick={handleOpenAccordion}>
+            <tr data-testid="budget-row" className="budget-row hovering" onClick={handleOpenAccordion}>
             <td>
                     {isEditing ? (
                         <input
@@ -79,8 +79,9 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                          <span>{budget.amount} :-</span>
                     )}
                 </td>
-                <td>{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
+                <td data-testid="total-expenses">{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
                 <td 
+                    data-testid="variance"
                     style={{ color: (budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)) < 0 ? 'red' : 'black' }}
                 >
                     {budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-
