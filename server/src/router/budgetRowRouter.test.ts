@@ -148,6 +148,14 @@ describe("BudgetRow API Tests", () => {
             await agent.put("/budget").send({ id: 999, category: "Groceries", amount: 500 }).expect(404);
         });
 
+        test("Returns 400 when body is not an object", async () => {
+            await agent.put("/budgets").send([]).expect(400, "Bad PUT call to /budgets --- invalid request body");
+        });
+    
+        test("Returns 400 when required properties are missing", async () => {
+            await agent.put("/budgets").send({}).expect(400, "Bad PUT call to /budgets --- invalid request body");
+        });
+
         test("Handle internal server error gracefully", async () => {
             jest.spyOn(budgetRowService, "updateBudgetRow").mockRejectedValue(new Error("Database error"));
             await agent.put("/budget").send({ id: 1, category: "Groceries", amount: 500 }).expect(500, "Database error");
