@@ -21,7 +21,6 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
 
   console.log("Using in-memory database for testing/development");
 } else {
-
   const DB_NAME: string = process.env.DB_NAME!;
   const DB_USER: string = process.env.DB_USER!;
   const DB_PASSWORD: string = process.env.DB_PASSWORD!;
@@ -46,11 +45,11 @@ if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
 
   console.log("Using PostgreSQL database for development/production");
 }
+
 export { sequelize, db };
 
 export async function initDB() {
   try {
-    await import('./associations');
     await sequelize.sync({ alter: true, force: false });
     console.log('Database synced successfully');
   } catch (error) {

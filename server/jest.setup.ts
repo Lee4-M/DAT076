@@ -2,8 +2,8 @@ import { db, sequelize } from "./src/db/conn";
 
 let backup: ReturnType<typeof db.backup>;
 
+// Setup and teardown database between test cases
 beforeAll(async () => {
-  await import('./src/db/associations');
   await sequelize.sync({ force: true });
   backup = db.backup();
 });

@@ -46,7 +46,7 @@ describe("User API Tests", () => {
 
         test("Fail to register a user that already exists", async () => {
             await agent.post("/user").send({ username, password }).expect(201);
-            await agent.post("/user").send({ username, password }).expect(500, "Failed to register user: User already exists");
+            await agent.post("/user").send({ username, password }).expect(400, "Failed to register user: User already exists");
         });
 
         test("Handle internal server error gracefully", async () => {
