@@ -135,12 +135,19 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         session: any
     }
 
-    function isValidBudgetRequest(body: any): body is EditBudgetsRequest["body"] {
-        return Array.isArray(body.ids) && body.ids.every((id: number) => typeof id === "number")
-            && Array.isArray(body.categories) && body.categories.every((category: string) => typeof category === "string")
-            && Array.isArray(body.amounts) && body.amounts.every((amount: number) => typeof amount === "number")
-            && body.ids.length === body.categories.length
-            && body.categories.length === body.amounts.length;
+    function isValidBudgetRequest(body: unknown): body is EditBudgetsRequest["body"] {
+        if (typeof body !== "object" || body === null || !("ids" in body) || !("categories" in body) || !("amounts" in body)) {
+            return false;
+        }
+    
+        const { ids, categories, amounts } = body 
+    
+        return (
+            Array.isArray(ids) && ids.every(id => typeof id === "number") &&
+            Array.isArray(categories) && categories.every(category => typeof category === "string") &&
+            Array.isArray(amounts) && amounts.every(amount => typeof amount === "number") &&
+            ids.length === categories.length && categories.length === amounts.length
+        );
     }
 
     budgetRowRouter.put("/budgets", async (
