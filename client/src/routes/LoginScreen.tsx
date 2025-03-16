@@ -36,7 +36,7 @@ const Login = () => {
           className="col-md-6 d-none d-md-flex left-section"
   
         >
-          <div className="text-center p-5">
+          <header className="text-center p-5">
           <img
               src="/images/Budgie_Logo.svg" 
               alt="Budgie Logo"
@@ -48,15 +48,15 @@ const Login = () => {
               Budget your money with Budgie. Keep track of your expenses and
               income.
             </p>
-          </div>
+          </header>
         </div>
 
         {/* Form Section Right Side */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center">
+        <main className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="w-75 mx-auto">
             <h2 className="text-center mb-4">Welcome to Budgie</h2>
             {error && <div className="error-message">{error}</div>}
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} >
               <div className="mb-3">
                 <input
                   type="text"
@@ -86,7 +86,7 @@ const Login = () => {
               </div>
             </form>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

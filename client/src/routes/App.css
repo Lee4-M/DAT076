@@ -199,12 +199,12 @@ tbody > tr > td:last-child {
 .delete-budget-btn{
   font-size: 14px;
   background-color: inherit !important;
-  color: red;
+  color: #b80000;
   text-decoration: underline;
 }
 
 .delete-budget-btn:hover{
-  color: #900000;
+  color: #640000;
 }
 
 .edit-budget-btn{

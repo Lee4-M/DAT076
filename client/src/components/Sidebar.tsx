@@ -48,18 +48,18 @@ export function Sidebar({ loadBudgets, expenses, onSave, isEditing, budgets}: Si
     );
 
     return (
-        <Container data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
+        <Container as="nav" data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
             <Row>
                 <Image src="/images/Budgie_Logo.svg" alt="Budgie" className="img-fluid w-25 h-auto mx-auto d-block" />
             </Row>
-            <Row className="px-3 pt-4">
-                <button role="button" className="sidebar-button" onClick={() => setShowBudgetModal(true)}>Add budget</button>
+            <Row role="button" className="px-3 pt-4">
+                <button className="sidebar-button" onClick={() => setShowBudgetModal(true)}>Add budget</button>
             </Row>
-            <Row className="px-3 pt-3">
-                <button role="button" className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
+            <Row role="button" className="px-3 pt-3">
+                <button className="sidebar-button" onClick={() => setShowExpenseModal(true)}>Add expense</button>
             </Row>
-            <Row className="px-3 py-3">
-                <button role="button" className="sidebar-button" onClick={(onSave)}>{isEditing ? "Save changes" : "Edit budget"}</button>
+            <Row role="button" className="px-3 py-3">
+                <button className="sidebar-button" onClick={(onSave)}>{isEditing ? "Save changes" : "Edit budget"}</button>
             </Row>
             <Row className="p-3">
                 <Card className="d-flex justify-content-center align-items-center">

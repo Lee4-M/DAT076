@@ -54,7 +54,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                 <Table striped  className="budget-table p-2  text-center">
                     <thead>
                         <tr>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("category")} className="m-auto py-2">Category
                                     <img 
                                             src={getSortIcon("category")} 
@@ -65,7 +65,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                         />
                                 </div>
                             </th>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("amount")}  className="m-auto py-2">Budget 
                                 <img 
                                         src={getSortIcon("amount")} 
@@ -76,7 +76,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                     />
                                 </div>
                             </th>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("totalExpenses")} className="m-auto py-2">Expense
                                     <img 
                                             src={getSortIcon("totalExpenses")} 
@@ -87,7 +87,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                         />
                                 </div>
                             </th>
-                            <th className="budget-table-hover">
+                            <th scope="col" className="budget-table-hover">
                                 <div onClick={() => handleSort("result")} className="m-auto py-2">Result
                                     <img 
                                             src={getSortIcon("result")} 
@@ -98,7 +98,7 @@ export function BudgetTable({ budgets, loadBudgets, expenses, loadExpenses, onEd
                                         />
                                 </div>
                             </th>
-                            <th>
+                            <th scope="col">
                                 </th>
                         </tr>
                     </thead>
