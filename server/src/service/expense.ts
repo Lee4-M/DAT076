@@ -22,7 +22,7 @@ export class ExpenseService implements IExpenseService {
     }
 
     async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {
-        if(!username || !category || cost < 0 || !description) {
+        if(!username || !category || cost < 0) {
             console.error("Invalid input: username, category, cost, or description: ", username, category, cost, description);
             return undefined;
         }

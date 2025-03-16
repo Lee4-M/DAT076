@@ -43,14 +43,27 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     }
 
     async function saveExpense() {
-        const expenseCost = parseFloat(cost);
         const categoryToUse = isCustomCategory ? customCategory : expenseName;
 
-        if (!categoryToUse || isNaN(expenseCost) || !description) {
-            alert('Please fill in all fields correctly.');
+        if (!categoryToUse) {
+            alert('Please select a category.');
             return;
         }
-        if (expenseName.length > 20 || description.length > 20 || cost.length > 20) {
+
+        let expenseCost: number;
+
+        if (cost === '') {
+            alert('Please fill in a cost.');
+            return;
+        } else {
+            expenseCost = parseFloat(cost);
+            if (expenseCost < 0 || isNaN(expenseCost)) {
+                alert('Please enter a positive number as the cost.');
+                return;
+            }
+        }
+
+        if (expenseName.length > 20 || description.length > 50 || cost.length > 20) {
             alert('Character limit of 20 exceeded.');
             return;
         }
@@ -80,6 +93,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                 <Form.Group className="mb-3">
                         <Form.Label>Category</Form.Label>
                         <Form.Select
+                            data-testid="category-select"
                             value={expenseName || ""}
                             onChange={(e) => handleCategoryChange(e.target.value)}
                             className={!expenseName ? "text-muted" : ""}
