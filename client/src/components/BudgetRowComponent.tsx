@@ -63,7 +63,7 @@ export function BudgetRowComponent({ budget, loadBudgets, expenses, loadExpenses
                             onKeyDown={handleSaveOnEnter}
                         />
                     ) : (
-                         <span>{budget.category} :-</span>
+                         <span>{budget.category}</span>
                     )}
                 </td>
                 <td>

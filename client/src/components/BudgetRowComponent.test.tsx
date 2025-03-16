@@ -63,7 +63,7 @@ describe('BudgetRowComponent', () => {
     });
 
     test('renders budget category', () => {
-        const category = screen.getByText('Food :-');
+        const category = screen.getByText('Food');
         expect(category).toBeInTheDocument();
     });
 
