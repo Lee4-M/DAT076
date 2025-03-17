@@ -30,7 +30,7 @@ const Login = () => {
     return (
         <div className="container-fluid vh-100">
             <div className="row h-100">
-                {/* Photo Left Side */}
+                {/* Banner on left side */}
                 <div className="col-md-6 d-none d-md-flex left-section">
                     <header className="text-center p-5">
                         <img
@@ -47,7 +47,7 @@ const Login = () => {
                     </header>
                 </div>
 
-                {/* Form Section Right Side */}
+                {/* Form Section on right side */}
                 <main className="col-md-6 d-flex align-items-center justify-content-center">
                     <div className="w-75 mx-auto">
                         <h2 className="text-center mb-4">Welcome to Budgie</h2>
