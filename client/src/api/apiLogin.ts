@@ -4,6 +4,7 @@ const BASE_URL = "http://localhost:8080";
 
 axios.defaults.withCredentials = true;
 
+/* Register a new user with username and password */
 export async function registerUser(username: string, password: string): Promise<void> {
     try {
         const response = await axios.post(`${BASE_URL}/user`, { username, password });
@@ -14,6 +15,7 @@ export async function registerUser(username: string, password: string): Promise<
     }
 };
 
+/* Logs in a user with username and password */
 export async function login(username: string, password: string): Promise<void> {
     try {
         const response = await axios.post(`${BASE_URL}/user/login`, { username, password });
@@ -23,6 +25,7 @@ export async function login(username: string, password: string): Promise<void> {
     }
 };
 
+/* Logs out current user  */
 export async function logout(): Promise<void> {
     try {
         await axios.post(`${BASE_URL}/user/logout`);

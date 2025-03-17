@@ -18,6 +18,7 @@ export type Expense = {
 
 const BASE_URL = "http://localhost:8080"
 
+/* Retrieves all expenses for a given budget row */
 export async function getExpenses(budgetRowId: number): Promise<Expense[] | undefined> {
     try {
         const response = await axios.get<Expense[]>(`${BASE_URL}/expense/${budgetRowId}`);
@@ -28,6 +29,7 @@ export async function getExpenses(budgetRowId: number): Promise<Expense[] | unde
     }
 }
 
+/* Retrieves all bugets for the current user */
 export async function getBudgets(): Promise<Budget[] | undefined> {
     try {
         const response = await axios.get<Budget[]>(`${BASE_URL}/budget`)
@@ -48,6 +50,7 @@ export async function getBudget(category: string): Promise<Budget | undefined> {
     }
 }
 
+/* Adds new expense under a budget category */
 export async function addExpense(category: string, cost: number, description: string): Promise<Expense | undefined> {
     try {
         const response = await axios.post<Expense>(`${BASE_URL}/expense`, { category: category, cost: cost, description: description });
@@ -58,6 +61,8 @@ export async function addExpense(category: string, cost: number, description: st
     }
 }
 
+
+/*Adds a new budget category with an amount */
 export async function addBudget(category: string, amount: number): Promise<Budget | undefined> {
     try {
         console.log("Sending POST request to:", `${BASE_URL}/budget`, { category: category, amount: amount });
@@ -69,6 +74,7 @@ export async function addBudget(category: string, amount: number): Promise<Budge
     }
 }
 
+/* Deletes an expense by ID */
 export async function deleteExpense(id: number): Promise<boolean> {
     try {
         const response = await axios.delete(`${BASE_URL}/expense/${id}`);
@@ -86,6 +92,7 @@ export async function deleteExpense(id: number): Promise<boolean> {
     }
 }
 
+/* Deletes a budget row by ID */ 
 export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     try {
         const response = await axios.delete(`${BASE_URL}/budget/${budgetRowId}`);
@@ -103,6 +110,7 @@ export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     }
 }
 
+/* Updates a single budget row with new values (category, amount)*/
 export async function updateBudgetRow(id: number, category: string, amount: number): Promise<Budget | undefined> {
     try {
         const response = await axios.put(`${BASE_URL}/budget/${id}`, { category: category, amount: amount });
@@ -113,6 +121,7 @@ export async function updateBudgetRow(id: number, category: string, amount: numb
     }
 }
 
+/* Update a single expense with new values (cost, description)*/ 
 export async function updateExpense(id: number, cost: number, description: string, budgetRowId?: number): Promise<Expense | undefined> {
     try {
         const response = await axios.put(`${BASE_URL}/expense/${id}`, { cost: cost, description: description, budgetRowId: budgetRowId } );
@@ -123,6 +132,7 @@ export async function updateExpense(id: number, cost: number, description: strin
     }
 }
 
+/* Updates multiple budget rows at the same time (categories, amounts) */
 export async function updateBudgetRows(budgets: Budget[]): Promise<Budget[] | undefined> {
     try {
         const ids: number[] = [];
@@ -142,6 +152,7 @@ export async function updateBudgetRows(budgets: Budget[]): Promise<Budget[] | un
     }
 }
 
+/* Updates multiple expenses at the same time (costs, descriptions) */
 export async function updateExpenses(ids: number[], costs: number[], descriptions: string[]): Promise<Expense[] | undefined> {
     try {
         const response = await axios.put(`${BASE_URL}/expenses`, { costs: costs, descriptions: descriptions }, { params: { ids: ids } });
