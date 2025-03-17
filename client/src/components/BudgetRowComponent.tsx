@@ -42,9 +42,10 @@ export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, l
     return (
         <>
             <tr data-testid="budget-row" className="budget-row hovering" onClick={handleOpenAccordion}>
-            <td>
+                <td>
                     {isEditing ? (
                         <input
+                            title="input-category"
                             type="text"
                             ref={categoryInputRef}
                             value={budget.category}
@@ -58,6 +59,7 @@ export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, l
                 <td>
                     {isEditing ? (
                         <input
+                            title="input-amount"
                             type="number"
                             value={budget.amount}
                             onChange={(e) => handleChangeBudgets(budget.id, { amount: parseInt(e.target.value) })}
@@ -68,22 +70,22 @@ export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, l
                          <span>{budget.amount} :-</span>
                     )}
                 </td>
-                <td data-testid="total-expenses">{expenses.reduce((total, expense) => total + expense.cost, 0)} :-</td>
+                <td data-testid="total-expenses">
+                    {expenses.reduce((total, expense) => total + expense.cost, 0)} :-
+                </td>
                 <td data-testid="variance"
                     style={{ color: (budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)) < 0 ? "#b80000" : 'black' }}
-
                 >
                     {budget.amount - expenses.reduce((total, expense) => total + expense.cost, 0)} :-
                 </td>
                 <td className='text-center col-1 ps-0'>
-                  <img 
-                      src={showExpenseAccordion ? "/images/arrow-down.svg" : "/images/arrow-left.svg"} 
-                      alt="Toggle Arrow" 
-                      width="15" 
-                      height="15" 
-                      style={{ display: "block", margin: "auto" }}
-                  />
-
+                    <img 
+                        src={showExpenseAccordion ? "/images/arrow-down.svg" : "/images/arrow-left.svg"} 
+                        alt="Toggle Arrow" 
+                        width="15" 
+                        height="15" 
+                        style={{ display: "block", margin: "auto" }}
+                    />
                 </td>
             </tr>
 

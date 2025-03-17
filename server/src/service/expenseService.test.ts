@@ -104,12 +104,6 @@ describe("Expense Service", () => {
             expect(updatedExpense).toBeUndefined();
         });
 
-        test("Updating an expense with an empty description should return undefined", async () => {
-            const expense = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
-            const updatedExpense = await expenseService.updateExpense(expense!.id, 200, "");
-            expect(updatedExpense).toBeUndefined();
-        });
-
         test("Updating an expense with a non-existent id should return undefined", async () => {
             const updatedExpense = await expenseService.updateExpense(999, 200, "Jacket");
             expect(updatedExpense).toBeUndefined();

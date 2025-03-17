@@ -116,7 +116,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 return;
             }
             const newBudget: BudgetRow | undefined = await budgetRowService.updateBudgetRow(req.session.username, id, category, amount);
-            if(!newBudget) {
+            if (!newBudget) {
                 res.status(404).send("Budget row not found");
                 return;
             }
@@ -139,9 +139,9 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         if (typeof body !== "object" || body === null || !("ids" in body) || !("categories" in body) || !("amounts" in body)) {
             return false;
         }
-    
-        const { ids, categories, amounts } = body 
-    
+
+        const { ids, categories, amounts } = body
+
         return (
             Array.isArray(ids) && ids.every(id => typeof id === "number") &&
             Array.isArray(categories) && categories.every(category => typeof category === "string") &&
@@ -166,7 +166,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
             const { ids, categories, amounts } = req.body;
 
             const newBudgets: BudgetRow[] | undefined = await budgetRowService.updateAllBudgetRows(req.session.username, ids, categories, amounts);
-            if(!newBudgets) {
+            if (!newBudgets) {
                 res.status(404).send("Budget rows not found");
                 return;
             }
@@ -175,8 +175,8 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
             res.status(500).send(e.message);
         }
     });
-    
-    
+
+
     return budgetRowRouter;
 }
 

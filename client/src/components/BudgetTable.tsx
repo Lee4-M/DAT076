@@ -66,7 +66,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                delay: 100, 
+                delay: 50, 
                 tolerance: 5,
             },
         })
@@ -79,7 +79,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                     <Table striped data-testid="budget-table" className="budget-table p-2  text-center">
                         <thead>
                             <tr>
-                                <th scope="col" className="budget-table-hover">
+                                <th scope="col" className="budget-table-header">
                                     <div onClick={() => handleSort("category")} className="m-auto py-2">Category
                                         <img 
                                                 src={getSortIcon("category")} 
@@ -90,7 +90,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                             />
                                     </div>
                                 </th>
-                                <th scope="col" className="budget-table-hover">
+                                <th scope="col" className="budget-table-header">
                                     <div onClick={() => handleSort("amount")}  className="m-auto py-2">Budget 
                                     <img 
                                             src={getSortIcon("amount")} 
@@ -101,7 +101,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                         />
                                     </div>
                                 </th>
-                                <th scope="col" className="budget-table-hover">
+                                <th scope="col" className="budget-table-header">
                                     <div onClick={() => handleSort("totalExpenses")} className="m-auto py-2">Expense
                                         <img 
                                                 src={getSortIcon("totalExpenses")} 
@@ -112,7 +112,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                             />
                                     </div>
                                 </th>
-                                <th scope="col" className="budget-table-hover">
+                                <th scope="col" className="budget-table-header">
                                     <div onClick={() => handleSort("result")} className="m-auto py-2">Result
                                         <img 
                                                 src={getSortIcon("result")} 
@@ -132,9 +132,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                 <tr>
                                     <td colSpan={5} className="text-center p-3">
                                         <p>Create Your First Budget!</p>
-                                        <button onClick={() => setShowBudgetModal(true)} className="expense-row-btn">
-                                            Add Budget +
-                                        </button>
+                                        <button onClick={() => setShowBudgetModal(true)} className="expense-row-btn">Add Budget +</button>
                                     </td>
                                 </tr>
                             ) : (

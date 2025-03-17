@@ -20,7 +20,7 @@ interface SidebarProps {
     handleSaveBudgetRows: () => void,
 }
 
-export function Sidebar({ loadBudgets, expenses, handleSaveBudgetRows, isEditing, budgets}: SidebarProps) {
+export function Sidebar({ budgets, expenses, isEditing, loadBudgets, handleSaveBudgetRows}: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     

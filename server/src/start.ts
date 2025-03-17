@@ -15,17 +15,17 @@ export const app = express();
 
 dotenv.config();
 if (!process.env.SESSION_SECRET) {
-  console.error("Could not find SESSION_SECRET in .env file");
-  process.exit();
+    console.error("Could not find SESSION_SECRET in .env file");
+    process.exit();
 }
 app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
 }));
 app.use(cors({
-  origin: true,
-  credentials: true
+    origin: true,
+    credentials: true
 }));
 
 app.use(express.json());

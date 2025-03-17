@@ -58,7 +58,6 @@ tbody > tr > td:last-child {
   border: none !important;
 }
 
-
 .budget-table th {
   background-color: var(--main-accent-color) !important;
   color: #706301;
@@ -72,7 +71,7 @@ tbody > tr > td:last-child {
   
 }
 
-.budget-table-hover:hover {
+.budget-table-header:hover {
   background-color: #cab519 !important;
   color: white !important;
   cursor: pointer !important;
@@ -127,6 +126,7 @@ tbody > tr > td:last-child {
 .budget-row td:nth-child(4) {
   text-align: center;
 }
+
 /* Accordion Edit Button*/
 .expense-row-btn{
   background-color: var(--main-secondary-color);

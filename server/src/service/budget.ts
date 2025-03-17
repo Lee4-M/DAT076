@@ -105,7 +105,7 @@ export class BudgetRowService implements IBudgetRowService {
 
         await budgetRow.update({ userId: user.id, category: category, amount: amount });
 
-        return budgetRow; //TODO Check if this is the old or new budgetRow
+        return budgetRow;
     }
 
     async updateAllBudgetRows(username: string, ids: number[], categories: string[], amounts: number[]): Promise<BudgetRow[] | undefined> {

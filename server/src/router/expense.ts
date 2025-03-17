@@ -80,8 +80,8 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 return;
             }
             const id = req.body.id
-            if(typeof(id) !== "number") {
-                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof(id)}`);
+            if (typeof (id) !== "number") {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof (id)}`);
                 return;
             }
             await expenseService.deleteExpense(id);
@@ -90,7 +90,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
             res.status(500).send(e.message);
         }
     });
-    
+
 
     interface EditExpenseRequest extends Request {
         body: {
@@ -140,9 +140,9 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         if (typeof body !== "object" || body === null || !("ids" in body) || !("costs" in body) || !("descriptions" in body)) {
             return false;
         }
-    
-        const { ids, descriptions, costs } = body 
-    
+
+        const { ids, descriptions, costs } = body
+
         return (
             Array.isArray(ids) && ids.every(id => typeof id === "number") &&
             Array.isArray(costs) && costs.every(cost => typeof cost === "number") &&
@@ -160,7 +160,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            
+
             if (!isValidExpensesRequest(req.body)) {
                 res.status(400).send(`Bad PUT call to ${req.originalUrl} --- invalid request body`);
                 return;
