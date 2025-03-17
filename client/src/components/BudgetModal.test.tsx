@@ -2,23 +2,18 @@ import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import axios from 'axios';
 import BudgetItemModal from './BudgetModal';
-import { addBudget } from '../api/api';
 
-jest.mock('axios');
+jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-jest.mock("../api/api", () => ({
-    addBudget: jest.fn(() => Promise.resolve({ id: 1, category: "Groceries", amount: 200 }))
-}));
+mockedAxios.get.mockResolvedValue({ data: [{ id: 1, category: "Groceries", amount: 200 }] });
 
 describe('BudgetModal Component', () => {
     const mockHandleClose = jest.fn();
     const mockOnSave = jest.fn();
 
-    jest.clearAllMocks();
-    mockedAxios.get.mockResolvedValue({ data: [] });
-
     beforeEach(() => {
+        jest.clearAllMocks();
         render(
             <BudgetItemModal 
                 show={true}
@@ -70,9 +65,15 @@ describe('BudgetModal Component', () => {
         const categoryInput = screen.getByPlaceholderText('Enter category name');
         const amountInput = screen.getByPlaceholderText('Enter amount');
         const saveButton = screen.getByText('Save Budget');
+
+        mockedAxios.post.mockResolvedValue({
+            data: { id: 1, category: "Groceries", cost: 200},
+        });
     
-        fireEvent.change(categoryInput, { target: { value: 'Groceries' } });
-        fireEvent.change(amountInput, { target: { value: '' } });
+        await act(async () => {
+            fireEvent.change(categoryInput, { target: { value: 'Groceries' } });
+            fireEvent.change(amountInput, { target: { value: '' } });
+        });
     
         expect(amountInput).toHaveValue(null);
     
@@ -80,9 +81,11 @@ describe('BudgetModal Component', () => {
             fireEvent.click(saveButton);
         });
 
-        expect(addBudget).toHaveBeenCalledWith("Groceries", 0);
+        expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/budget", {
+            category: "Groceries",
+            amount: 0,
+        });
     });
-    
 
     test('shows alert if character limit is exceeded', () => {
         window.alert = jest.fn();

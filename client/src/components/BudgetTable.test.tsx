@@ -6,10 +6,6 @@ import axios from 'axios';
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-jest.mock('../api/api', () => ({
-    deleteBudget: jest.fn(),
-}));
-
 describe('BudgetTable', () => {
     const mockLoadBudgets = jest.fn();
     const mockLoadExpenses = jest.fn();
@@ -138,7 +134,6 @@ describe('BudgetTable', () => {
         
         const sortedRows = screen.getAllByRole('row');
         const sortedCategories = sortedRows.slice(1).map(row => row.children[0].textContent);
-        console.log(sortedCategories);
         expect(sortedCategories).toEqual(['Food', 'Transport']);
     });
 
@@ -208,7 +203,7 @@ describe('BudgetTable', () => {
         expect(mockOnSave).toHaveBeenCalled();
     });
 
-    test('opens budget modal when add budget button is clicked', async () => {
+    test('requests server when clicking Save Budget', async () => {
         render(
             <BudgetTable
                 budgets={[]}
@@ -228,5 +223,27 @@ describe('BudgetTable', () => {
 
         const budgetModal = screen.getByTestId('budget-modal');
         expect(budgetModal).toBeInTheDocument();
+
+        const categoryInput = screen.getByPlaceholderText('Enter category name');
+        const amountInput = screen.getByPlaceholderText('Enter amount');
+        const saveButton = screen.getByRole('button', { name: 'Save Budget' });
+
+        mockedAxios.post.mockResolvedValue({
+            data: { id: 3, category: 'Health', amount: 300, userId: 1 },
+        });
+
+        await act(async () => {
+            fireEvent.change(categoryInput, { target: { value: 'Health' } });
+            fireEvent.change(amountInput, { target: { value: '300' } });
+        });
+
+        await act(async () => {
+            fireEvent.click(saveButton);
+        });
+
+        expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/budget", {
+            category: 'Health',
+            amount: 300,
+        });
     });
 });

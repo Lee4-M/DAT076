@@ -1,14 +1,10 @@
 import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
-import axios from 'axios';
 import { BudgetRowComponent } from './BudgetRowComponent';
+import axios from 'axios';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-jest.mock('../api/api', () => ({
-    deleteBudget: jest.fn(),
-}));
 
 describe('BudgetRowComponent', () => {
     const mockLoadBudgets = jest.fn();
@@ -145,10 +141,7 @@ describe('BudgetRowComponent', () => {
         expect(expenseAccordion).not.toBeInTheDocument();
     });
 
-    test('deletes budget when delete button is clicked', async () => {
-        const deleteBudgetMock = require('../api/api').deleteBudget;
-        deleteBudgetMock.mockResolvedValue(true);
-
+    test('requests server when delete button is clicked', async () => {
         const budgetRow = screen.getByTestId('budget-row');
         fireEvent.click(budgetRow);
 
@@ -157,7 +150,8 @@ describe('BudgetRowComponent', () => {
             fireEvent.click(deleteButton);
         });
 
-        expect(deleteBudgetMock).toHaveBeenCalledWith(budget.id);
+        expect(mockedAxios.delete).toHaveBeenCalledWith("http://localhost:8080/budget", {
+            data: { id: budget.id },
+        });
     });
-
 });
