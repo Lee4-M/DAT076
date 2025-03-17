@@ -1,9 +1,7 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import axios from 'axios';
 import { BudgetRowComponent } from './BudgetRowComponent';
-// import { deleteBudget } from '../api/api';
-// import { ExpenseAccordion } from './ExpenseAccordion';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -136,6 +134,30 @@ describe('BudgetRowComponent', () => {
         expect(mockOnSave).toHaveBeenCalled();
     });
 
-    // TODO Add accordion tests - Kevin
+    test('toggles expense accordion when budget row is clicked', () => {
+        const budgetRow = screen.getByTestId('budget-row');
+        fireEvent.click(budgetRow);
+
+        const expenseAccordion = screen.getByTestId('expense-accordion');
+        expect(expenseAccordion).toBeInTheDocument();
+
+        fireEvent.click(budgetRow);
+        expect(expenseAccordion).not.toBeInTheDocument();
+    });
+
+    test('deletes budget when delete button is clicked', async () => {
+        const deleteBudgetMock = require('../api/api').deleteBudget;
+        deleteBudgetMock.mockResolvedValue(true);
+
+        const budgetRow = screen.getByTestId('budget-row');
+        fireEvent.click(budgetRow);
+
+        const deleteButton = screen.getByRole('button', { name: /delete/i });
+        await act(async () => {
+            fireEvent.click(deleteButton);
+        });
+
+        expect(deleteBudgetMock).toHaveBeenCalledWith(budget.id);
+    });
 
 });

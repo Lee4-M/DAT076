@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import { BudgetTable } from './BudgetTable';
 import axios from 'axios';
@@ -69,7 +69,7 @@ describe('BudgetTable', () => {
             totalBudgets += budget.amount;
         }
         
-        const totalRowElements = screen.getByTestId('total-row').children;;
+        const totalRowElements = screen.getByTestId('total-row').children;
         const totalBudgetsOnScreen = totalRowElements[1].textContent;   
         expect(totalBudgets + " :-").toEqual(totalBudgetsOnScreen)
     });
@@ -82,7 +82,7 @@ describe('BudgetTable', () => {
             }
         }
         
-        const totalRowElements = screen.getByTestId('total-row').children;;
+        const totalRowElements = screen.getByTestId('total-row').children;
         const totalExpensesOnScreen = totalRowElements[2].textContent;   
         expect(totalExpenses + " :-").toEqual(totalExpensesOnScreen)
     });
@@ -100,7 +100,7 @@ describe('BudgetTable', () => {
             }
         }
 
-        const totalRowElements = screen.getByTestId('total-row').children;;
+        const totalRowElements = screen.getByTestId('total-row').children;
         const resultOnScreen = totalRowElements[3].textContent;   
         expect((totalBudgets - totalExpenses) + " :-").toEqual(resultOnScreen)
     });
@@ -206,5 +206,27 @@ describe('BudgetTable', () => {
         fireEvent.keyDown(categoryInput, { key: 'Enter', code: 'Enter' });
 
         expect(mockOnSave).toHaveBeenCalled();
+    });
+
+    test('opens budget modal when add budget button is clicked', async () => {
+        render(
+            <BudgetTable
+                budgets={[]}
+                loadBudgets={mockLoadBudgets}
+                expenses={expenses}
+                loadExpenses={mockLoadExpenses}
+                isEditing={isEditing}
+                handleChangeBudgets={mockOnEdit}
+                handleSaveBudgetRows={mockOnSave}
+            />
+        );
+
+        const addBudgetButton = screen.getByText('Add Budget +');
+        await act(async () => {
+            fireEvent.click(addBudgetButton);
+        });
+
+        const budgetModal = screen.getByTestId('budget-modal');
+        expect(budgetModal).toBeInTheDocument();
     });
 });
