@@ -38,16 +38,6 @@ export async function getBudgets(): Promise<Budget[] | undefined> {
     }
 }
 
-export async function getBudget(category: string): Promise<Budget | undefined> {
-    try {    
-        const response = await axios.get<Budget>(`${BASE_URL}/budget?category=${category}`);
-        return response.data;
-    } catch (e: any) {
-        console.log(e);
-        return undefined;
-    }
-}
-
 export async function addExpense(category: string, cost: number, description: string): Promise<Expense | undefined> {
     try {
         const response = await axios.post<Expense>(`${BASE_URL}/expense`, { category: category, cost: cost, description: description });

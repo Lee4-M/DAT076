@@ -1,24 +1,19 @@
-import { render, fireEvent, act} from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import axios from 'axios';
 import ExpenseModal from './ExpenseModal';
-import { addExpense } from '../api/api';
 
-jest.mock('axios');
+jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-jest.mock("../api/api", () => ({
-    addExpense: jest.fn(() => Promise.resolve({ id: 1, category: "Groceries", cost: 150, description: "a" })),
-    getBudgets: jest.fn(() => Promise.resolve([{ id: 1, category: "Groceries", amount: 100, userId: 1 }])),
-}));
+mockedAxios.get.mockResolvedValue({ data: [{ id: 1, category: "Groceries", amount: 100, userId: 1 }] });
 
 describe('ExpenseModal Component', () => {
     const mockHandleClose = jest.fn();
     const mockOnSave = jest.fn();
 
-    beforeEach(() => {
+    beforeEach(async () => {
         jest.clearAllMocks();
-        mockedAxios.get.mockResolvedValue({ data: [] });
         render(
             <ExpenseModal 
                 show={true}
@@ -26,6 +21,7 @@ describe('ExpenseModal Component', () => {
                 onSave={mockOnSave}
             />
         );
+        await screen.findByText("Groceries");
     });
 
     test('renders ExpenseModal component', () => {
@@ -64,27 +60,6 @@ describe('ExpenseModal Component', () => {
         expect(mockHandleClose).toHaveBeenCalled();
     });
 
-    test('calls addExpense when clicking Save Expense with valid input', async () => {
-        await screen.findByText("Groceries");
-
-        const categoryInput = screen.getByTestId("category-select");
-        const costInput = screen.getByPlaceholderText("Enter amount");
-        const descriptionInput = screen.getByPlaceholderText("Enter description");
-        const saveButton = screen.getByRole("button", { name: "Save Expense" });
-    
-        await act(async () => {
-            fireEvent.change(categoryInput, { target: { value: "Groceries" } });
-        });
-        fireEvent.change(costInput, { target: { value: "200" } });
-        fireEvent.change(descriptionInput, { target: { value: "Dinner" } });
-    
-        await act(async () => {
-            fireEvent.click(saveButton);
-        });
-    
-        expect(addExpense).toHaveBeenCalledWith("Groceries", 200, "Dinner");
-    });
-
     test('Empty category leads to alert that warns user', () => {
         window.alert = jest.fn();
         const saveButton = screen.getByText('Save Expense');
@@ -94,8 +69,7 @@ describe('ExpenseModal Component', () => {
 
     test('Empty cost leads to alert that warns user', async () => {
         window.alert = jest.fn();
-        await screen.findByText("Groceries");
-
+        
         const categoryInput = screen.getByTestId("category-select");
         const costInput = screen.getByPlaceholderText("Enter amount");
         const saveButton = screen.getByRole("button", { name: "Save Expense" });
@@ -112,18 +86,47 @@ describe('ExpenseModal Component', () => {
         expect(window.alert).toHaveBeenCalledWith('Please fill in a cost.');
     });
 
-    test('Empty description creates expense with default description = ""', async () => {
-        await screen.findByText("Groceries");
-
+    test("requests server when clicking Save Expense", async () => {
         const categoryInput = screen.getByTestId("category-select");
         const costInput = screen.getByPlaceholderText("Enter amount");
         const descriptionInput = screen.getByPlaceholderText("Enter description");
         const saveButton = screen.getByRole("button", { name: "Save Expense" });
+
+        mockedAxios.post.mockResolvedValue({
+            data: { id: 1, category: "Groceries", cost: 200, description: "Dinner" },
+        });
+
+        await act(async () => {
+            fireEvent.change(categoryInput, { target: { value: "Groceries" } });
+            fireEvent.change(costInput, { target: { value: "200" } });
+            fireEvent.change(descriptionInput, { target: { value: "Dinner" } });
+        });
+
+        await act(async () => {
+            fireEvent.click(saveButton);
+        });
+
+        expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/expense", {
+            category: "Groceries",
+            cost: 200,
+            description: "Dinner",
+        });
+    });
+
+    test('Empty description creates expense with default description = ""', async () => {
+        const categoryInput = screen.getByTestId("category-select");
+        const costInput = screen.getByPlaceholderText("Enter amount");
+        const descriptionInput = screen.getByPlaceholderText("Enter description");
+        const saveButton = screen.getByRole("button", { name: "Save Expense" });
+
+        mockedAxios.post.mockResolvedValue({
+            data: { id: 1, category: "Groceries", cost: 200, description: "Dinner" },
+        });
     
         await act(async () => {
             fireEvent.change(categoryInput, { target: { value: "Groceries" } });
+            fireEvent.change(costInput, { target: { value: "200" } });
         });
-        fireEvent.change(costInput, { target: { value: "50" } });
     
         expect(descriptionInput).toHaveValue("");
 
@@ -131,7 +134,11 @@ describe('ExpenseModal Component', () => {
             fireEvent.click(saveButton);
         });
     
-        expect(addExpense).toHaveBeenCalledWith("Groceries", 50, "");
+        expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/expense", {
+            category: "Groceries",
+            cost: 200,
+            description: "",
+        });
     });
 
     test('shows alert if expense character limit is exceeded', async () => {

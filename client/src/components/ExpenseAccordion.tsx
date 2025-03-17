@@ -10,28 +10,28 @@ import { useDroppable } from "@dnd-kit/core";
 
 
 interface ExpenseAccordionProps {
-    budgetId: number; 
+    budgetId: number;
     expenses: Expense[];
-    deleteBudget: (id: number) => void;  
     loadExpenses: () => void;
     loadBudgets: () => void;
+    deleteBudget: (id: number) => void;
     handleClose: () => void;
 }
 
-export function ExpenseAccordion({ expenses, handleClose, loadExpenses, loadBudgets, deleteBudget, budgetId}: ExpenseAccordionProps) {
-    const {setNodeRef, isOver} = useDroppable({
-            id: budgetId.toString(),
-            data: { id: budgetId },
-          });
+export function ExpenseAccordion({ budgetId, expenses, loadExpenses, loadBudgets, deleteBudget, handleClose }: ExpenseAccordionProps) {
+    const { setNodeRef, isOver } = useDroppable({
+        id: budgetId.toString(),
+        data: { id: budgetId },
+    });
     const tbodyStyle = {
-            backgroundColor: isOver ? "#e0e0e0" : "transparent", 
-            transition: "background-color 0.2s ease-in-out, transform 0.15s ease-in-out", 
-            borderRadius: "8px",
-        };
+        backgroundColor: isOver ? "#e0e0e0" : "transparent",
+        transition: "background-color 0.2s ease-in-out, transform 0.15s ease-in-out",
+        borderRadius: "8px",
+    };
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     const [editedExpenses, setEditedExpenses] = useState<Expense[]>(expenses);
     const [isEditing, setIsEditing] = useState(false);
-    
+
     async function handleDeleteExpense(id: number) {
         const success = await deleteExpense(id);
         if (success) {
@@ -48,17 +48,17 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses, loadBudg
             const ids = editedExpenses.map(expense => expense.id);
             const costs = editedExpenses.map(expense => expense.cost);
             const descriptions = editedExpenses.map(expense => expense.description);
-    
+
             await updateExpenses(ids, costs, descriptions);
             await loadExpenses();
         }
     }
-    
+
     async function handleChangeExpenses(id: number, changes: Partial<Expense>) {
         setEditedExpenses(prevExpenses =>
             prevExpenses.map(expense =>
                 expense.id === id ? { ...expense, ...changes } : expense
-            )  
+            )
         );
     }
 
@@ -78,24 +78,24 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses, loadBudg
                 </div>
             ) : (
                 // Show when there are existing expenses
-                <Table className="p-2 expense-table" >
+                <Table data-testid="expense-accordion" className="p-2 expense-table" >
                     <thead>
                         <tr>
-                            <th>Cost</th>
+                            <th>Cost (SEK)</th>
                             <th>Description</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         {expenses.map(expense => (
-                            <DraggableExpense 
-                                key={expense.id} 
-                                expense={expense} 
+                            <DraggableExpense
+                                key={expense.id}
+                                expense={expense}
                                 editedExpenses={editedExpenses}
-                                isEditing={isEditing} 
-                                handleChangeExpenses={handleChangeExpenses} 
+                                isEditing={isEditing}
+                                handleChangeExpenses={handleChangeExpenses}
                                 handleSaveExpenses={handleSaveExpenses}
-                                handleDeleteExpense={handleDeleteExpense} 
+                                handleDeleteExpense={handleDeleteExpense}
                             />
                         ))}
                     </tbody>
@@ -133,14 +133,14 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses, loadBudg
                 </button>
             </div>
 
-            <ExpenseModal 
-                show={showExpenseModal} 
-                handleClose={() => setShowExpenseModal(false)} 
+            <ExpenseModal
+                show={showExpenseModal}
+                handleClose={() => setShowExpenseModal(false)}
                 onSave={() => {
                     setShowExpenseModal(false);
                     loadExpenses();
                     loadBudgets();
-                }} 
+                }}
             />
         </section>
     );

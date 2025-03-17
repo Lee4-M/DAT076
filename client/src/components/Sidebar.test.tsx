@@ -3,6 +3,7 @@ import { screen } from '@testing-library/dom';
 import { Sidebar } from '../components/Sidebar';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
+import { Budget } from '../api/api';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -101,9 +102,52 @@ describe('Sidebar Component', () => {
     expect(saveButton).toBeInTheDocument();
   });
 
+    // PieChart testing
+    test('renders the PieChart component', () => {
+      const pieChart = screen.getByTestId('pie-chart');
+      expect(pieChart).toBeInTheDocument();
+    });
+  
+    test('PieChart handles empty budgets and expenses gracefully', () => {
+      const pieChart = screen.getByTestId('pie-chart');
+      expect(pieChart).toBeInTheDocument();
+      expect(pieChart).toHaveTextContent('No data to display');
+    });
+  
+    test('PieChart handles non-empty budgets and expenses', async () => {
+      const budgets : Budget[] = [{ id: 1, category: 'Food', amount: 200, userId: 1 }];
+      const expenses = { 1: [{ id: 1, budgetRowId: 1, description: 'Groceries', cost: 50 }] };
+  
+      rerender(
+        <MemoryRouter>
+          <Sidebar
+            loadBudgets={jest.fn()} 
+            expenses={expenses} 
+            budgets={budgets} 
+            isEditing={false} 
+            handleSaveBudgetRows={mockOnSave}  
+          />
+        </MemoryRouter>
+      );
+  
+      const pieChart = screen.getByTestId('pie-chart');
+      expect(pieChart).toBeInTheDocument();
+      expect(pieChart).toHaveTextContent('Food');
+    });
+    
   // Sign out button tests
   test('renders the sign out button', () => {
     const signOutButton = screen.getByRole('button', { name: "Sign out" });
     expect(signOutButton).toBeInTheDocument();
+  });
+
+  test('when sign out button is clicked, user is logged out', async () => {
+    const signOutButton = screen.getByRole('button', { name: "Sign out" });
+
+    await act(async () => {
+      fireEvent.click(signOutButton);
+    });
+
+    expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/user/logout");
   });
 });
