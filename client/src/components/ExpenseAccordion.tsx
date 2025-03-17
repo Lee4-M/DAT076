@@ -14,10 +14,11 @@ interface ExpenseAccordionProps {
     expenses: Expense[];
     deleteBudget: (id: number) => void;  
     loadExpenses: () => void;
+    loadBudgets: () => void;
     handleClose: () => void;
 }
 
-export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteBudget, budgetId}: ExpenseAccordionProps) {
+export function ExpenseAccordion({ expenses, handleClose, loadExpenses, loadBudgets, deleteBudget, budgetId}: ExpenseAccordionProps) {
     const {setNodeRef, isOver} = useDroppable({
             id: budgetId.toString(),
             data: { id: budgetId },
@@ -138,6 +139,7 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
                 onSave={() => {
                     setShowExpenseModal(false);
                     loadExpenses();
+                    loadBudgets();
                 }} 
             />
         </section>

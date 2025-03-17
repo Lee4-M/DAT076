@@ -94,6 +94,7 @@ export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, l
                             expenses={expenses}
                             handleClose={() => setShowExpenseAccordion(false)}
                             loadExpenses={loadExpenses}
+                            loadBudgets={loadBudgets}
                             deleteBudget={handleDeleteBudget}
                             budgetId={budget.id}
                         />
