@@ -130,55 +130,5 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         }
     });
 
-    interface EditExpensesRequest extends Request {
-        body: {
-            ids: number[],
-            costs: number[],
-            descriptions: string[]
-        },
-        session: any
-    }
-
-    function isValidExpensesRequest(body: unknown): body is EditExpenseRequest["body"] {
-        if (typeof body !== "object" || body === null || !("ids" in body) || !("costs" in body) || !("descriptions" in body)) {
-            return false;
-        }
-
-        const { ids, descriptions, costs } = body
-
-        return (
-            Array.isArray(ids) && ids.every(id => typeof id === "number") &&
-            Array.isArray(costs) && costs.every(cost => typeof cost === "number") &&
-            Array.isArray(descriptions) && descriptions.every(description => typeof description === "string") &&
-            ids.length === descriptions.length && descriptions.length === costs.length
-        );
-    }
-
-    expenseRouter.put("/expenses", async (
-        req: EditExpensesRequest,
-        res: Response<Expense[] | string>
-    ) => {
-        try {
-            if (!req.session.username) {
-                res.status(401).send("Not logged in");
-                return;
-            }
-
-            if (!isValidExpensesRequest(req.body)) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- invalid request body`);
-                return;
-            }
-            const { ids, costs, descriptions } = req.body;
-            const updatedExpenses: Expense[] | undefined = await expenseService.updateAllExpenses(ids, costs, descriptions);
-            if (!updatedExpenses) {
-                res.status(404).send(`Expenses not found`);
-                return;
-            }
-            res.status(201).send(updatedExpenses);
-        } catch (e: any) {
-            res.status(500).send(e.message);
-        }
-    });
-
     return expenseRouter;
 }

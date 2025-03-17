@@ -38,7 +38,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
         setSortOrder(newSortOrder);
     };
 
-    const sortedBudgets = _.orderBy(budgets, [budget => {
+    const sortedBudgets = isEditing ? budgets : _.orderBy(budgets, [budget => {
         if (sortBy === 'totalExpenses') {
             return expenses[budget.id]?.reduce((total, expense) => total + expense.cost, 0) || 0;
         } else if (sortBy === 'result') {

@@ -114,32 +114,4 @@ export class ExpenseService implements IExpenseService {
 
         return expense;
     }
-
-    /**
-     * Updates all expenses with provided values. 
-     * 
-     * @param ids - Array of identifiers of expenses
-     * @param costs - Array of amounts of expenses
-     * @param descriptions - Array of descriptions of expenses
-     * @returns - All updated expense objects if successful, or 'undefined' 
-     * if the expenses are not found or inputs are invalid.
-     */
-
-    async updateAllExpenses(ids: number[], costs: number[], descriptions: string[]): Promise<Expense[] | undefined> {
-        if (ids.length !== costs.length || ids.length !== descriptions.length) {
-            console.error("Invalid input: ids, costs, or descriptions");
-            return undefined;
-        }
-
-        const expenses: Expense[] = [];
-        for (let i = 0; i < ids.length; i++) {
-            const expense = await this.updateExpense(ids[i], costs[i], descriptions[i]);
-            if (!expense){
-                return undefined;
-            } 
-            expenses.push(expense);
-        }
-
-        return expenses;
-    }
 }

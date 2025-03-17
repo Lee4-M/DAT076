@@ -163,40 +163,5 @@ export class BudgetRowService implements IBudgetRowService {
 
         return budgetRow;
     }
-    
-    /**
-     * Updates multiple budget rows for a user.
-     * 
-     * @param username - Username of the user
-     * @param ids - Array of identifiers of the budget rows to update
-     * @param categories - Array of categories for the budget rows
-     * @param amounts - Array of amounts for the budget rows
-     * @returns - An array of updated BudgetRow objects if successful, 
-     * 'undefined' if user is not found or input is invalid (username, categories, or amounts)
-     */
-    async updateAllBudgetRows(username: string, ids: number[], categories: string[], amounts: number[]): Promise<BudgetRow[] | undefined> {
-        if (ids.length !== categories.length || ids.length !== amounts.length) {
-            console.warn("Mismatched array lengths.");
-            return undefined;
-        }
-        
-        const user: User | undefined = await this.userService.findUser(username);
-        if (!user) {
-            console.warn(`User not found: ${username}`);
-            return undefined;
-        }
-        
-        const newBudgets: BudgetRow[] = [];
-        
-        for (let i = 0; i < ids.length; i++) {
-            const newBudget: BudgetRow | undefined = await this.updateBudgetRow(username, ids[i], categories[i], amounts[i]);
-            if (!newBudget) {
-                return undefined;
-            }
-            newBudgets.push(newBudget);
-        }
-
-        return newBudgets;
-    }
 }
 

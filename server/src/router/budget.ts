@@ -129,57 +129,6 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         }
     });
 
-    interface EditBudgetsRequest extends Request {
-        body: {
-            ids: [number],
-            categories: [string],
-            amounts: [number]
-        },
-        session: any
-    }
-
-    function isValidBudgetRequest(body: unknown): body is EditBudgetsRequest["body"] {
-        if (typeof body !== "object" || body === null || !("ids" in body) || !("categories" in body) || !("amounts" in body)) {
-            return false;
-        }
-
-        const { ids, categories, amounts } = body
-
-        return (
-            Array.isArray(ids) && ids.every(id => typeof id === "number") &&
-            Array.isArray(categories) && categories.every(category => typeof category === "string") &&
-            Array.isArray(amounts) && amounts.every(amount => typeof amount === "number") &&
-            ids.length === categories.length && categories.length === amounts.length
-        );
-    }
-
-    budgetRowRouter.put("/budgets", async (
-        req: EditBudgetsRequest,
-        res: Response<BudgetRow[] | string>
-    ) => {
-        try {
-            if (!req.session.username) {
-                res.status(401).send("Not logged in");
-                return;
-            }
-            if (!isValidBudgetRequest(req.body)) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- invalid request body`);
-                return;
-            }
-            const { ids, categories, amounts } = req.body;
-
-            const newBudgets: BudgetRow[] | undefined = await budgetRowService.updateAllBudgetRows(req.session.username, ids, categories, amounts);
-            if (!newBudgets) {
-                res.status(404).send("Budget rows not found");
-                return;
-            }
-            res.status(201).send(newBudgets);
-        } catch (e: any) {
-            res.status(500).send(e.message);
-        }
-    });
-
-
     return budgetRowRouter;
 }
 
