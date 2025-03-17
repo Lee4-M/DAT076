@@ -13,11 +13,11 @@ export function userRouter(userService: IUserService): Router {
     userRouter.post("/user", async (req: UserRequest, res: Response) => {
         try {
             const { username, password } = req.body;
-            if((typeof(username) !== "string") || (typeof(password) !== "string")) {
-                res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof(username)} or password has type ${typeof(password)}`);
+            if ((typeof (username) !== "string") || (typeof (password) !== "string")) {
+                res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof (username)} or password has type ${typeof (password)}`);
                 return;
             }
-            if(await userService.findUser(username, password)) {
+            if (await userService.findUser(username)) {
                 res.status(400).send("Failed to register user: User already exists");
                 return;
             }
@@ -35,8 +35,8 @@ export function userRouter(userService: IUserService): Router {
                 return;
             }
             const { username, password } = req.body;
-            if((typeof(username) !== "string") || (typeof(password) !== "string")) {
-                res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof(username)} or password has type ${typeof(password)}`);
+            if ((typeof (username) !== "string") || (typeof (password) !== "string")) {
+                res.status(400).send(`Bad POST call to ${req.originalUrl} --- username has type ${typeof (username)} or password has type ${typeof (password)}`);
                 return;
             }
             const user: User | undefined = await userService.findUser(username, password);
@@ -59,6 +59,6 @@ export function userRouter(userService: IUserService): Router {
         delete req.session.username;
         res.status(200).send("Logged out successfully");
     });
-    
+
     return userRouter;
 }

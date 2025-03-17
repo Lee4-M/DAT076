@@ -107,9 +107,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                             <tr>
                                 <td colSpan={5} className="text-center p-3">
                                     <p>Create Your First Budget!</p>
-                                    <button onClick={() => setShowBudgetModal(true)} className="expense-row-btn">
-                                        Add Budget +
-                                    </button>
+                                    <button onClick={() => setShowBudgetModal(true)} className="expense-row-btn">Add Budget +</button>
                                 </td>
                             </tr>
                         ) : (

@@ -22,7 +22,11 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     useEffect(() => {
         async function fetchBudgets() {
             const fetchedBudgets = await getBudgets();
-            setBudgets(fetchedBudgets);
+            if (fetchedBudgets) {
+                setBudgets(fetchedBudgets);
+            } else {
+                console.error("Failed to fetch budgets");
+            }
         }
 
         if (show) {

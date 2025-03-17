@@ -18,19 +18,34 @@ export type Expense = {
 
 const BASE_URL = "http://localhost:8080"
 
-export async function getExpenses(budgetRowId: number): Promise<Expense[]> {
-    const response = await axios.get<Expense[]>(`${BASE_URL}/expense`, { params: { budgetRowId: budgetRowId } })
-    return response.data
+export async function getExpenses(budgetRowId: number): Promise<Expense[] | undefined> {
+    try {
+        const response = await axios.get<Expense[]>(`${BASE_URL}/expense`, { params: { budgetRowId: budgetRowId } })
+        return response.data
+    } catch (e: any) {
+        console.log(e);
+        return undefined;
+    }
 }
 
-export async function getBudgets(): Promise<Budget[]> {
-    const response = await axios.get<Budget[]>(`${BASE_URL}/budget`)
-    return response.data
+export async function getBudgets(): Promise<Budget[] | undefined> {
+    try {
+        const response = await axios.get<Budget[]>(`${BASE_URL}/budget`)
+        return response.data
+    } catch (error) {
+        console.log(error);
+        return undefined;
+    }
 }
 
-export async function getBudget(category: string): Promise<Budget> {
-    const response = await axios.get<Budget>(`${BASE_URL}/budget?category=${category}`);
-    return response.data;
+export async function getBudget(category: string): Promise<Budget | undefined> {
+    try {    
+        const response = await axios.get<Budget>(`${BASE_URL}/budget?category=${category}`);
+        return response.data;
+    } catch (e: any) {
+        console.log(e);
+        return undefined;
+    }
 }
 
 export async function addExpense(category: string, cost: number, description: string): Promise<Expense | undefined> {
@@ -110,7 +125,7 @@ export async function updateExpense(id: number, cost: number, description: strin
     }
 }
 
-export async function updateBudgetRows(budgets : Budget[]): Promise<Budget[] | undefined> {
+export async function updateBudgetRows(budgets: Budget[]): Promise<Budget[] | undefined> {
     try {
         const ids: number[] = [];
         const categories: string[] = [];
