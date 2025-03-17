@@ -12,7 +12,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
-    expenseRouter.get("/expense", async (
+    expenseRouter.get("/expense/:budgetRowId", async (
         req: ExpenseRequest,
         res: Response<Expense[] | string>
     ) => {
@@ -21,9 +21,9 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const budgetRowId = Number(req.query.budgetRowId);
-            if (isNaN(budgetRowId)) {
-                res.status(400).send(`Bad GET call to ${req.originalUrl} --- budgetRowId is missing or not a number`);
+            const budgetRowId = Number(req.params.budgetRowId);
+            if (!budgetRowId) {
+                res.status(400).send(`Bad GET call to ${req.originalUrl} --- budgetRowId is missing`);
                 return;
             }
             const expenses: Expense[] | undefined = await expenseService.getExpenses(budgetRowId);
@@ -64,13 +64,13 @@ export function expenseRouter(expenseService: IExpenseService): Router {
     });
 
     interface DeleteExpenseRequest extends Request {
-        body: {
-            id: number
+        params: {
+            id: string
         },
         session: any
     }
 
-    expenseRouter.delete("/expense", async (
+    expenseRouter.delete("/expense/:id", async (
         req: DeleteExpenseRequest,
         res: Response<string>
     ) => {
@@ -79,9 +79,9 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const id = req.body.id
-            if (typeof (id) !== "number") {
-                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof (id)}`);
+            const id = Number(req.params.id)
+            if (!id) {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id is missing`);
                 return;
             }
             await expenseService.deleteExpense(id);
@@ -93,8 +93,10 @@ export function expenseRouter(expenseService: IExpenseService): Router {
 
 
     interface EditExpenseRequest extends Request {
+        params: {
+            id: string
+        },
         body: {
-            id: number,
             cost: number,
             description: string
             budgetRowId?: number
@@ -102,7 +104,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
-    expenseRouter.put("/expense", async (
+    expenseRouter.put("/expense/:id", async (
         req: EditExpenseRequest,
         res: Response<Expense | string>
     ) => {
@@ -111,9 +113,10 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const { id, cost, description, budgetRowId} = req.body;
-            if ((typeof (id) !== "number") || (typeof (cost) !== "number") || (typeof (description) !== "string")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- id has type ${typeof (id)} or cost has type ${typeof (cost)} or description has type ${typeof (description)}`);
+            const id = Number(req.params.id)
+            const { cost, description, budgetRowId} = req.body;
+            if ((typeof (cost) !== "number") || (typeof (description) !== "string" || !id)) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- cost has type ${typeof (cost)} or description has type ${typeof (description)} or id is missing`);
                 return;
             }
             const updatedExpense: Expense | undefined = await expenseService.updateExpense(id, cost, description, budgetRowId);
@@ -176,5 +179,6 @@ export function expenseRouter(expenseService: IExpenseService): Router {
             res.status(500).send(e.message);
         }
     });
+
     return expenseRouter;
 }

@@ -61,13 +61,13 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     });
 
     interface DeleteBudgetRowRequest extends Request {
-        body: {
-            id: number
+        params: {
+            id: string
         },
         session: any
     }
 
-    budgetRowRouter.delete("/budget", async (
+    budgetRowRouter.delete("/budget/:id", async (
         req: DeleteBudgetRowRequest,
         res: Response<string>
     ) => {
@@ -76,9 +76,9 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const id = req.body.id;
-            if (typeof (id) !== "number") {
-                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof (id)}`);
+            const id = Number(req.params.id);
+            if (!id) {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id is missing`);
                 return;
             }
             const success = await budgetRowService.deleteBudgetRow(req.session.username, id);
@@ -93,15 +93,17 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     });
 
     interface EditBudgetRequest extends Request {
+        params: {
+            id: string
+        },
         body: {
             category: string,
             amount: number,
-            id: number
         },
         session: any
     }
 
-    budgetRowRouter.put("/budget", async (
+    budgetRowRouter.put("/budget/:id", async (
         req: EditBudgetRequest,
         res: Response<BudgetRow | string>
     ) => {
@@ -110,9 +112,10 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const { category, amount, id } = req.body;
-            if ((typeof (category) !== "string") || (typeof (amount) !== "number") || (typeof (id) !== "number")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)}, budget has type ${typeof (id)} or amount has type ${typeof (amount)}`);
+            const id = Number(req.params.id);
+            const { category, amount } = req.body;
+            if ((typeof (category) !== "string") || (typeof (amount) !== "number") || !id) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)} or amount has type ${typeof (amount)} or id is missing`);
                 return;
             }
             const newBudget: BudgetRow | undefined = await budgetRowService.updateBudgetRow(req.session.username, id, category, amount);

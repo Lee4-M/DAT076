@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 
-import { deleteExpense, Expense, updateExpenses } from "../api/api";
+import { deleteExpense, Expense, updateExpense } from "../api/api";
 
 import '../routes/App.css';
 import ExpenseModal from "./ExpenseModal";
@@ -45,11 +45,9 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses, loadBudg
     async function handleSaveExpenses() {
         setIsEditing(!isEditing);
         if (isEditing) {
-            const ids = editedExpenses.map(expense => expense.id);
-            const costs = editedExpenses.map(expense => expense.cost);
-            const descriptions = editedExpenses.map(expense => expense.description);
-    
-            await updateExpenses(ids, costs, descriptions);
+            for (const expense of editedExpenses) {
+                await updateExpense(expense.id, expense.cost, expense.description, budgetId);
+            }
             await loadExpenses();
         }
     }
