@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 
 import { deleteExpense, Expense, updateExpenses } from "../api/api";
 
 import '../routes/App.css';
 import ExpenseModal from "./ExpenseModal";
+import { DraggableExpense } from "./DraggableExpense";
+import { useDroppable } from "@dnd-kit/core";
 
 
 interface ExpenseAccordionProps {
@@ -12,15 +14,24 @@ interface ExpenseAccordionProps {
     expenses: Expense[];
     deleteBudget: (id: number) => void;  
     loadExpenses: () => void;
+    loadBudgets: () => void;
     handleClose: () => void;
 }
 
-export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteBudget, budgetId}: ExpenseAccordionProps) {
+export function ExpenseAccordion({ expenses, handleClose, loadExpenses, loadBudgets, deleteBudget, budgetId}: ExpenseAccordionProps) {
+    const {setNodeRef, isOver} = useDroppable({
+            id: budgetId.toString(),
+            data: { id: budgetId },
+          });
+    const tbodyStyle = {
+            backgroundColor: isOver ? "#e0e0e0" : "transparent", 
+            transition: "background-color 0.2s ease-in-out, transform 0.15s ease-in-out", 
+            borderRadius: "8px",
+        };
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     const [editedExpenses, setEditedExpenses] = useState<Expense[]>(expenses);
     const [isEditing, setIsEditing] = useState(false);
-    const descriptionInputRef = useRef<HTMLInputElement>(null);
-
+    
     async function handleDeleteExpense(id: number) {
         const success = await deleteExpense(id);
         if (success) {
@@ -51,19 +62,12 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
         );
     }
 
-    const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            handleSaveExpenses();
-        }
-    }
-
     useEffect(() => {
         setEditedExpenses(expenses);
     }, [expenses]);
 
     return (
-        <section>
+        <section ref={setNodeRef} style={tbodyStyle}>
             {expenses.length === 0 ? (
                 // If there are no expenses
                 <div className="text-center p-3">
@@ -74,7 +78,7 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
                 </div>
             ) : (
                 // Show when there are existing expenses
-                <Table className="p-2 expense-table">
+                <Table className="p-2 expense-table" >
                     <thead>
                         <tr>
                             <th>Cost</th>
@@ -84,53 +88,17 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
                     </thead>
                     <tbody>
                         {expenses.map(expense => (
-                            <tr key={expense.id}>
-                                <td>
-                                {isEditing ? (
-                                    <input
-                                        type="number"
-                                        value={editedExpenses.find(e => e.id === expense.id)?.cost || ""}
-                                        onChange={(e) => {
-                                            const value = Number(e.target.value);
-                                            if (value >= 0) {
-                                                handleChangeExpenses(expense.id, { cost: value });
-                                            }
-                                        }}
-                                        onKeyDown={handleSaveOnEnter}
-                                    />
-                                ) : (
-                                    <span>{expense.cost}</span>
-                                )}
-                                </td>
-                                <td>
-                                    { isEditing ? (
-                                        <input
-                                            type="text"
-                                            ref={descriptionInputRef}
-                                            value={editedExpenses.find(e => e.id === expense.id)?.description || ""}
-                                            onChange={(e) => handleChangeExpenses(expense.id, { description: e.target.value })}
-                                            onKeyDown={handleSaveOnEnter}
-                                        />
-                                    ) : (
-                                        <span>{expense.description}</span>
-                                    )}
-                                </td>
-                                <td style={{ padding: "0px", backgroundColor: "inherit", textAlign: "center" }}>
-                                    {isEditing && (
-                                        <img 
-                                            src="/images/bin-svgrepo-com.svg" 
-                                            alt="Delete" 
-                                            width="20" 
-                                            height="20" 
-                                            style={{ cursor: "pointer" }} 
-                                            onClick={() => handleDeleteExpense(expense.id)} 
-                                        />
-                                    )}
-                                </td>
-                            </tr>
+                            <DraggableExpense 
+                                key={expense.id} 
+                                expense={expense} 
+                                editedExpenses={editedExpenses}
+                                isEditing={isEditing} 
+                                handleChangeExpenses={handleChangeExpenses} 
+                                handleSaveExpenses={handleSaveExpenses}
+                                handleDeleteExpense={handleDeleteExpense} 
+                            />
                         ))}
                     </tbody>
-
                 </Table>
             )}
 
@@ -171,6 +139,7 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
                 onSave={() => {
                     setShowExpenseModal(false);
                     loadExpenses();
+                    loadBudgets();
                 }} 
             />
         </section>
