@@ -1,6 +1,6 @@
 import { useDraggable } from "@dnd-kit/core";
 import { Expense } from "../api/api";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 interface DraggableExpenseProps {
     expense: Expense;
@@ -12,10 +12,19 @@ interface DraggableExpenseProps {
 }
 
 export function DraggableExpense({ expense, editedExpenses, isEditing, handleChangeExpenses, handleSaveExpenses, handleDeleteExpense }: DraggableExpenseProps) {
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: expense.id.toString(), data: { id: expense.id } });
+    const [isPressing, setIsPressing] = useState(false);
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({ 
+        id: expense.id.toString(), 
+        data: { id: expense.id }, 
+    });
     const descriptionInputRef = useRef<HTMLInputElement>(null);
 
-    const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : {};
+    const style = {
+        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : "none",
+        opacity: transform ? 0.7 : 1,
+        transition: "opacity 0.1s ease",
+        backgroundColor: isPressing ? "#fff" : "fff", 
+    };
 
     const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
@@ -23,10 +32,13 @@ export function DraggableExpense({ expense, editedExpenses, isEditing, handleCha
             handleSaveExpenses();
         }
     }
+
+    const handlePressStart = () => setIsPressing(true);
+    const handlePressEnd = () => setIsPressing(false);
     
     return (
         <tr>
-            <td ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <td ref={setNodeRef} style={style} {...attributes} {...listeners} onMouseDown={handlePressStart} onMouseUp={handlePressEnd} onTouchStart={handlePressStart} onTouchEnd={handlePressEnd}>
                 {isEditing ? (
                     <input
                         type="number"

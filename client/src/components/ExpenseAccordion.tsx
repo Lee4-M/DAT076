@@ -18,10 +18,15 @@ interface ExpenseAccordionProps {
 }
 
 export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteBudget, budgetId}: ExpenseAccordionProps) {
-    const {setNodeRef} = useDroppable({
+    const {setNodeRef, isOver} = useDroppable({
             id: budgetId.toString(),
             data: { id: budgetId },
           });
+    const tbodyStyle = {
+            backgroundColor: isOver ? "#e0e0e0" : "transparent", 
+            transition: "background-color 0.2s ease-in-out, transform 0.15s ease-in-out", 
+            borderRadius: "8px",
+        };
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     const [editedExpenses, setEditedExpenses] = useState<Expense[]>(expenses);
     const [isEditing, setIsEditing] = useState(false);
@@ -61,10 +66,10 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
     }, [expenses]);
 
     return (
-        <section>
+        <section ref={setNodeRef} style={tbodyStyle}>
             {expenses.length === 0 ? (
                 // If there are no expenses
-                <div ref={setNodeRef} className="text-center p-3">
+                <div className="text-center p-3">
                     <p>No expenses available</p>
                     <button onClick={() => setShowExpenseModal(true)} className=" expense-row-btn ">
                         Add Expense +
@@ -80,7 +85,7 @@ export function ExpenseAccordion({ expenses, handleClose, loadExpenses , deleteB
 
                         </tr>
                     </thead>
-                    <tbody ref={setNodeRef}>
+                    <tbody>
                         {expenses.map(expense => (
                             <DraggableExpense 
                                 key={expense.id} 

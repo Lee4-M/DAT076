@@ -4,7 +4,7 @@ import { Budget, Expense, updateExpense } from "../api/api";
 import { BudgetRowComponent } from "./BudgetRowComponent";
 import BudgetItemModal from "./BudgetModal";
 import _ from "lodash";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 
 interface BudgetTableProps {
     budgets: Budget[];
@@ -62,9 +62,18 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
         await updateExpense(expenseId, expense.cost, expense.description, newBudgetId);
         await loadExpenses();
     }
-    
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                delay: 100, 
+                tolerance: 5,
+            },
+        })
+    );
+
     return (
-        <DndContext onDragEnd={handleDragEnd}>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
             <section role="main" className="bg-light-subtle rounded d-flex flex-column h-100 w-100">
                 <div className="flex-grow-1 overflow-auto table-responsive">
                     <Table striped data-testid="budget-table" className="budget-table p-2  text-center">
