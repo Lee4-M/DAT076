@@ -77,7 +77,7 @@ const Login = () => {
                             <div className="text-center">
                                 <span>Don't have an account yet? </span>
                                 <NavLink to="/register" className="text-decoration-none" end>
-                                    
+                                    Register
                                 </NavLink>
                             </div>
                         </form>
