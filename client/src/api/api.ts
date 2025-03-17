@@ -115,9 +115,9 @@ export async function updateBudgetRow(id: number, category: string, amount: numb
     }
 }
 
-export async function updateExpense(id: number, cost: number, description: string): Promise<Expense | undefined> {
+export async function updateExpense(id: number, cost: number, description: string, budgetRowId?: number): Promise<Expense | undefined> {
     try {
-        const response = await axios.put(`${BASE_URL}/expense`, { id: id, cost: cost, description: description });
+        const response = await axios.put(`${BASE_URL}/expense`, { id: id, cost: cost, description: description, budgetRowId: budgetRowId });
         return response.data;
     } catch (e: any) {
         console.log(e);

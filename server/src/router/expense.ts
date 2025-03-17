@@ -97,6 +97,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
             id: number,
             cost: number,
             description: string
+            budgetRowId?: number
         },
         session: any
     }
@@ -110,12 +111,12 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const { id, cost, description } = req.body;
+            const { id, cost, description, budgetRowId} = req.body;
             if ((typeof (id) !== "number") || (typeof (cost) !== "number") || (typeof (description) !== "string")) {
                 res.status(400).send(`Bad PUT call to ${req.originalUrl} --- id has type ${typeof (id)} or cost has type ${typeof (cost)} or description has type ${typeof (description)}`);
                 return;
             }
-            const updatedExpense: Expense | undefined = await expenseService.updateExpense(id, cost, description);
+            const updatedExpense: Expense | undefined = await expenseService.updateExpense(id, cost, description, budgetRowId);
             if (!updatedExpense) {
                 res.status(404).send(`Expense not found`);
                 return;

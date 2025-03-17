@@ -48,8 +48,8 @@ export function Sidebar({ budgets, expenses, isEditing, loadBudgets, handleSaveB
     );
 
     return (
-        <Container as="aside" data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
-            <Row>
+        <Container as="nav" data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
+            <Row className="pt-4">
                 <Image src="/images/Budgie_Logo.svg" alt="Budgie" className="img-fluid w-25 h-auto mx-auto d-block" />
             </Row>
             <Row className="px-3 pt-4">

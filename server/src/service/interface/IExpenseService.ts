@@ -7,7 +7,7 @@ export interface IExpenseService {
 
   deleteExpense(id: number): Promise<boolean>
 
-  updateExpense(id: number, cost: number, description: string): Promise<Expense | undefined>
+  updateExpense(id: number, cost: number, description: string, budgetRowId?: number): Promise<Expense | undefined>
   
   updateAllExpenses(ids: number[], costs: number[], descriptions: string[]): Promise<Expense[] | undefined>
 }

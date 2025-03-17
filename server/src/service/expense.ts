@@ -53,7 +53,7 @@ export class ExpenseService implements IExpenseService {
         return true;
     }
 
-    async updateExpense(id: number, cost: number, description: string): Promise<Expense | undefined> {
+    async updateExpense(id: number, cost: number, description: string, budgetRowId?: number): Promise<Expense | undefined> {
         if (id < 0 || cost < 0 || !description) {
             console.error("Invalid input: id, cost, or description");
             return undefined;
@@ -65,7 +65,7 @@ export class ExpenseService implements IExpenseService {
             return undefined;
         }
 
-        await expense.update({ cost: cost, description: description });
+        await expense.update({ budgetRowId: budgetRowId, cost: cost, description: description });
 
         return expense;
     }
