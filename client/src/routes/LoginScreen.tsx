@@ -12,7 +12,6 @@ const Login = () => {
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-
     setError(null);
 
     if (!username || !password) {

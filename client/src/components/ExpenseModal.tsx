@@ -15,7 +15,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     const [customCategory, setCustomCategory] = useState<string>('');
     const [isCustomCategory, setIsCustomCategory] = useState(false);
 
-    const [expenseName, setExpenseName] = useState('');
+    const [expenseCategory, setExpenseCategory] = useState('');
     const [cost, setCost] = useState('');
     const [description, setDescription] = useState('');
 
@@ -35,15 +35,15 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     function handleCategoryChange(value: string) {
         if (value === "custom") {
             setIsCustomCategory(true);
-            setExpenseName(''); 
+            setExpenseCategory(''); 
         } else {
             setIsCustomCategory(false);
-            setExpenseName(value);
+            setExpenseCategory(value);
         }
     }
 
     async function saveExpense() {
-        const categoryToUse = isCustomCategory ? customCategory : expenseName;
+        const categoryToUse = isCustomCategory ? customCategory : expenseCategory;
 
         if (!categoryToUse) {
             alert('Please select a category.');
@@ -63,8 +63,18 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
             }
         }
 
-        if (expenseName.length > 20 || description.length > 50 || cost.length > 20) {
-            alert('Character limit of 20 exceeded.');
+        if (categoryToUse.length > 20) {
+            alert('Character limit (20) for category exceeded.');
+            return;
+        }
+
+        if (cost.length > 20) {
+            alert('Character limit (20) for cost exceeded.');
+            return;
+        }
+
+        if (description.length > 50) {
+            alert('Character limit (50) for description exceeded.');
             return;
         }
 
@@ -73,7 +83,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
             handleClose();
             onSave();
             // Reset form fields
-            setExpenseName('');
+            setExpenseCategory('');
             setCustomCategory('');
             setCost('');
             setDescription('');
@@ -94,11 +104,11 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                         <Form.Label>Category</Form.Label>
                         <Form.Select
                             data-testid="category-select"
-                            value={expenseName || ""}
+                            value={expenseCategory || ""}
                             onChange={(e) => handleCategoryChange(e.target.value)}
-                            className={!expenseName ? "text-muted" : ""}
+                            className={!expenseCategory ? "text-muted" : ""}
                         >
-                            {!expenseName && (
+                            {!expenseCategory && (
                                 <option value="" disabled hidden>
                                     Pick a category
                                 </option>
@@ -142,9 +152,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
+                <Button variant="secondary" onClick={handleClose}>Close</Button>
                 <Button variant="primary" onClick={saveExpense}>Save Expense</Button>
             </Modal.Footer>
         </Modal >

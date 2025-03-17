@@ -20,7 +20,7 @@ interface SidebarProps {
     handleSaveBudgetRows: () => void,
 }
 
-export function Sidebar({ loadBudgets, expenses, handleSaveBudgetRows, isEditing, budgets}: SidebarProps) {
+export function Sidebar({ budgets, expenses, isEditing, loadBudgets, handleSaveBudgetRows}: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     
@@ -48,7 +48,7 @@ export function Sidebar({ loadBudgets, expenses, handleSaveBudgetRows, isEditing
     );
 
     return (
-        <Container as="nav" data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
+        <Container as="aside" data-testid="sidebar" className="bg-light-subtle rounded-3 h-100">
             <Row>
                 <Image src="/images/Budgie_Logo.svg" alt="Budgie" className="img-fluid w-25 h-auto mx-auto d-block" />
             </Row>

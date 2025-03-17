@@ -15,17 +15,10 @@ const Register: React.FC = () => {
     return /^[a-z0-9]+$/i.test(str);
   };
 
-  //TODO remove comments as they are irrelevant?
-  //All characters should be allowed according to OWASP
-  //const isAlphanumericPlus = (str: string) => {
-  //  return /^[a-z0-9_-]+$/i.test(str);
-  //};
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setLoading(true);
-    setError(""); // Reset error message on new submit
+    setError(null); 
 
     if (!username || !password) {
       setError("Please fill all fields");
@@ -44,13 +37,6 @@ const Register: React.FC = () => {
       setLoading(false);
       return;
     }
-
-    //See explanation in function declaration
-    //if (!isAlphanumericPlus(password)) {
-    //  setError('Password can only contain a-z, 0-9 and "-_+!#¤%&/()=?"');
-    //  setLoading(false);
-    //  return;
-    //}
 
     try {
       await registerUser(username, password);

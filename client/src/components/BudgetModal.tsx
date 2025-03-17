@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addBudget, Budget } from "../api/api";
-// //Annelie
 
 interface BudgetModalProps {
     show: boolean;
@@ -44,20 +43,26 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Budget Category</Form.Label>
-                        <Form.Control type="text" placeholder="Enter category name" value={category}
-                            onChange={(e) => setCategory(e.target.value)} />
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter category name"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                        />
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Amount</Form.Label>
-                        <Form.Control type="number" placeholder="Enter amount" value={amount}
-                            onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))} />
+                        <Form.Control
+                            type="number"
+                            placeholder="Enter amount"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))}
+                        />
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => { handleClose() }}>
-                    Close
-                </Button>
+                <Button variant="secondary" onClick={() => { handleClose() }}>Close</Button>
                 <Button variant="primary" onClick={saveBudgetRow}>Save Budget</Button>
             </Modal.Footer>
         </Modal>

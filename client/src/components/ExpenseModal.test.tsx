@@ -133,9 +133,8 @@ describe('ExpenseModal Component', () => {
     
         expect(addExpense).toHaveBeenCalledWith("Groceries", 50, "");
     });
-    
 
-    test('shows alert if character limit is exceeded', async () => {
+    test('shows alert if expense character limit is exceeded', async () => {
         window.alert = jest.fn();
         await screen.findByText("Groceries");
 
@@ -152,7 +151,7 @@ describe('ExpenseModal Component', () => {
             fireEvent.click(saveButton);
         });
 
-        expect(window.alert).toHaveBeenCalledWith('Character limit of 20 exceeded.');
+        expect(window.alert).toHaveBeenCalledWith('Character limit (20) for cost exceeded.');
     });
 
     test("calls onSave and handleClose when clicking Save Expense", async () => {
