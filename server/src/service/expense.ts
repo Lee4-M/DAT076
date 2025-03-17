@@ -54,8 +54,8 @@ export class ExpenseService implements IExpenseService {
     }
 
     async updateExpense(id: number, cost: number, description: string, budgetRowId?: number): Promise<Expense | undefined> {
-        if (id < 0 || cost < 0 || !description) {
-            console.error("Invalid input: id, cost, or description");
+        if (id < 0 || cost < 0) {
+            console.error("Invalid input: id or cost");
             return undefined;
         }
 

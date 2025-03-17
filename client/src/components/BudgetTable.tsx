@@ -66,7 +66,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                delay: 100, 
+                delay: 50, 
                 tolerance: 5,
             },
         })

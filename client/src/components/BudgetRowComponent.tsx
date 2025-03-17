@@ -45,6 +45,7 @@ export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, l
                 <td>
                     {isEditing ? (
                         <input
+                            title="input-category"
                             type="text"
                             ref={categoryInputRef}
                             value={budget.category}
@@ -58,6 +59,7 @@ export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, l
                 <td>
                     {isEditing ? (
                         <input
+                            title="input-amount"
                             type="number"
                             value={budget.amount}
                             onChange={(e) => handleChangeBudgets(budget.id, { amount: parseInt(e.target.value) })}

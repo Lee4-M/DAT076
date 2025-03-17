@@ -41,6 +41,7 @@ export function DraggableExpense({ expense, editedExpenses, isEditing, handleCha
             <td ref={setNodeRef} style={style} {...attributes} {...listeners} onMouseDown={handlePressStart} onMouseUp={handlePressEnd} onTouchStart={handlePressStart} onTouchEnd={handlePressEnd}>
                 {isEditing ? (
                     <input
+                        title="input-cost"
                         type="number"
                         value={editedExpenses.find(e => e.id === expense.id)?.cost || ""}
                         onChange={(e) => {
@@ -58,6 +59,7 @@ export function DraggableExpense({ expense, editedExpenses, isEditing, handleCha
             <td ref={setNodeRef} style={style} {...attributes} {...listeners}>
                 {isEditing ? (
                     <input
+                        title="input-description"
                         type="text"
                         ref={descriptionInputRef}
                         value={editedExpenses.find(e => e.id === expense.id)?.description || ""}
