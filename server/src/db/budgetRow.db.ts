@@ -13,6 +13,16 @@ export class BudgetRowModel extends Model<InferAttributes<BudgetRowModel>, Infer
   }
 }
 
+/*
+ * The BudgetRowModel class represents the budgetRows table in the database.
+ * It has a one-to-many relationship with the ExpenseModel class.
+ * The budgetRows table has the following columns:
+ * - id: an auto-incrementing integer that serves as the primary key
+ * - category: a string that cannot be empty
+ * - amount: an integer that cannot be empty
+ * The table name is 'budgetRows'.
+ * The table has a composite unique constraint on the userId and category columns.
+ */
 BudgetRowModel.init(
   {
     id: {
