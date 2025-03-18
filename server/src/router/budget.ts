@@ -171,7 +171,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(404).send("Budget row not found");
                 return;
             }
-            res.status(201).send(newBudget);
+            res.status(200).send(newBudget);
         } catch (e: any) {
             res.status(500).send(e.message);
         }

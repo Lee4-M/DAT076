@@ -124,7 +124,7 @@ describe("BudgetRow API Tests", () => {
     describe("PUT /budget/:id", () => {
         test("Successfully update a budget row", async () => {
             const addResponse = await agent.post("/budget").send({ category: "Groceries", amount: 1000 });
-            await agent.put(`/budget/${addResponse.body.id}`).send({ category: "Groceries", amount: 500 }).expect(201);
+            await agent.put(`/budget/${addResponse.body.id}`).send({ category: "Groceries", amount: 500 }).expect(200);
         });
 
         test("Unsuccessfully update a budget row with invalid id", async () => {
