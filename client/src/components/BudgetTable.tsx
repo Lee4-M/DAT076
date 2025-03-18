@@ -1,3 +1,23 @@
+/**
+ * BudgetTable component is responsible for rendering the table containing the budgets 
+ * and related expenses.
+ * 
+ * Features: 
+ * - Displays budgets and associated expenses.
+ * - Interactive sorting by: category name, budget amount, expense amount and result (budget amount - expense amount).
+ * - Drag and drop expenses between budgets. 
+ * - Summary rows of totals and remaining budget.
+ * 
+ * @component
+ * @param budgets - The budget objects containing category and amount.
+ * @param expenses - The list of expenses related to the budget.
+ * @param isEditing - Flag to determine if the budget row is in editing mode.
+ * @param loadBudgets - Function to reload the budgets.
+ * @param loadExpenses - Function to reload the expenses.
+ * @param handleChangeBudgets - Function to handle changes to the budget.
+ * @param handleSaveBudgetRows - Function to save the budget rows.
+ */
+
 import { Table } from "react-bootstrap";
 import { useState } from "react";
 import { Budget, Expense, updateExpense } from "../api/api";
@@ -38,7 +58,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
         setSortOrder(newSortOrder);
     };
 
-    const sortedBudgets = _.orderBy(budgets, [budget => {
+    const sortedBudgets = isEditing ? budgets : _.orderBy(budgets, [budget => {
         if (sortBy === 'totalExpenses') {
             return expenses[budget.id]?.reduce((total, expense) => total + expense.cost, 0) || 0;
         } else if (sortBy === 'result') {

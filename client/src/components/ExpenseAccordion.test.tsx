@@ -90,12 +90,10 @@ describe('ExpenseAccordion Component', () => {
         const deleteButton = screen.getAllByAltText('Delete');
         fireEvent.click(deleteButton[0]);
 
-        expect(mockedAxios.delete).toHaveBeenCalledWith("http://localhost:8080/expense", {
-            data: { id: expenses[0].id },
-        });
+        expect(mockedAxios.delete).toHaveBeenCalledWith("http://localhost:8080/expense/1");
     });
 
-    test('When Edit Expense button is clicked and new input is provided, updateExpenses is called', async () => {
+    test('When Edit Expense button is clicked and new input is provided, updateExpense is called', async () => {
         const editButton = screen.getByText('Edit expenses');
         fireEvent.click(editButton);
         const costInput = screen.getByDisplayValue('30');
@@ -105,10 +103,10 @@ describe('ExpenseAccordion Component', () => {
         const doneButton = screen.getByText('Done');
         fireEvent.click(doneButton);
 
-        expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/expenses", {
-            costs: [50, 80],
-            descriptions: ['new desc', 'desc-2'],
-            ids: [1, 2],
+        expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/expense/1", {
+            cost: 50,
+            description: 'new desc',
+            budgetRowId: 1,
         });
     });
 

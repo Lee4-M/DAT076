@@ -1,3 +1,20 @@
+/**
+ * Sidebar component displays the sidebar navigation, allowing users to manage budgets and expenses.
+ * 
+ * Features:
+ * - Allows users to add new budget items and expenses.
+ * - Provides the option to edit and save changes to the budget. 
+ * - Displays a pie chart summarizing the totatl expenses per budget category. 
+ * - Includes a logout button to sign out the user. 
+ * 
+ * @component
+ * @param budgets - List of all budgets.  
+ * @param expenses - An object mapping budget Ids to their respective expenses.
+ * @param isEditing - Boolean flag indicating whether or not the user is in editing mode. 
+ * @param loadBudgets - Function to reload the list of budgets.
+ * @param handleSaveBudgetRows - Function to save all changes made to the budgets.
+ * 
+ */
 import { useMemo, useState } from "react";
 import { Container, Row, Card, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";

@@ -1,3 +1,21 @@
+/**
+ * DraggableExpense component renders a draggable table row representing a single expense. 
+ * 
+ * Features: 
+ * - Supports drag and drop with @dnd-kit/core
+ * - Allows in line editing of cost and description fields when 'isEditing' is true
+ * - Handles changes to expenses and saves on Enter. 
+ * - Displays a delete icon to remove expenses in editing mode.
+ * 
+ * @component
+ * @param expense - The expense object to display and edit. 
+ * @param editedExpenses - Array of currently edited expenses to track input changes. 
+ * @param isEditing - Boolean that toggles edit mode. 
+ * @param handleChangeExpenses - Function to handle changes to expenses to track input changes. 
+ * @param handleSaveExpenses - Function to save all expenses on Enter.
+ * @param handleDeleteExpense - Function to delete expenses. 
+ * 
+ */
 import { useDraggable } from "@dnd-kit/core";
 import { Expense } from "../api/api";
 import { useRef, useState } from "react";

@@ -188,53 +188,6 @@ describe("Budget Service", () => {
             expect(result).toBeUndefined();
         });
     });
-
-    describe("Updating multiple budget rows", () => {
-        test("Updating multiple budget rows should reflect in the budgetRows database table", async () => {
-            const budget1 = await budgetService.addBudgetRow("User", "Clothes", 500);
-            const budget2 = await budgetService.addBudgetRow("User", "Food", 300);
-    
-            const updatedBudgets = await budgetService.updateAllBudgetRows(
-                "User", 
-                [budget1!.id, budget2!.id], 
-                ["Clothes", "Food"], 
-                [1000, 500]
-            );
-    
-            expect(updatedBudgets).toBeDefined();
-            expect(updatedBudgets!.length).toBe(2);
-            
-            const updatedBudget1 = await budgetService.findBudgetRowById(budget1!.id);
-            const updatedBudget2 = await budgetService.findBudgetRowById(budget2!.id);
-            
-            expect(updatedBudget1).toEqual(expect.objectContaining({ category: "Clothes", amount: 1000 }));
-            expect(updatedBudget2).toEqual(expect.objectContaining({ category: "Food", amount: 500 }));
-        });
-    
-        test("Updating budget rows for a non-existent user should return undefined", async () => {
-            const result = await budgetService.updateAllBudgetRows("NonExistentUser", [1, 2], ["Clothes", "Food"], [1000, 500]);
-            expect(result).toBeUndefined();
-        });
-    
-        test("Updating budget rows when some rows do not exist should return undefined", async () => {
-            const budget = await budgetService.addBudgetRow("User", "Clothes", 500);
-            const result = await budgetService.updateAllBudgetRows("User", [budget!.id, 999], ["Clothes", "Food"], [1000, 500]);
-            expect(result).toBeUndefined();
-        });
-    
-        test("Updating budget rows with an empty username should return undefined", async () => {
-            const budget = await budgetService.addBudgetRow("User", "Clothes", 500);
-            const result = await budgetService.updateAllBudgetRows("", [budget!.id], ["Clothes"], [1000]);
-            expect(result).toBeUndefined();
-        });
-    
-        test("Updating budget rows with mismatched array lengths should return undefined", async () => {
-            const budget = await budgetService.addBudgetRow("User", "Clothes", 500);
-            const result = await budgetService.updateAllBudgetRows("User", [budget!.id], ["Clothes", "Food"], [1000]);
-            expect(result).toBeUndefined();
-        });
-    });
-    
 });
 
 

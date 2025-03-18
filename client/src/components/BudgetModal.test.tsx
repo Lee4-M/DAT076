@@ -67,7 +67,7 @@ describe('BudgetModal Component', () => {
         const saveButton = screen.getByText('Save Budget');
 
         mockedAxios.post.mockResolvedValue({
-            data: { id: 1, category: "Groceries", cost: 200},
+            data: { category: "Groceries", cost: 200 },
         });
     
         await act(async () => {

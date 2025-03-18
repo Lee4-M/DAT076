@@ -8,6 +8,18 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     interface BudgetRowRequest extends Request {
         session: any
     }
+    
+    /**
+     * GET /budget: Retrieves the budget rows for the logged-in user.
+     * 
+     * @param req - The request object, which includes the session information.
+     * @param res - The response object, which will contain the budget rows or an error message.
+     * 
+     * @returns 200 - Returns an array of budget rows if the user is logged in and budget rows are found.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in or the user no longer exists.
+     * @returns 500 - Returns an error message if there is a server error.
+     * 
+     */
 
     budgetRowRouter.get("/budget", async (
         req: BudgetRowRequest,
@@ -38,7 +50,18 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         },
         session: any
     }
-
+     
+    /**
+     * POST /budget: Adds a new budget row for the logged-in user.
+     * 
+     * @param req - The request object, which includes the session information and the budget row details (category and amount).
+     * @param res - The response object, which will contain the newly created budget row or an error message.
+     * 
+     * @returns 201 - Returns the newly created budget row if the user is logged in and the input is valid.
+     * @returns 400 - Returns an error message if the input is invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
     budgetRowRouter.post("/budget", async (
         req: AddBudgetRowRequest,
         res: Response<BudgetRow | string>
@@ -61,13 +84,25 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     });
 
     interface DeleteBudgetRowRequest extends Request {
-        body: {
-            id: number
+        params: {
+            id: string
         },
         session: any
     }
 
-    budgetRowRouter.delete("/budget", async (
+    /**
+     * DELETE /budget/:id: Deletes a budget row for the logged-in user by ID.
+     * 
+     * @param req - The request object, which includes the session information and the budget row ID.
+     * @param res - The response object, which will contain a success message or an error message.
+     * 
+     * @returns 200 - Returns "Budget row deleted" if the budget row is successfully deleted.
+     * @returns 400 - Returns an error message if the ID is missing or invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 404 - Returns "Budget row not found" if the budget row does not exist.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
+    budgetRowRouter.delete("/budget/:id", async (
         req: DeleteBudgetRowRequest,
         res: Response<string>
     ) => {
@@ -76,9 +111,9 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const id = req.body.id;
-            if (typeof (id) !== "number") {
-                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof (id)}`);
+            const id = Number(req.params.id);
+            if (!id) {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id is missing`);
                 return;
             }
             const success = await budgetRowService.deleteBudgetRow(req.session.username, id);
@@ -93,15 +128,30 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     });
 
     interface EditBudgetRequest extends Request {
+        params: {
+            id: string
+        },
         body: {
             category: string,
             amount: number,
-            id: number
         },
         session: any
     }
 
-    budgetRowRouter.put("/budget", async (
+    /**
+     * PUT /budget/:id: Updates a budget row for the logged-in user by ID.
+     * 
+     * @param req - The request object, which includes the session information, the budget row ID, and the updated budget row details (category and amount).
+     * @param res - The response object, which will contain the updated budget row or an error message.
+     * 
+     * @returns 201 - Returns the updated budget row if the user is logged in and the input is valid.
+     * @returns 400 - Returns an error message if the input is invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 404 - Returns "Budget row not found" if the budget row does not exist.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
+
+    budgetRowRouter.put("/budget/:id", async (
         req: EditBudgetRequest,
         res: Response<BudgetRow | string>
     ) => {
@@ -110,9 +160,10 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const { category, amount, id } = req.body;
-            if ((typeof (category) !== "string") || (typeof (amount) !== "number") || (typeof (id) !== "number")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)}, budget has type ${typeof (id)} or amount has type ${typeof (amount)}`);
+            const id = Number(req.params.id);
+            const { category, amount } = req.body;
+            if ((typeof (category) !== "string") || (typeof (amount) !== "number") || !id) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- category has type ${typeof (category)} or amount has type ${typeof (amount)} or id is missing`);
                 return;
             }
             const newBudget: BudgetRow | undefined = await budgetRowService.updateBudgetRow(req.session.username, id, category, amount);
@@ -125,57 +176,6 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
             res.status(500).send(e.message);
         }
     });
-
-    interface EditBudgetsRequest extends Request {
-        body: {
-            ids: [number],
-            categories: [string],
-            amounts: [number]
-        },
-        session: any
-    }
-
-    function isValidBudgetRequest(body: unknown): body is EditBudgetsRequest["body"] {
-        if (typeof body !== "object" || body === null || !("ids" in body) || !("categories" in body) || !("amounts" in body)) {
-            return false;
-        }
-
-        const { ids, categories, amounts } = body
-
-        return (
-            Array.isArray(ids) && ids.every(id => typeof id === "number") &&
-            Array.isArray(categories) && categories.every(category => typeof category === "string") &&
-            Array.isArray(amounts) && amounts.every(amount => typeof amount === "number") &&
-            ids.length === categories.length && categories.length === amounts.length
-        );
-    }
-
-    budgetRowRouter.put("/budgets", async (
-        req: EditBudgetsRequest,
-        res: Response<BudgetRow[] | string>
-    ) => {
-        try {
-            if (!req.session.username) {
-                res.status(401).send("Not logged in");
-                return;
-            }
-            if (!isValidBudgetRequest(req.body)) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- invalid request body`);
-                return;
-            }
-            const { ids, categories, amounts } = req.body;
-
-            const newBudgets: BudgetRow[] | undefined = await budgetRowService.updateAllBudgetRows(req.session.username, ids, categories, amounts);
-            if (!newBudgets) {
-                res.status(404).send("Budget rows not found");
-                return;
-            }
-            res.status(201).send(newBudgets);
-        } catch (e: any) {
-            res.status(500).send(e.message);
-        }
-    });
-
 
     return budgetRowRouter;
 }

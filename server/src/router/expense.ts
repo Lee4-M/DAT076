@@ -12,7 +12,20 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
-    expenseRouter.get("/expense", async (
+    /**
+     * GET /expense/:budgetRowId: Retrieves the expenses for a specific budget row.
+    * 
+    * @param req - The request object: the session information and budgetRowId parameter.
+    * @param res - The response object: the expenses or an error message.
+    * 
+    * @returns 200 - Returns an array of expenses if the user is logged in and the budgetRowId is valid.
+    * @returns 400 - Returns an error message if the budgetRowId is missing or invalid.
+    * @returns 401 - Returns "Not logged in" if the user is not logged in.
+    * @returns 500 - Returns an error message if there is a server error.
+    * 
+     */
+
+    expenseRouter.get("/expense/:budgetRowId", async (
         req: ExpenseRequest,
         res: Response<Expense[] | string>
     ) => {
@@ -21,9 +34,9 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const budgetRowId = Number(req.query.budgetRowId);
-            if (isNaN(budgetRowId)) {
-                res.status(400).send(`Bad GET call to ${req.originalUrl} --- budgetRowId is missing or not a number`);
+            const budgetRowId = Number(req.params.budgetRowId);
+            if (!budgetRowId) {
+                res.status(400).send(`Bad GET call to ${req.originalUrl} --- budgetRowId is missing`);
                 return;
             }
             const expenses: Expense[] | undefined = await expenseService.getExpenses(budgetRowId);
@@ -41,6 +54,18 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         },
         session: any
     }
+
+    /**
+     * POST /expense: Adds a new expense.
+     * 
+     * @param req - The request object: the session information and expense details (category, cost, description).
+     * @param res - The response object: the newly created expense or an error message.
+     * 
+     * @returns 201 - Returns the newly created expense if the user is logged in and the expense details are valid.
+     * @returns 400 - Returns an error message if the expense details are missing or invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
 
     expenseRouter.post("/expense", async (
         req: AddExpenseRequest,
@@ -64,13 +89,25 @@ export function expenseRouter(expenseService: IExpenseService): Router {
     });
 
     interface DeleteExpenseRequest extends Request {
-        body: {
-            id: number
+        params: {
+            id: string
         },
         session: any
     }
 
-    expenseRouter.delete("/expense", async (
+    /**
+     * DELETE /expense/:id: Deletes an expense by its ID.
+     * 
+     * @param req - The request object: the session information and expense ID parameter.
+     * @param res - The response object: a success message or an error message.
+     * 
+     * @returns 200 - Returns a success message if the user is logged in and the expense ID is valid.
+     * @returns 400 - Returns an error message if the expense ID is missing or invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
+
+    expenseRouter.delete("/expense/:id", async (
         req: DeleteExpenseRequest,
         res: Response<string>
     ) => {
@@ -79,9 +116,9 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const id = req.body.id
-            if (typeof (id) !== "number") {
-                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id has type ${typeof (id)}`);
+            const id = Number(req.params.id)
+            if (!id) {
+                res.status(400).send(`Bad DELETE call to ${req.originalUrl} --- id is missing`);
                 return;
             }
             await expenseService.deleteExpense(id);
@@ -93,8 +130,10 @@ export function expenseRouter(expenseService: IExpenseService): Router {
 
 
     interface EditExpenseRequest extends Request {
+        params: {
+            id: string
+        },
         body: {
-            id: number,
             cost: number,
             description: string
             budgetRowId?: number
@@ -102,7 +141,20 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
-    expenseRouter.put("/expense", async (
+        /**
+         * PUT /expense/:id: Updates expense values by its ID.
+         * 
+         * @param req - The request object: the session information and expense parameters.
+         * @param res - The response object: the updated expense object.
+         * 
+         * @returns 200 - Returns the updated expense if the user is logged in and the expense details are valid.
+         * @returns 400 - Returns an error message if the expense details are missing or invalid.
+         * @returns 401 - Returns "Not logged in" if the user is not logged in.
+         * @returns 404 - Returns "Expense not found" if the expense ID does not exist.
+         * @returns 500 - Returns an error message if there is a server error.
+         */
+
+    expenseRouter.put("/expense/:id", async (
         req: EditExpenseRequest,
         res: Response<Expense | string>
     ) => {
@@ -111,9 +163,10 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 res.status(401).send("Not logged in");
                 return;
             }
-            const { id, cost, description, budgetRowId} = req.body;
-            if ((typeof (id) !== "number") || (typeof (cost) !== "number") || (typeof (description) !== "string")) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- id has type ${typeof (id)} or cost has type ${typeof (cost)} or description has type ${typeof (description)}`);
+            const id = Number(req.params.id)
+            const { cost, description, budgetRowId} = req.body;
+            if ((typeof (cost) !== "number") || (typeof (description) !== "string" || !id)) {
+                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- cost has type ${typeof (cost)} or description has type ${typeof (description)} or id is missing`);
                 return;
             }
             const updatedExpense: Expense | undefined = await expenseService.updateExpense(id, cost, description, budgetRowId);
@@ -127,54 +180,5 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         }
     });
 
-    interface EditExpensesRequest extends Request {
-        body: {
-            ids: number[],
-            costs: number[],
-            descriptions: string[]
-        },
-        session: any
-    }
-
-    function isValidExpensesRequest(body: unknown): body is EditExpenseRequest["body"] {
-        if (typeof body !== "object" || body === null || !("ids" in body) || !("costs" in body) || !("descriptions" in body)) {
-            return false;
-        }
-
-        const { ids, descriptions, costs } = body
-
-        return (
-            Array.isArray(ids) && ids.every(id => typeof id === "number") &&
-            Array.isArray(costs) && costs.every(cost => typeof cost === "number") &&
-            Array.isArray(descriptions) && descriptions.every(description => typeof description === "string") &&
-            ids.length === descriptions.length && descriptions.length === costs.length
-        );
-    }
-
-    expenseRouter.put("/expenses", async (
-        req: EditExpensesRequest,
-        res: Response<Expense[] | string>
-    ) => {
-        try {
-            if (!req.session.username) {
-                res.status(401).send("Not logged in");
-                return;
-            }
-
-            if (!isValidExpensesRequest(req.body)) {
-                res.status(400).send(`Bad PUT call to ${req.originalUrl} --- invalid request body`);
-                return;
-            }
-            const { ids, costs, descriptions } = req.body;
-            const updatedExpenses: Expense[] | undefined = await expenseService.updateAllExpenses(ids, costs, descriptions);
-            if (!updatedExpenses) {
-                res.status(404).send(`Expenses not found`);
-                return;
-            }
-            res.status(201).send(updatedExpenses);
-        } catch (e: any) {
-            res.status(500).send(e.message);
-        }
-    });
     return expenseRouter;
 }

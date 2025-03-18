@@ -10,6 +10,18 @@ export function userRouter(userService: IUserService): Router {
         session: any
     }
 
+    /**
+     * POST /user: Adds a new user.
+     * 
+     * @param req - The request object: contains the username and password in the body.
+     * @param res - The response object: registered user or an error message
+     * 
+     * @returns 201 - Returns a success message if the user is registered successfully.
+     * @returns 400 - Returns an error message if the username or password is invalid, or if the user already exists.
+     * @returns 500 - Returns an error message if there is a server error.
+     * 
+    */
+
     userRouter.post("/user", async (req: UserRequest, res: Response) => {
         try {
             const { username, password } = req.body;
@@ -27,6 +39,19 @@ export function userRouter(userService: IUserService): Router {
             res.status(500).send("Failed to register user: " + error.message);
         }
     });
+    
+    /**
+     * POST /user/login: Logs in a user.
+     * 
+     * @param req - The request object: contains the username and password in the body.
+     * @param res - The response object: user session or an error message.
+     * 
+     * @returns 200 - Returns a success message if the user is logged in successfully.
+     * @returns 400 - Returns an error message if the user is already logged in or if the username or password is invalid.
+     * @returns 401 - Returns an error message if the username or password is incorrect.
+     * @returns 500 - Returns an error message if there is a server error.
+     * 
+     */
 
     userRouter.post("/user/login", async (req: UserRequest, res: Response) => {
         try {
@@ -50,6 +75,17 @@ export function userRouter(userService: IUserService): Router {
             res.status(500).send("Failed to login: " + error.message);
         }
     });
+
+    /**
+     * POST /user/logout: Logs out a user.
+     * 
+     * @param req - The request object containing the session information.
+     * @param res - The response object: messege of successful logout or error message. 
+     * 
+     * @returns 200 - Returns a success message if the user is logged out successfully.
+     * @returns 401 - Returns an error message if the user is not logged in.
+     * 
+     */
 
     userRouter.post("/user/logout", (req: UserRequest, res: Response) => {
         if (!req.session.username) {

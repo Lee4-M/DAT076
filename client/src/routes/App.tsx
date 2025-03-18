@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import './App.css'
-import { Budget, Expense, getBudgets, getExpenses, updateBudgetRows } from '../api/api';
+import { Budget, Expense, getBudgets, getExpenses, updateBudgetRow } from '../api/api';
 
 import { Sidebar } from '../components/Sidebar'
 import { BudgetTable } from '../components/BudgetTable'
@@ -39,8 +39,10 @@ function App() {
 
     async function handleSaveBudgetRows() {
         setIsEditing(!isEditing);
-        if(isEditing) {
-            await updateBudgetRows(editedBudgets);
+        if (isEditing) {
+            for(const budget of editedBudgets) {
+                await updateBudgetRow(budget.id, budget.category, budget.amount);
+            }
             await loadBudgets();
         }
     }

@@ -1,3 +1,19 @@
+/**
+ * ExpenseModal component renders a modal dialog that allows users to add a new expense to a budget.
+ * 
+ * Features:
+ * - Displays a modal form to input expense details.
+ * - Allows selecting a category from existing budgets or entering a custom category.
+ * - Validates input fields (cost, category, description length).
+ * - Submits the new expense and resets form fields.
+ * 
+ * @component
+ * @param show - Determines whether the modal is visible or not.
+ * @param handleClose - Function to close the modal.
+ * @param onSave -Function to call when a new expense item is successfully added.
+ */
+
+
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addExpense, Expense, getBudgets } from "../api/api";
 import { useState, useEffect } from 'react';
@@ -10,7 +26,6 @@ interface ExpenseModalProps {
 }
 
 function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
-
     const [budgets, setBudgets] = useState<Budget[]>([]);
     const [customCategory, setCustomCategory] = useState<string>('');
     const [isCustomCategory, setIsCustomCategory] = useState(false);
@@ -46,7 +61,8 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
         }
     }
 
-    async function saveExpense() {
+    async function saveExpense(event?: React.FormEvent) {
+        event?.preventDefault();
         const categoryToUse = isCustomCategory ? customCategory : expenseCategory;
 
         if (!categoryToUse) {
@@ -98,13 +114,13 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     }
 
     return (
-        <Modal data-testid="expense-modal" show={show} onHide={handleClose} >
+        <Modal data-testid="expense-modal" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Expense</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
-                <Form.Group className="mb-3">
+                <Form onSubmit={saveExpense}>
+                    <Form.Group className="mb-3">
                         <Form.Label>Category</Form.Label>
                         <Form.Select
                             data-testid="category-select"
@@ -117,7 +133,6 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                                     Pick a category
                                 </option>
                             )}
-                            
                             {budgets.map((budget) => (
                                 <option key={budget.category} value={budget.category}>
                                     {budget.category}
@@ -153,12 +168,12 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </Form.Group>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>Close</Button>
+                        <Button variant="primary" type="submit">Save Expense</Button>
+                    </Modal.Footer>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" onClick={saveExpense}>Save Expense</Button>
-            </Modal.Footer>
         </Modal >
     );
 }
