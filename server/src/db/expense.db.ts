@@ -8,7 +8,6 @@ export class ExpenseModel extends Model<InferAttributes<ExpenseModel>, InferCrea
   declare budgetRowId: ForeignKey<BudgetRowModel['id']>;
   declare cost: number;
   declare description: string;
-  declare userId: ForeignKey<UserModel['id']>;
   declare static associations: {
     budgetRow: Association<ExpenseModel, BudgetRowModel>;
   }
@@ -20,10 +19,6 @@ ExpenseModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
-    },
-    budgetRowId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     cost: {
       type: DataTypes.INTEGER,
