@@ -4,9 +4,11 @@ Welcome to README for Budgie, a budget planner and expense tracker for the every
 
 Note: This is part of the coursework for DAT076 "Web Applications".
 
-## Project Report
+## Project Report & Repo structure
 
-The project report can be found in the folder named project-report.
+The project report can be found in the folder named project-report. 
+
+The frontend is located in the client directory, where we have our setup and config files and src. In src, we have our typescript files including React components, routes, api and main.tsx. The backend is located in the server directory, where we have config files and a src folder. The src folder contains the service layer, the router layer, model, as well as database implementation. This folder also has index.ts and start.ts.
 
 ## Environment Variables
 
