@@ -1,14 +1,10 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import { BudgetTable } from './BudgetTable';
 import axios from 'axios';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-jest.mock('../api/api', () => ({
-    deleteBudget: jest.fn(),
-}));
 
 describe('BudgetTable', () => {
     const mockLoadBudgets = jest.fn();
@@ -69,7 +65,7 @@ describe('BudgetTable', () => {
             totalBudgets += budget.amount;
         }
         
-        const totalRowElements = screen.getByTestId('total-row').children;;
+        const totalRowElements = screen.getByTestId('total-row').children;
         const totalBudgetsOnScreen = totalRowElements[1].textContent;   
         expect(totalBudgets + " :-").toEqual(totalBudgetsOnScreen)
     });
@@ -82,7 +78,7 @@ describe('BudgetTable', () => {
             }
         }
         
-        const totalRowElements = screen.getByTestId('total-row').children;;
+        const totalRowElements = screen.getByTestId('total-row').children;
         const totalExpensesOnScreen = totalRowElements[2].textContent;   
         expect(totalExpenses + " :-").toEqual(totalExpensesOnScreen)
     });
@@ -100,7 +96,7 @@ describe('BudgetTable', () => {
             }
         }
 
-        const totalRowElements = screen.getByTestId('total-row').children;;
+        const totalRowElements = screen.getByTestId('total-row').children;
         const resultOnScreen = totalRowElements[3].textContent;   
         expect((totalBudgets - totalExpenses) + " :-").toEqual(resultOnScreen)
     });
@@ -138,7 +134,6 @@ describe('BudgetTable', () => {
         
         const sortedRows = screen.getAllByRole('row');
         const sortedCategories = sortedRows.slice(1).map(row => row.children[0].textContent);
-        console.log(sortedCategories);
         expect(sortedCategories).toEqual(['Food', 'Transport']);
     });
 
@@ -206,5 +201,49 @@ describe('BudgetTable', () => {
         fireEvent.keyDown(categoryInput, { key: 'Enter', code: 'Enter' });
 
         expect(mockOnSave).toHaveBeenCalled();
+    });
+
+    test('requests server when clicking Save Budget', async () => {
+        render(
+            <BudgetTable
+                budgets={[]}
+                loadBudgets={mockLoadBudgets}
+                expenses={expenses}
+                loadExpenses={mockLoadExpenses}
+                isEditing={isEditing}
+                handleChangeBudgets={mockOnEdit}
+                handleSaveBudgetRows={mockOnSave}
+            />
+        );
+
+        const addBudgetButton = screen.getByText('Add Budget +');
+        await act(async () => {
+            fireEvent.click(addBudgetButton);
+        });
+
+        const budgetModal = screen.getByTestId('budget-modal');
+        expect(budgetModal).toBeInTheDocument();
+
+        const categoryInput = screen.getByPlaceholderText('Enter category name');
+        const amountInput = screen.getByPlaceholderText('Enter amount');
+        const saveButton = screen.getByRole('button', { name: 'Save Budget' });
+
+        mockedAxios.post.mockResolvedValue({
+            data: { id: 3, category: 'Health', amount: 300, userId: 1 },
+        });
+
+        await act(async () => {
+            fireEvent.change(categoryInput, { target: { value: 'Health' } });
+            fireEvent.change(amountInput, { target: { value: '300' } });
+        });
+
+        await act(async () => {
+            fireEvent.click(saveButton);
+        });
+
+        expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/budget", {
+            category: 'Health',
+            amount: 300,
+        });
     });
 });
