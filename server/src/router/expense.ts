@@ -12,6 +12,19 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
+    /**
+     * GET /expense/:budgetRowId: Retrieves the expenses for a specific budget row.
+    * 
+    * @param req - The request object: the session information and budgetRowId parameter.
+    * @param res - The response object: the expenses or an error message.
+    * 
+    * @returns 200 - Returns an array of expenses if the user is logged in and the budgetRowId is valid.
+    * @returns 400 - Returns an error message if the budgetRowId is missing or invalid.
+    * @returns 401 - Returns "Not logged in" if the user is not logged in.
+    * @returns 500 - Returns an error message if there is a server error.
+    * 
+     */
+
     expenseRouter.get("/expense/:budgetRowId", async (
         req: ExpenseRequest,
         res: Response<Expense[] | string>
@@ -42,6 +55,18 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
+    /**
+     * POST /expense: Adds a new expense.
+     * 
+     * @param req - The request object: the session information and expense details (category, cost, description).
+     * @param res - The response object: the newly created expense or an error message.
+     * 
+     * @returns 201 - Returns the newly created expense if the user is logged in and the expense details are valid.
+     * @returns 400 - Returns an error message if the expense details are missing or invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
+
     expenseRouter.post("/expense", async (
         req: AddExpenseRequest,
         res: Response<Expense | string>
@@ -69,6 +94,18 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         },
         session: any
     }
+
+    /**
+     * DELETE /expense/:id: Deletes an expense by its ID.
+     * 
+     * @param req - The request object: the session information and expense ID parameter.
+     * @param res - The response object: a success message or an error message.
+     * 
+     * @returns 200 - Returns a success message if the user is logged in and the expense ID is valid.
+     * @returns 400 - Returns an error message if the expense ID is missing or invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
 
     expenseRouter.delete("/expense/:id", async (
         req: DeleteExpenseRequest,
@@ -103,6 +140,19 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         },
         session: any
     }
+
+        /**
+         * PUT /expense/:id: Updates expense values by its ID.
+         * 
+         * @param req - The request object: the session information and expense parameters.
+         * @param res - The response object: the updated expense object.
+         * 
+         * @returns 200 - Returns the updated expense if the user is logged in and the expense details are valid.
+         * @returns 400 - Returns an error message if the expense details are missing or invalid.
+         * @returns 401 - Returns "Not logged in" if the user is not logged in.
+         * @returns 404 - Returns "Expense not found" if the expense ID does not exist.
+         * @returns 500 - Returns an error message if there is a server error.
+         */
 
     expenseRouter.put("/expense/:id", async (
         req: EditExpenseRequest,
