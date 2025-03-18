@@ -12,13 +12,20 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
     const [category, setCategory] = useState<string>('');
     const [amount, setAmount] = useState<number | ''>('');
 
-    async function saveBudgetRow() {
+    async function saveBudgetRow(event?: React.FormEvent) {
+        event?.preventDefault();
+
         if (category.length > 20 || amount.toString().length > 20) {
             alert('Character limit of 20 exceeded.');
             return;
         }
         if (!category) {
             alert('Please fill in a category name.');
+            return;
+        }
+
+        if (!(typeof amount === 'number')) {
+            alert('Please fill in a valid amount.');
             return;
         }
 
@@ -40,7 +47,7 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
                 <Modal.Title>Add Budget Item</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form onSubmit={saveBudgetRow}>
                     <Form.Group className="mb-3">
                         <Form.Label>Budget Category</Form.Label>
                         <Form.Control
@@ -59,12 +66,13 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
                             onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))}
                         />
                     </Form.Group>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>Close</Button>
+                        <Button variant="primary" type="submit">Save Budget</Button>
+                    </Modal.Footer>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={() => { handleClose() }}>Close</Button>
-                <Button variant="primary" onClick={saveBudgetRow}>Save Budget</Button>
-            </Modal.Footer>
+            
         </Modal>
     );
 }

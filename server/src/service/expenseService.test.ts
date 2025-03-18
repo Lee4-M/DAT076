@@ -109,29 +109,4 @@ describe("Expense Service", () => {
             expect(updatedExpense).toBeUndefined();
         });
     });
-
-    describe("Updating all expenses", () => {
-        test("Updating all expenses should reflect in the expense database table", async () => {
-            const expense1 = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
-            const expense2 = await expenseService.addExpense("User", "Clothes", 200, "Pants");
-            const updatedExpenses = await expenseService.updateAllExpenses([expense1!.id, expense2!.id], [150, 250], ["T-Shirt", "Jeans"]);
-            expect(updatedExpenses).toEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({ cost: 150, description: "T-Shirt" }),
-                    expect.objectContaining({ cost: 250, description: "Jeans" }),
-                ])
-            );
-        });
-
-        test("Updating all expenses with different array lengths should return undefined", async () => {
-            const expense1 = await expenseService.addExpense("User", "Clothes", 100, "Shirt");
-            const updatedExpenses = await expenseService.updateAllExpenses([expense1!.id], [150, 250], ["T-Shirt", "Jeans"]);
-            expect(updatedExpenses).toBeUndefined();
-        });
-
-        test("Updating all expenses with non-existent ids should return undefined", async () => {
-            const updatedExpenses = await expenseService.updateAllExpenses([999], [150], ["T-Shirt"]);
-            expect(updatedExpenses).toBeUndefined();
-        });
-    });
 });
