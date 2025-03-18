@@ -150,8 +150,6 @@ describe('BudgetRowComponent', () => {
             fireEvent.click(deleteButton);
         });
 
-        expect(mockedAxios.delete).toHaveBeenCalledWith("http://localhost:8080/budget", {
-            data: { id: budget.id },
-        });
+        expect(mockedAxios.delete).toHaveBeenCalledWith(`http://localhost:8080/budget/${budget.id}`);
     });
 });

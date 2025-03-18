@@ -39,11 +39,6 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
             return;
         }
 
-        if (!(typeof amount === 'number')) {
-            alert('Please fill in a valid amount.');
-            return;
-        }
-
         const newBudgetItem: Budget | undefined = await addBudget(category, Number(amount));
 
         if (newBudgetItem) {
