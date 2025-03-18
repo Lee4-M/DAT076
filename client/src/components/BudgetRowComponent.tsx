@@ -41,7 +41,14 @@ export function BudgetRowComponent({ budget, expenses, isEditing, loadBudgets, l
 
     return (
         <>
-            <tr data-testid="budget-row" className="budget-row hovering" onClick={handleOpenAccordion}>
+            <tr tabIndex={0} data-testid="budget-row" className="budget-row hovering" 
+                onKeyDown={(e) => { 
+                    if (e.key === " ") { 
+                        e.preventDefault(); 
+                        handleOpenAccordion();}
+                    }
+                } 
+                onClick={handleOpenAccordion}>
                 <td>
                     {isEditing ? (
                         <input

@@ -40,6 +40,7 @@ export async function getBudgets(): Promise<Budget[] | undefined> {
     }
 }
 
+/* Adds new expense under a budget category */
 export async function addExpense(category: string, cost: number, description: string): Promise<Expense | undefined> {
     try {
         const response = await axios.post<Expense>(`${BASE_URL}/expense`, { category: category, cost: cost, description: description });

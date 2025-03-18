@@ -10,7 +10,6 @@ interface ExpenseModalProps {
 }
 
 function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
-
     const [budgets, setBudgets] = useState<Budget[]>([]);
     const [customCategory, setCustomCategory] = useState<string>('');
     const [isCustomCategory, setIsCustomCategory] = useState(false);
@@ -99,7 +98,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     }
 
     return (
-        <Modal data-testid="expense-modal" show={show} onHide={handleClose} >
+        <Modal data-testid="expense-modal" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Expense</Modal.Title>
             </Modal.Header>
@@ -118,7 +117,6 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                                     Pick a category
                                 </option>
                             )}
-                            
                             {budgets.map((budget) => (
                                 <option key={budget.category} value={budget.category}>
                                     {budget.category}
@@ -160,7 +158,6 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                     </Modal.Footer>
                 </Form>
             </Modal.Body>
-            
         </Modal >
     );
 }
