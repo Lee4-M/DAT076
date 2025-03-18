@@ -46,7 +46,8 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
         }
     }
 
-    async function saveExpense() {
+    async function saveExpense(event?: React.FormEvent) {
+        event?.preventDefault();
         const categoryToUse = isCustomCategory ? customCategory : expenseCategory;
 
         if (!categoryToUse) {
@@ -103,8 +104,8 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                 <Modal.Title>Add Expense</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
-                <Form.Group className="mb-3">
+                <Form onSubmit={saveExpense}>
+                    <Form.Group className="mb-3">
                         <Form.Label>Category</Form.Label>
                         <Form.Select
                             data-testid="category-select"
@@ -153,12 +154,13 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </Form.Group>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>Close</Button>
+                        <Button variant="primary" type="submit">Save Expense</Button>
+                    </Modal.Footer>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" onClick={saveExpense}>Save Expense</Button>
-            </Modal.Footer>
+            
         </Modal >
     );
 }
