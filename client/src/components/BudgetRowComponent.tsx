@@ -1,5 +1,26 @@
-import { useState, useRef } from 'react';
+/**
+ * BudgetRowComponent component is responsible for rendering a single budget row,
+ * including: 
+ * - The budget's category amount.
+ * - Total Expenses associated with that budget
+ * - The result/remaining budget (budget amount - total expenses) 
+ * - An expandable ExpenseAccordion showing all related expenses when row is clicked. 
+ * 
+ * Features:
+ * - Inline editing which save when pressing enter
+ * - Indicators of overspending
+ * 
+ * @component
+ * @param budget - The budget object containing category and amount.
+ * @param expenses - The list of expenses related to the budget.
+ * @param isEditing - Flag to determine if the budget row is in editing mode.
+ * @param loadBudgets - Function to reload the budgets.
+ * @param loadExpenses - Function to reload the expenses.
+ * @param handleChangeBudgets - Function to handle changes to the budget.
+ * @param handleSaveBudgetRows - Function to save the budget rows.
+ */
 
+import { useState, useRef } from 'react';
 import '../routes/App.css'
 import { Budget, deleteBudget, Expense } from '../api/api';
 import { ExpenseAccordion } from './ExpenseAccordion';

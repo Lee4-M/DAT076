@@ -1,3 +1,18 @@
+/**
+ * BudgetItemModal component renders a modal dialog that allows users to add new budget.
+ * 
+ * Features:
+ * - Includes form fields for entering a budget category and amount.
+ * - Validates input fields.
+ * - Displays alerts if validation fails.
+ * - On successful submission, it triggers 'onSave', closes the modal and resets form. 
+ *
+ * @component
+ * @param show - Determines whether the modal is visible or not.
+ * @param handleClose - Function to call when the modal is closed.
+ * @param onSave - Function to call when a new budget item is successfully added.
+ */
+
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addBudget, Budget } from "../api/api";
