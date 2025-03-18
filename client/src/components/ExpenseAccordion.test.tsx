@@ -27,9 +27,6 @@ describe('ExpenseAccordion Component', () => {
                 budgetId={1}
             />
         );
-
-        // const toggleButton = screen.getByAltText('Toggle Arrow');
-        // fireEvent.click(toggleButton);
     };
 
     beforeEach(() => {
