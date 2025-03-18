@@ -3,7 +3,7 @@ import { screen } from '@testing-library/dom';
 import { Sidebar } from '../components/Sidebar';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
-import { Budget, updateBudgetRows } from '../api/api';
+import { Budget, updateBudgetRow } from '../api/api';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -26,7 +26,10 @@ describe('Sidebar Component', () => {
 
     mockOnSave = jest.fn(async () => {
       isEditing = !isEditing;
-      await updateBudgetRows(budgets);
+      
+      budgets.forEach(budget => {
+        updateBudgetRow(budget.id, budget.category, budget.amount);
+      });
     });
 
     const renderResult = render(
@@ -111,7 +114,7 @@ describe('Sidebar Component', () => {
     expect(saveButton).toBeInTheDocument();
   });
 
-  test('calls updateBudgetRows and requests server when clicking Save changes', async () => {
+  test('calls updateBudgetRow and requests server when clicking Save changes', async () => {
     rerender(
       <MemoryRouter>
         <Sidebar
@@ -134,10 +137,14 @@ describe('Sidebar Component', () => {
       fireEvent.click(saveButton);
     });
 
-    expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/budgets", {
-      ids: budgets.map(budget => budget.id),
-      categories: budgets.map(budget => budget.category),
-      amounts: budgets.map(budget => budget.amount),
+    expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/budget/1", {
+      category: 'Food',
+      amount: 100,
+    });
+
+    expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/budget/2", {
+      category: 'Transport',
+      amount: 150,
     });
   });
 

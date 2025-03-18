@@ -120,34 +120,3 @@ export async function updateExpense(id: number, cost: number, description: strin
         return undefined;
     }
 }
-
-/* Updates multiple budget rows at the same time (categories, amounts) */
-export async function updateBudgetRows(budgets: Budget[]): Promise<Budget[] | undefined> {
-    try {
-        const ids: number[] = [];
-        const categories: string[] = [];
-        const amounts: number[] = [];
-
-        for (const budget of budgets) {
-            ids.push(budget.id);
-            categories.push(budget.category);
-            amounts.push(budget.amount);
-        }
-        const response = await axios.put(`${BASE_URL}/budgets`, { ids: ids, categories: categories, amounts: amounts });
-        return response.data;
-    } catch (e: any) {
-        console.log(e);
-        return undefined;
-    }
-}
-
-/* Updates multiple expenses at the same time (costs, descriptions) */
-export async function updateExpenses(ids: number[], costs: number[], descriptions: string[]): Promise<Expense[] | undefined> {
-    try {
-        const response = await axios.put(`${BASE_URL}/expenses`, { costs: costs, descriptions: descriptions }, { params: { ids: ids } });
-        return response.data;
-    } catch (e: any) {
-        console.log(e);
-        return undefined;
-    }
-}
