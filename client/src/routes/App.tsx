@@ -23,7 +23,7 @@ function App() {
             console.error("Failed to fetch budgets");
         }
     }, []);
-  
+
     const loadExpenses = useCallback(async () => {
         if (budgets.length === 0) return;
 
@@ -40,7 +40,7 @@ function App() {
     async function handleSaveBudgetRows() {
         setIsEditing(!isEditing);
         if (isEditing) {
-            for(const budget of editedBudgets) {
+            for (const budget of editedBudgets) {
                 await updateBudgetRow(budget.id, budget.category, budget.amount);
             }
             await loadBudgets();
@@ -72,8 +72,8 @@ function App() {
         <>
             <Container fluid className="bg-body-secondary h-100 w-100">
                 <Row className='h-100'>
-                    <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} budgets={budgets} isEditing={isEditing} handleSaveBudgetRows={handleSaveBudgetRows}/></Col>
-                    <Col lg="9" className='p-3'><BudgetTable budgets={editedBudgets} expenses={expenses} isEditing={isEditing} loadBudgets={loadBudgets} loadExpenses={loadExpenses} handleChangeBudgets={handleChangeBudgets} handleSaveBudgetRows={handleSaveBudgetRows}/></Col>
+                    <Col lg="3" className='p-3'><Sidebar loadBudgets={loadBudgets} expenses={expenses} budgets={budgets} isEditing={isEditing} handleSaveBudgetRows={handleSaveBudgetRows} /></Col>
+                    <Col lg="9" className='p-3'><BudgetTable budgets={editedBudgets} expenses={expenses} isEditing={isEditing} loadBudgets={loadBudgets} loadExpenses={loadExpenses} handleChangeBudgets={handleChangeBudgets} handleSaveBudgetRows={handleSaveBudgetRows} /></Col>
                 </Row>
             </Container>
         </>

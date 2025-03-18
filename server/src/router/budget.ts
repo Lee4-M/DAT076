@@ -8,7 +8,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
     interface BudgetRowRequest extends Request {
         session: any
     }
-    
+
     /**
      * GET /budget: Retrieves the budget rows for the logged-in user.
      * 
@@ -50,7 +50,7 @@ export function budgetRowRouter(budgetRowService: IBudgetRowService): Router {
         },
         session: any
     }
-     
+
     /**
      * POST /budget: Adds a new budget row for the logged-in user.
      * 

@@ -8,7 +8,7 @@ jest.mock("axios")
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
 describe('Login screen', () => {
-  
+
      beforeEach(() => {
           jest.clearAllMocks();
           mockedAxios.get.mockResolvedValue({ data: [] });
@@ -30,7 +30,7 @@ describe('Login screen', () => {
      });
 
      test('renders the login button', () => {
-          const loginButton = screen.getByRole('button', {name: "Log In"});
+          const loginButton = screen.getByRole('button', { name: "Log In" });
           expect(loginButton).toBeInTheDocument();
      });
 
@@ -48,16 +48,16 @@ describe('Login screen', () => {
 
           const userNameField = screen.findByPlaceholderText("Username");
           const passwordField = screen.findByPlaceholderText("Password");
-          const loginButton = screen.getByRole('button', {name: "Log In"});
+          const loginButton = screen.getByRole('button', { name: "Log In" });
 
           await act(async () => {
-               fireEvent.change(await userNameField, {target: {value: "UserName"}});
-               fireEvent.change(await passwordField, {target: {value: "Password12345"}});
+               fireEvent.change(await userNameField, { target: { value: "UserName" } });
+               fireEvent.change(await passwordField, { target: { value: "Password12345" } });
                fireEvent.click(await loginButton);
           });
 
           expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/user/login",
-               {username : "UserName", password: "Password12345"}
+               { username: "UserName", password: "Password12345" }
           );
      })
 
@@ -65,23 +65,23 @@ describe('Login screen', () => {
 
           const userNameField = screen.findByPlaceholderText("Username");
           const passwordField = screen.findByPlaceholderText("Password");
-          const loginButton = screen.getByRole('button', {name: "Log In"});
-  
+          const loginButton = screen.getByRole('button', { name: "Log In" });
+
           await act(async () => {
-               fireEvent.change(await userNameField, {target: {value: ""}});
-               fireEvent.change(await passwordField, {target: {value: "Password12345"}});
+               fireEvent.change(await userNameField, { target: { value: "" } });
+               fireEvent.change(await passwordField, { target: { value: "Password12345" } });
                fireEvent.click(await loginButton);
           });
-  
+
           const errorMessage = screen.getByText("Please enter username and password");
           expect(errorMessage).toBeInTheDocument();
-  
+
           await act(async () => {
-               fireEvent.change(await userNameField, {target: {value: "UserName"}});
-               fireEvent.change(await passwordField, {target: {value: ""}});
+               fireEvent.change(await userNameField, { target: { value: "UserName" } });
+               fireEvent.change(await passwordField, { target: { value: "" } });
                fireEvent.click(await loginButton);
           });
-  
+
           expect(errorMessage).toBeInTheDocument();
-      })
+     })
 });

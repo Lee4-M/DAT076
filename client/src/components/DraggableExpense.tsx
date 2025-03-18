@@ -31,9 +31,9 @@ interface DraggableExpenseProps {
 
 export function DraggableExpense({ expense, editedExpenses, isEditing, handleChangeExpenses, handleSaveExpenses, handleDeleteExpense }: DraggableExpenseProps) {
     const [isPressing, setIsPressing] = useState(false);
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({ 
-        id: expense.id.toString(), 
-        data: { id: expense.id }, 
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+        id: expense.id.toString(),
+        data: { id: expense.id },
     });
     const descriptionInputRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +41,7 @@ export function DraggableExpense({ expense, editedExpenses, isEditing, handleCha
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : "none",
         opacity: transform ? 0.7 : 1,
         transition: "opacity 0.1s ease",
-        backgroundColor: isPressing ? "#fff" : "fff", 
+        backgroundColor: isPressing ? "#fff" : "fff",
     };
 
     const handleSaveOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -53,7 +53,7 @@ export function DraggableExpense({ expense, editedExpenses, isEditing, handleCha
 
     const handlePressStart = () => setIsPressing(true);
     const handlePressEnd = () => setIsPressing(false);
-    
+
     return (
         <tr>
             <td ref={setNodeRef} style={style} {...attributes} {...listeners} onMouseDown={handlePressStart} onMouseUp={handlePressEnd} onTouchStart={handlePressStart} onTouchEnd={handlePressEnd}>
@@ -90,13 +90,13 @@ export function DraggableExpense({ expense, editedExpenses, isEditing, handleCha
             </td>
             <td style={{ padding: "0px", backgroundColor: "inherit", textAlign: "center" }}>
                 {isEditing && (
-                    <img 
-                        src="/images/bin-svgrepo-com.svg" 
-                        alt="Delete" 
-                        width="20" 
-                        height="20" 
-                        style={{ cursor: "pointer" }} 
-                        onClick={() => handleDeleteExpense(expense.id)} 
+                    <img
+                        src="/images/bin-svgrepo-com.svg"
+                        alt="Delete"
+                        width="20"
+                        height="20"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDeleteExpense(expense.id)}
                     />
                 )}
             </td>

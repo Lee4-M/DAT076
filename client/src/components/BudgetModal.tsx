@@ -82,7 +82,7 @@ function BudgetItemModal({ show, handleClose, onSave }: BudgetModalProps) {
                     </Modal.Footer>
                 </Form>
             </Modal.Body>
-            
+
         </Modal>
     );
 }

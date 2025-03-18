@@ -20,8 +20,8 @@ describe('BudgetRowComponent', () => {
     };
 
     const expenses = [
-        { id: 1, budgetRowId: 1,  cost: 30, description: "desc-1" },
-        { id: 2, budgetRowId: 1,  cost: 80, description: "desc-2" },
+        { id: 1, budgetRowId: 1, cost: 30, description: "desc-1" },
+        { id: 2, budgetRowId: 1, cost: 80, description: "desc-2" },
     ];
 
     let isEditing: boolean;

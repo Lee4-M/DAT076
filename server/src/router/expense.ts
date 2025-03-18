@@ -141,18 +141,18 @@ export function expenseRouter(expenseService: IExpenseService): Router {
         session: any
     }
 
-        /**
-         * PUT /expense/:id: Updates expense values by its ID.
-         * 
-         * @param req - The request object: the session information and expense parameters.
-         * @param res - The response object: the updated expense object.
-         * 
-         * @returns 200 - Returns the updated expense if the user is logged in and the expense details are valid.
-         * @returns 400 - Returns an error message if the expense details are missing or invalid.
-         * @returns 401 - Returns "Not logged in" if the user is not logged in.
-         * @returns 404 - Returns "Expense not found" if the expense ID does not exist.
-         * @returns 500 - Returns an error message if there is a server error.
-         */
+    /**
+     * PUT /expense/:id: Updates expense values by its ID.
+     * 
+     * @param req - The request object: the session information and expense parameters.
+     * @param res - The response object: the updated expense object.
+     * 
+     * @returns 200 - Returns the updated expense if the user is logged in and the expense details are valid.
+     * @returns 400 - Returns an error message if the expense details are missing or invalid.
+     * @returns 401 - Returns "Not logged in" if the user is not logged in.
+     * @returns 404 - Returns "Expense not found" if the expense ID does not exist.
+     * @returns 500 - Returns an error message if there is a server error.
+     */
 
     expenseRouter.put("/expense/:id", async (
         req: EditExpenseRequest,
@@ -164,7 +164,7 @@ export function expenseRouter(expenseService: IExpenseService): Router {
                 return;
             }
             const id = Number(req.params.id)
-            const { cost, description, budgetRowId} = req.body;
+            const { cost, description, budgetRowId } = req.body;
             if ((typeof (cost) !== "number") || (typeof (description) !== "string" || !id)) {
                 res.status(400).send(`Bad PUT call to ${req.originalUrl} --- cost has type ${typeof (cost)} or description has type ${typeof (description)} or id is missing`);
                 return;

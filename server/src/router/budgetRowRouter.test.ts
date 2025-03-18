@@ -37,7 +37,7 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-    jest.restoreAllMocks(); 
+    jest.restoreAllMocks();
 });
 
 describe("BudgetRow API Tests", () => {

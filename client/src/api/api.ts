@@ -81,7 +81,7 @@ export async function deleteExpense(id: number): Promise<boolean> {
     }
 }
 
-/* Deletes a budget row by ID */ 
+/* Deletes a budget row by ID */
 export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     try {
         const response = await axios.delete(`${BASE_URL}/budget/${budgetRowId}`);
@@ -110,10 +110,10 @@ export async function updateBudgetRow(id: number, category: string, amount: numb
     }
 }
 
-/* Update a single expense with new values (cost, description)*/ 
+/* Update a single expense with new values (cost, description)*/
 export async function updateExpense(id: number, cost: number, description: string, budgetRowId?: number): Promise<Expense | undefined> {
     try {
-        const response = await axios.put(`${BASE_URL}/expense/${id}`, { cost: cost, description: description, budgetRowId: budgetRowId } );
+        const response = await axios.put(`${BASE_URL}/expense/${id}`, { cost: cost, description: description, budgetRowId: budgetRowId });
         return response.data;
     } catch (e: any) {
         console.log(e);

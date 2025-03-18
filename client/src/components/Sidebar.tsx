@@ -37,25 +37,25 @@ interface SidebarProps {
     handleSaveBudgetRows: () => void,
 }
 
-export function Sidebar({ budgets, expenses, isEditing, loadBudgets, handleSaveBudgetRows}: SidebarProps) {
+export function Sidebar({ budgets, expenses, isEditing, loadBudgets, handleSaveBudgetRows }: SidebarProps) {
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const [showExpenseModal, setShowExpenseModal] = useState(false);
-    
+
     const navigate = useNavigate();
 
     async function handleLogout() {
         await logout();
         navigate('/');
     }
-    
-    const expenseData = useMemo(() => 
+
+    const expenseData = useMemo(() =>
         Object.entries(expenses)
             .map(([budgetRowId, expenseList]) => {
                 const budget = budgets.find(b => b.id === Number(budgetRowId));
-                const totalCost = expenseList.reduce((sum, expense) => sum + (expense.cost || 0), 0); 
-    
+                const totalCost = expenseList.reduce((sum, expense) => sum + (expense.cost || 0), 0);
+
                 return {
-                    id: isNaN(Number(budgetRowId)) ? -1 : Number(budgetRowId), 
+                    id: isNaN(Number(budgetRowId)) ? -1 : Number(budgetRowId),
                     value: isNaN(totalCost) ? 0 : totalCost,
                     label: budget ? budget.category : "Unknown",
                 };

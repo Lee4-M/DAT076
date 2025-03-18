@@ -8,7 +8,7 @@ jest.mock("axios")
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
 describe('Register screen', () => {
-  
+
     beforeEach(() => {
         jest.clearAllMocks();
         mockedAxios.get.mockResolvedValue({ data: [] });
@@ -30,12 +30,12 @@ describe('Register screen', () => {
     });
 
     test('renders the register button', () => {
-        const registerButton = screen.getByRole('button', {name: "Register"});
+        const registerButton = screen.getByRole('button', { name: "Register" });
         expect(registerButton).toBeInTheDocument();
     });
 
     test('renders the login link', () => {
-        const loginLink = screen.getByRole('link', {name: "Login"});
+        const loginLink = screen.getByRole('link', { name: "Login" });
         expect(loginLink).toBeInTheDocument();
     });
 
@@ -53,16 +53,16 @@ describe('Register screen', () => {
 
         const userNameField = screen.findByPlaceholderText("Username");
         const passwordField = screen.findByPlaceholderText("Password");
-        const registerButton = screen.getByRole('button', {name: "Register"});
+        const registerButton = screen.getByRole('button', { name: "Register" });
 
         await act(async () => {
-            fireEvent.change(await userNameField, {target: {value: "UserName"}});
-            fireEvent.change(await passwordField, {target: {value: "Password12345"}});
+            fireEvent.change(await userNameField, { target: { value: "UserName" } });
+            fireEvent.change(await passwordField, { target: { value: "Password12345" } });
             fireEvent.click(await registerButton);
         });
 
         expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/user",
-            {username : "UserName", password: "Password12345"}
+            { username: "UserName", password: "Password12345" }
         );
     })
 
@@ -70,11 +70,11 @@ describe('Register screen', () => {
 
         const userNameField = screen.findByPlaceholderText("Username");
         const passwordField = screen.findByPlaceholderText("Password");
-        const registerButton = screen.getByRole('button', {name: "Register"});
+        const registerButton = screen.getByRole('button', { name: "Register" });
 
         await act(async () => {
-            fireEvent.change(await userNameField, {target: {value: ""}});
-            fireEvent.change(await passwordField, {target: {value: "Password12345"}});
+            fireEvent.change(await userNameField, { target: { value: "" } });
+            fireEvent.change(await passwordField, { target: { value: "Password12345" } });
             fireEvent.click(await registerButton);
         });
 
@@ -82,8 +82,8 @@ describe('Register screen', () => {
         expect(errorMessage).toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(await userNameField, {target: {value: "Username"}});
-            fireEvent.change(await passwordField, {target: {value: ""}});
+            fireEvent.change(await userNameField, { target: { value: "Username" } });
+            fireEvent.change(await passwordField, { target: { value: "" } });
             fireEvent.click(await registerButton);
         });
 
@@ -94,11 +94,11 @@ describe('Register screen', () => {
 
         const userNameField = screen.findByPlaceholderText("Username");
         const passwordField = screen.findByPlaceholderText("Password");
-        const registerButton = screen.getByRole('button', {name: "Register"});
+        const registerButton = screen.getByRole('button', { name: "Register" });
 
         await act(async () => {
-            fireEvent.change(await userNameField, {target: {value: "A"}});
-            fireEvent.change(await passwordField, {target: {value: "Password12345"}});
+            fireEvent.change(await userNameField, { target: { value: "A" } });
+            fireEvent.change(await passwordField, { target: { value: "Password12345" } });
             fireEvent.click(await registerButton);
         });
 
@@ -106,8 +106,8 @@ describe('Register screen', () => {
         expect(errorMessage).toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(await userNameField, {target: {value: "Username"}});
-            fireEvent.change(await passwordField, {target: {value: "A"}});
+            fireEvent.change(await userNameField, { target: { value: "Username" } });
+            fireEvent.change(await passwordField, { target: { value: "A" } });
             fireEvent.click(await registerButton);
         });
 
@@ -118,11 +118,11 @@ describe('Register screen', () => {
 
         const userNameField = screen.findByPlaceholderText("Username");
         const passwordField = screen.findByPlaceholderText("Password");
-        const registerButton = screen.getByRole('button', {name: "Register"});
+        const registerButton = screen.getByRole('button', { name: "Register" });
 
         await act(async () => {
-            fireEvent.change(await userNameField, {target: {value: "User@Name"}});
-            fireEvent.change(await passwordField, {target: {value: "Password12345"}});
+            fireEvent.change(await userNameField, { target: { value: "User@Name" } });
+            fireEvent.change(await passwordField, { target: { value: "Password12345" } });
             fireEvent.click(await registerButton);
         });
 

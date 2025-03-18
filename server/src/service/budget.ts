@@ -147,7 +147,7 @@ export class BudgetRowService implements IBudgetRowService {
             console.error("Invalid input: username, category, or amount");
             return undefined;
         }
-        
+
         const user: User | undefined = await this.userService.findUser(username);
         if (!user) {
             console.warn(`User not found: ${username}`);
