@@ -1,3 +1,19 @@
+/**
+ * ExpenseModal component renders a modal dialog that allows users to add a new expense to a budget.
+ * 
+ * Features:
+ * - Displays a modal form to input expense details.
+ * - Allows selecting a category from existing budgets or entering a custom category.
+ * - Validates input fields (cost, category, description length).
+ * - Submits the new expense and resets form fields.
+ * 
+ * @component
+ * @param show - Determines whether the modal is visible or not.
+ * @param handleClose - Function to close the modal.
+ * @param onSave -Function to call when a new expense item is successfully added.
+ */
+
+
 import { Modal, Button, Form } from 'react-bootstrap';
 import { addExpense, Expense, getBudgets } from "../api/api";
 import { useState, useEffect } from 'react';

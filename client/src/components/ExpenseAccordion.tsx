@@ -1,3 +1,22 @@
+/**
+ * ExpenseAccordion component displays a list of expenses for a specific budget.
+ * 
+ * Features: 
+ * - Displays all expenses for a given budget in an accordion. 
+ * - Inline editing of expense amount and description.
+ * - Drag and drop for expense items.
+ * - Delete individual expenses or the entire budget and its expenses. 
+ * - Save all edited expenses with a button. 
+ * 
+ * @component
+ * @param budgetId - The ID of the budget whose expenses are shown.
+ * @param expenses - List of expenses associated with the budget.
+ * @param deleteBudget - Function to delete the entire budget.
+ * @param loadExpenses - Function to reload expenses.
+ * @param loadBudgets - Function to reload all budgets.
+ * @param handleClose - Function to close the accordion view.
+ */
+
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 
