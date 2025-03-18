@@ -40,16 +40,6 @@ export async function getBudgets(): Promise<Budget[] | undefined> {
     }
 }
 
-export async function getBudget(category: string): Promise<Budget | undefined> {
-    try {    
-        const response = await axios.get<Budget>(`${BASE_URL}/budget?category=${category}`);
-        return response.data;
-    } catch (e: any) {
-        console.log(e);
-        return undefined;
-    }
-}
-
 /* Adds new expense under a budget category */
 export async function addExpense(category: string, cost: number, description: string): Promise<Expense | undefined> {
     try {
@@ -60,7 +50,6 @@ export async function addExpense(category: string, cost: number, description: st
         return undefined;
     }
 }
-
 
 /*Adds a new budget category with an amount */
 export async function addBudget(category: string, amount: number): Promise<Budget | undefined> {
