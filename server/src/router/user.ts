@@ -39,7 +39,7 @@ export function userRouter(userService: IUserService): Router {
             res.status(500).send("Failed to register user: " + error.message);
         }
     });
-    
+
     /**
      * POST /user/login: Logs in a user.
      * 

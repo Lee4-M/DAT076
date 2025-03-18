@@ -42,7 +42,7 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-    jest.restoreAllMocks(); 
+    jest.restoreAllMocks();
 });
 
 describe("Expense API Tests", () => {

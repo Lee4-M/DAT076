@@ -30,7 +30,7 @@ export class ExpenseService implements IExpenseService {
             return undefined;
         }
 
-        return await ExpenseModel.findAll({ where: { budgetRowId: budgetRowId }});
+        return await ExpenseModel.findAll({ where: { budgetRowId: budgetRowId } });
     }
 
     /**
@@ -41,12 +41,12 @@ export class ExpenseService implements IExpenseService {
      * @param cost - Amount of expense
      * @param description - Description of expense
      * @returns - Creates ExpenseModel object to a budget, returns 'undefined' if input 
-     * is invalid (no username, category, cost or description)
+     * is invalid (no username or cost)
      * 
      */
 
     async addExpense(username: string, category: string, cost: number, description: string): Promise<Expense | undefined> {
-        if(!username || !category || cost < 0) {
+        if (!username || !category || cost < 0) {
             console.error("Invalid input: username, category, cost, or description: ", username, category, cost, description);
             return undefined;
         }

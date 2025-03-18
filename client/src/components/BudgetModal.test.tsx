@@ -15,7 +15,7 @@ describe('BudgetModal Component', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         render(
-            <BudgetItemModal 
+            <BudgetItemModal
                 show={true}
                 handleClose={mockHandleClose}
                 onSave={mockOnSave}
@@ -69,14 +69,14 @@ describe('BudgetModal Component', () => {
         mockedAxios.post.mockResolvedValue({
             data: { category: "Groceries", cost: 200 },
         });
-    
+
         await act(async () => {
             fireEvent.change(categoryInput, { target: { value: 'Groceries' } });
             fireEvent.change(amountInput, { target: { value: '' } });
         });
-    
+
         expect(amountInput).toHaveValue(null);
-    
+
         await act(async () => {
             fireEvent.click(saveButton);
         });
@@ -115,14 +115,14 @@ describe('BudgetModal Component', () => {
         const categoryInput = screen.getByPlaceholderText("Enter category name");
         const amountInput = screen.getByPlaceholderText("Enter amount");
         const saveButton = screen.getByRole("button", { name: "Save Budget" });
-    
+
         fireEvent.change(categoryInput, { target: { value: "Groceries" } });
         fireEvent.change(amountInput, { target: { value: "200" } });
-    
+
         await act(async () => {
-          fireEvent.click(saveButton);
+            fireEvent.click(saveButton);
         });
-    
+
         expect(mockOnSave).toHaveBeenCalled();
         expect(mockHandleClose).toHaveBeenCalled();
     });

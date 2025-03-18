@@ -36,7 +36,7 @@ interface BudgetTableProps {
     handleSaveBudgetRows: () => void;
 }
 
-export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadExpenses, handleChangeBudgets, handleSaveBudgetRows }: BudgetTableProps) {
+export function BudgetTable({ budgets, expenses, isEditing, loadBudgets, loadExpenses, handleChangeBudgets, handleSaveBudgetRows }: BudgetTableProps) {
     const [sortBy, setSortBy] = useState<string>('category');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -47,7 +47,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
     const [showBudgetModal, setShowBudgetModal] = useState(false);
 
     const getSortIcon = (column: string) => {
-        if (sortBy !== column) return "/images/Filter-Base.svg"; 
+        if (sortBy !== column) return "/images/Filter-Base.svg";
         if (sortOrder === 'asc') return "/images/Filter-Up.svg";
         return "/images/Filter-Down.svg";
     };
@@ -68,16 +68,16 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
             return budget[sortBy as keyof Budget];
         }
     }], [sortOrder]);
-    	
+
     async function handleDragEnd(event: any) {
         const { active, over } = event;
         if (!over) return;
 
-        const expenseId = active.data.current.id; 
+        const expenseId = active.data.current.id;
         const newBudgetId = over.data.current.id;
 
         const expense = Object.values(expenses).flat().find(e => e.id === expenseId);
-        if (!expense || expense.budgetRowId === newBudgetId) return; 
+        if (!expense || expense.budgetRowId === newBudgetId) return;
 
         await updateExpense(expenseId, expense.cost, expense.description, newBudgetId);
         await loadExpenses();
@@ -86,7 +86,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                delay: 50, 
+                delay: 50,
                 tolerance: 5,
             },
         })
@@ -101,50 +101,50 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                             <tr>
                                 <th scope="col" className="budget-table-header">
                                     <div onClick={() => handleSort("category")} className="m-auto py-2">Category
-                                        <img 
-                                                src={getSortIcon("category")} 
-                                                alt="Sort" 
-                                                width="15" 
-                                                height="15" 
-                                                className="ms-1"
-                                            />
+                                        <img
+                                            src={getSortIcon("category")}
+                                            alt="Sort"
+                                            width="15"
+                                            height="15"
+                                            className="ms-1"
+                                        />
                                     </div>
                                 </th>
                                 <th scope="col" className="budget-table-header">
-                                    <div onClick={() => handleSort("amount")}  className="m-auto py-2">Budget 
-                                    <img 
-                                            src={getSortIcon("amount")} 
-                                            alt="Sort" 
-                                            width="15" 
-                                            height="15" 
+                                    <div onClick={() => handleSort("amount")} className="m-auto py-2">Budget
+                                        <img
+                                            src={getSortIcon("amount")}
+                                            alt="Sort"
+                                            width="15"
+                                            height="15"
                                             className="ms-1"
                                         />
                                     </div>
                                 </th>
                                 <th scope="col" className="budget-table-header">
                                     <div onClick={() => handleSort("totalExpenses")} className="m-auto py-2">Expense
-                                        <img 
-                                                src={getSortIcon("totalExpenses")} 
-                                                alt="Sort" 
-                                                width="15" 
-                                                height="15" 
-                                                className="ms-1"
-                                            />
+                                        <img
+                                            src={getSortIcon("totalExpenses")}
+                                            alt="Sort"
+                                            width="15"
+                                            height="15"
+                                            className="ms-1"
+                                        />
                                     </div>
                                 </th>
                                 <th scope="col" className="budget-table-header">
                                     <div onClick={() => handleSort("result")} className="m-auto py-2">Result
-                                        <img 
-                                                src={getSortIcon("result")} 
-                                                alt="Sort" 
-                                                width="15" 
-                                                height="15" 
-                                                className="ms-1"
-                                            />
+                                        <img
+                                            src={getSortIcon("result")}
+                                            alt="Sort"
+                                            width="15"
+                                            height="15"
+                                            className="ms-1"
+                                        />
                                     </div>
                                 </th>
                                 <th scope="col">
-                                    </th>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -163,8 +163,8 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                                         loadBudgets={loadBudgets}
                                         loadExpenses={loadExpenses}
                                         expenses={expenses[budget.id] || []}
-                                        isEditing={isEditing} 
-                                        handleChangeBudgets={handleChangeBudgets} 
+                                        isEditing={isEditing}
+                                        handleChangeBudgets={handleChangeBudgets}
                                         handleSaveBudgetRows={handleSaveBudgetRows}
                                     />
                                 ))
@@ -182,7 +182,7 @@ export function BudgetTable({ budgets, expenses,  isEditing, loadBudgets, loadEx
                 </div>
 
                 <BudgetItemModal show={showBudgetModal} handleClose={() => setShowBudgetModal(false)} onSave={loadBudgets} />
-            
+
             </section>
         </DndContext>
     );

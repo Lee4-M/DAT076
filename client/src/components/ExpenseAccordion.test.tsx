@@ -1,4 +1,4 @@
-import { render, fireEvent} from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import ExpenseAccordion from './ExpenseAccordion';
 import axios from 'axios';
@@ -86,7 +86,7 @@ describe('ExpenseAccordion Component', () => {
     test('When delete button is clicked, expense is deleted', async () => {
         const editButton = screen.getByText('Edit expenses');
         fireEvent.click(editButton);
-        
+
         const deleteButton = screen.getAllByAltText('Delete');
         fireEvent.click(deleteButton[0]);
 

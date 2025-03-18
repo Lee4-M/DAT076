@@ -64,9 +64,9 @@ describe('BudgetTable', () => {
         for (const budget of Object.values(budgets)) {
             totalBudgets += budget.amount;
         }
-        
+
         const totalRowElements = screen.getByTestId('total-row').children;
-        const totalBudgetsOnScreen = totalRowElements[1].textContent;   
+        const totalBudgetsOnScreen = totalRowElements[1].textContent;
         expect(totalBudgets + " :-").toEqual(totalBudgetsOnScreen)
     });
 
@@ -77,9 +77,9 @@ describe('BudgetTable', () => {
                 totalExpenses += expense.cost;
             }
         }
-        
+
         const totalRowElements = screen.getByTestId('total-row').children;
-        const totalExpensesOnScreen = totalRowElements[2].textContent;   
+        const totalExpensesOnScreen = totalRowElements[2].textContent;
         expect(totalExpenses + " :-").toEqual(totalExpensesOnScreen)
     });
 
@@ -97,7 +97,7 @@ describe('BudgetTable', () => {
         }
 
         const totalRowElements = screen.getByTestId('total-row').children;
-        const resultOnScreen = totalRowElements[3].textContent;   
+        const resultOnScreen = totalRowElements[3].textContent;
         expect((totalBudgets - totalExpenses) + " :-").toEqual(resultOnScreen)
     });
 
@@ -129,9 +129,9 @@ describe('BudgetTable', () => {
         const rows = screen.getAllByRole('row');
         const categories = rows.slice(1).map(row => row.children[0].textContent);
         expect(categories).toEqual(['Transport', 'Food']);
-        
+
         fireEvent.click(categoryHeader);
-        
+
         const sortedRows = screen.getAllByRole('row');
         const sortedCategories = sortedRows.slice(1).map(row => row.children[0].textContent);
         expect(sortedCategories).toEqual(['Food', 'Transport']);
@@ -144,9 +144,9 @@ describe('BudgetTable', () => {
         const rows = screen.getAllByRole('row');
         const budgets = rows.slice(1).map(row => row.children[1].textContent);
         expect(budgets).toEqual(['100 :-', '150 :-']);
-        
+
         fireEvent.click(budgetHeader);
-        
+
         const sortedRows = screen.getAllByRole('row');
         const sortedBudgets = sortedRows.slice(1).map(row => row.children[1].textContent);
         expect(sortedBudgets).toEqual(['150 :-', '100 :-']);
@@ -159,9 +159,9 @@ describe('BudgetTable', () => {
         const rows = screen.getAllByRole('row');
         const expenses = rows.slice(1).map(row => row.children[2].textContent);
         expect(expenses).toEqual(['50 :-', '110 :-']);
-        
+
         fireEvent.click(expenseHeader);
-        
+
         const sortedRows = screen.getAllByRole('row');
         const sortedExpenses = sortedRows.slice(1).map(row => row.children[2].textContent);
         expect(sortedExpenses).toEqual(['110 :-', '50 :-']);
@@ -174,9 +174,9 @@ describe('BudgetTable', () => {
         const rows = screen.getAllByRole('row');
         const results = rows.slice(1).map(row => row.children[3].textContent);
         expect(results).toEqual(['-10 :-', '100 :-']);
-        
+
         fireEvent.click(resultHeader);
-        
+
         const sortedRows = screen.getAllByRole('row');
         const sortedResults = sortedRows.slice(1).map(row => row.children[3].textContent);
         expect(sortedResults).toEqual(['100 :-', '-10 :-']);

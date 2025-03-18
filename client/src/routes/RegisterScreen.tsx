@@ -18,7 +18,7 @@ const Register: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError(null); 
+        setError(null);
 
         if (!username || !password) {
             setError("Please fill all fields");
@@ -26,7 +26,7 @@ const Register: React.FC = () => {
             return;
         }
 
-        if (username.length < 3  || username.length > 128 || password.length < 12 || password.length > 128) {
+        if (username.length < 3 || username.length > 128 || password.length < 12 || password.length > 128) {
             setError("Username must be between 3 and 128 characters and password must be between 12 and 128 characters");
             setLoading(false);
             return;
@@ -43,7 +43,7 @@ const Register: React.FC = () => {
             navigate('/');
         } catch (error: any) {
             console.error("Error during registration:", error);
-        
+
             if (error.response) {
                 setError(error.response.data || "Unknown error occurred");
             } else {
@@ -64,10 +64,10 @@ const Register: React.FC = () => {
                     <div className="text-center p-5">
 
                         <img
-                            src="/images/Budgie_Logo.svg" 
+                            src="/images/Budgie_Logo.svg"
                             alt="Budgie Logo"
-                            className="mb-4" 
-                            style={{ maxWidth: '150px' }} 
+                            className="mb-4"
+                            style={{ maxWidth: '150px' }}
                         />
 
                         <h1 className="display-4 fw-bold">Create Account</h1>

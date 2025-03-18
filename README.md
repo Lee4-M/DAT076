@@ -4,6 +4,10 @@ Welcome to README for Budgie, a budget planner and expense tracker for the every
 
 Note: This is part of the coursework for DAT076 "Web Applications".
 
+## Project Report
+
+The project report can be found in the folder named project-report.
+
 ## Environment Variables
 
 To run a local instance of the database and project, you will need to add the following environment variables to your .env file in the server directory.

@@ -11,6 +11,15 @@ export class UserModel extends Model<InferAttributes<UserModel>, InferCreationAt
   };
 }
 
+/*
+ * The UserModel class represents the user table in the database.
+ * It has a one-to-many relationship with the BudgetRowModel class.
+ * The user table has the following columns:
+ * - id: an auto-incrementing integer that serves as the primary key
+ * - username: a string that must be unique and cannot be empty
+ * - password: a string that cannot be empty
+ * The table name is 'users'.
+ */
 UserModel.init(
   {
     id: {

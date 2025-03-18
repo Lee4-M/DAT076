@@ -12,6 +12,15 @@ export class ExpenseModel extends Model<InferAttributes<ExpenseModel>, InferCrea
   }
 }
 
+/*
+ * The ExpenseModel class represents the expenses table in the database.
+ * The expenses table has the following columns:
+ * - id: an auto-incrementing integer that serves as the primary key
+ * - budgetRowId: an integer that is a foreign key to the budgetRows table
+ * - cost: an integer that cannot be empty
+ * - description: a string that cannot be empty
+ * The table name is 'expenses'.
+ */
 ExpenseModel.init(
   {
     id: {

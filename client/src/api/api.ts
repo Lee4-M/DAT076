@@ -81,7 +81,7 @@ export async function deleteExpense(id: number): Promise<boolean> {
     }
 }
 
-/* Deletes a budget row by ID */ 
+/* Deletes a budget row by ID */
 export async function deleteBudget(budgetRowId: number): Promise<boolean> {
     try {
         const response = await axios.delete(`${BASE_URL}/budget/${budgetRowId}`);
@@ -110,41 +110,10 @@ export async function updateBudgetRow(id: number, category: string, amount: numb
     }
 }
 
-/* Update a single expense with new values (cost, description)*/ 
+/* Update a single expense with new values (cost, description)*/
 export async function updateExpense(id: number, cost: number, description: string, budgetRowId?: number): Promise<Expense | undefined> {
     try {
-        const response = await axios.put(`${BASE_URL}/expense/${id}`, { cost: cost, description: description, budgetRowId: budgetRowId } );
-        return response.data;
-    } catch (e: any) {
-        console.log(e);
-        return undefined;
-    }
-}
-
-/* Updates multiple budget rows at the same time (categories, amounts) */
-export async function updateBudgetRows(budgets: Budget[]): Promise<Budget[] | undefined> {
-    try {
-        const ids: number[] = [];
-        const categories: string[] = [];
-        const amounts: number[] = [];
-
-        for (const budget of budgets) {
-            ids.push(budget.id);
-            categories.push(budget.category);
-            amounts.push(budget.amount);
-        }
-        const response = await axios.put(`${BASE_URL}/budgets`, { ids: ids, categories: categories, amounts: amounts });
-        return response.data;
-    } catch (e: any) {
-        console.log(e);
-        return undefined;
-    }
-}
-
-/* Updates multiple expenses at the same time (costs, descriptions) */
-export async function updateExpenses(ids: number[], costs: number[], descriptions: string[]): Promise<Expense[] | undefined> {
-    try {
-        const response = await axios.put(`${BASE_URL}/expenses`, { costs: costs, descriptions: descriptions }, { params: { ids: ids } });
+        const response = await axios.put(`${BASE_URL}/expense/${id}`, { cost: cost, description: description, budgetRowId: budgetRowId });
         return response.data;
     } catch (e: any) {
         console.log(e);

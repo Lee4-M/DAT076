@@ -15,7 +15,7 @@ describe('ExpenseModal Component', () => {
     beforeEach(async () => {
         jest.clearAllMocks();
         render(
-            <ExpenseModal 
+            <ExpenseModal
                 show={true}
                 handleClose={mockHandleClose}
                 onSave={mockOnSave}
@@ -69,7 +69,7 @@ describe('ExpenseModal Component', () => {
 
     test('Empty cost leads to alert that warns user', async () => {
         window.alert = jest.fn();
-        
+
         const categoryInput = screen.getByTestId("category-select");
         const costInput = screen.getByPlaceholderText("Enter amount");
         const saveButton = screen.getByRole("button", { name: "Save Expense" });
@@ -122,18 +122,18 @@ describe('ExpenseModal Component', () => {
         mockedAxios.post.mockResolvedValue({
             data: { id: 1, category: "Groceries", cost: 200, description: "Dinner" },
         });
-    
+
         await act(async () => {
             fireEvent.change(categoryInput, { target: { value: "Groceries" } });
             fireEvent.change(costInput, { target: { value: "200" } });
         });
-    
+
         expect(descriptionInput).toHaveValue("");
 
         await act(async () => {
             fireEvent.click(saveButton);
         });
-    
+
         expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/expense", {
             category: "Groceries",
             cost: 200,
@@ -153,7 +153,7 @@ describe('ExpenseModal Component', () => {
             fireEvent.change(categoryInput, { target: { value: "Groceries" } });
         });
         fireEvent.change(costInput, { target: { value: "5478954896745589764894578945986470" } });
-        
+
         await act(async () => {
             fireEvent.click(saveButton);
         });
@@ -168,17 +168,17 @@ describe('ExpenseModal Component', () => {
         const costInput = screen.getByPlaceholderText("Enter amount");
         const descriptionInput = screen.getByPlaceholderText("Enter description");
         const saveButton = screen.getByRole("button", { name: "Save Expense" });
-    
+
         await act(async () => {
             fireEvent.change(categoryInput, { target: { value: "Groceries" } });
         });
         fireEvent.change(costInput, { target: { value: "200" } });
         fireEvent.change(descriptionInput, { target: { value: "Dinner" } });
-    
+
         await act(async () => {
             fireEvent.click(saveButton);
         });
-    
+
         expect(mockOnSave).toHaveBeenCalled();
         expect(mockHandleClose).toHaveBeenCalled();
     });

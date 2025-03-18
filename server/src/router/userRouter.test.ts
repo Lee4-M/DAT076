@@ -30,7 +30,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    jest.restoreAllMocks(); 
+    jest.restoreAllMocks();
 });
 
 describe("User API Tests", () => {
@@ -40,7 +40,7 @@ describe("User API Tests", () => {
         });
 
         test("Fail to register a user with bad input", async () => {
-            await agent.post("/user").send({ username: 1, password: 1 }).expect(400, 
+            await agent.post("/user").send({ username: 1, password: 1 }).expect(400,
                 "Bad POST call to /user --- username has type number or password has type number");
         });
 

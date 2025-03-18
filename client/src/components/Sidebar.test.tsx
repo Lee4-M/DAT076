@@ -3,7 +3,7 @@ import { screen } from '@testing-library/dom';
 import { Sidebar } from '../components/Sidebar';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
-import { Budget, updateBudgetRows } from '../api/api';
+import { Budget, updateBudgetRow } from '../api/api';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -23,20 +23,23 @@ describe('Sidebar Component', () => {
     mockedAxios.get.mockResolvedValue({ data: [] });
 
     isEditing = false;
-    
+
     mockOnSave = jest.fn(async () => {
       isEditing = !isEditing;
-      await updateBudgetRows(budgets);
+      
+      budgets.forEach(budget => {
+        updateBudgetRow(budget.id, budget.category, budget.amount);
+      });
     });
 
     const renderResult = render(
       <MemoryRouter>
         <Sidebar
-          loadBudgets={jest.fn()} 
-          expenses={{}} 
-          budgets={[]} 
-          isEditing={isEditing} 
-          handleSaveBudgetRows={mockOnSave}  
+          loadBudgets={jest.fn()}
+          expenses={{}}
+          budgets={[]}
+          isEditing={isEditing}
+          handleSaveBudgetRows={mockOnSave}
         />
       </MemoryRouter>
     );
@@ -61,7 +64,7 @@ describe('Sidebar Component', () => {
     await act(async () => {
       fireEvent.click(addExpenseButton);
     });
-    
+
     const expenseModal = screen.getByTestId('expense-modal');
     expect(expenseModal).toBeInTheDocument();
   });
@@ -78,7 +81,7 @@ describe('Sidebar Component', () => {
     await act(async () => {
       fireEvent.click(addBudgetButton);
     });
-    
+
     const budgetModal = screen.getByTestId('budget-modal');
     expect(budgetModal).toBeInTheDocument();
   });
@@ -98,11 +101,11 @@ describe('Sidebar Component', () => {
     rerender(
       <MemoryRouter>
         <Sidebar
-          loadBudgets={jest.fn()} 
-          expenses={{}} 
-          budgets={[]} 
+          loadBudgets={jest.fn()}
+          expenses={{}}
+          budgets={[]}
           isEditing={isEditing}
-          handleSaveBudgetRows={mockOnSave}  
+          handleSaveBudgetRows={mockOnSave}
         />
       </MemoryRouter>
     );
@@ -111,15 +114,15 @@ describe('Sidebar Component', () => {
     expect(saveButton).toBeInTheDocument();
   });
 
-  test('calls updateBudgetRows and requests server when clicking Save changes', async () => {
+  test('calls updateBudgetRow and requests server when clicking Save changes', async () => {
     rerender(
       <MemoryRouter>
         <Sidebar
-          loadBudgets={jest.fn()} 
-          expenses={{}} 
-          budgets={budgets} 
-          isEditing={true} 
-          handleSaveBudgetRows={mockOnSave}  
+          loadBudgets={jest.fn()}
+          expenses={{}}
+          budgets={budgets}
+          isEditing={true}
+          handleSaveBudgetRows={mockOnSave}
         />
       </MemoryRouter>
     );
@@ -134,10 +137,14 @@ describe('Sidebar Component', () => {
       fireEvent.click(saveButton);
     });
 
-    expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/budgets", {
-      ids: budgets.map(budget => budget.id),
-      categories: budgets.map(budget => budget.category),
-      amounts: budgets.map(budget => budget.amount),
+    expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/budget/1", {
+      category: 'Food',
+      amount: 100,
+    });
+
+    expect(mockedAxios.put).toHaveBeenCalledWith("http://localhost:8080/budget/2", {
+      category: 'Transport',
+      amount: 150,
     });
   });
 
@@ -154,17 +161,17 @@ describe('Sidebar Component', () => {
   });
 
   test('PieChart handles non-empty budgets and expenses', async () => {
-    const budgets : Budget[] = [{ id: 1, category: 'Food', amount: 200, userId: 1 }];
+    const budgets: Budget[] = [{ id: 1, category: 'Food', amount: 200, userId: 1 }];
     const expenses = { 1: [{ id: 1, budgetRowId: 1, description: 'Groceries', cost: 50 }] };
 
     rerender(
       <MemoryRouter>
         <Sidebar
-          loadBudgets={jest.fn()} 
-          expenses={expenses} 
-          budgets={budgets} 
-          isEditing={false} 
-          handleSaveBudgetRows={mockOnSave}  
+          loadBudgets={jest.fn()}
+          expenses={expenses}
+          budgets={budgets}
+          isEditing={false}
+          handleSaveBudgetRows={mockOnSave}
         />
       </MemoryRouter>
     );
@@ -175,18 +182,18 @@ describe('Sidebar Component', () => {
   });
 
   // Sign out button tests
-    test('renders the sign out button', () => {
-      const signOutButton = screen.getByRole('button', { name: "Sign out" });
-      expect(signOutButton).toBeInTheDocument();
+  test('renders the sign out button', () => {
+    const signOutButton = screen.getByRole('button', { name: "Sign out" });
+    expect(signOutButton).toBeInTheDocument();
+  });
+
+  test('when sign out button is clicked, user is logged out', async () => {
+    const signOutButton = screen.getByRole('button', { name: "Sign out" });
+
+    await act(async () => {
+      fireEvent.click(signOutButton);
     });
-  
-    test('when sign out button is clicked, user is logged out', async () => {
-      const signOutButton = screen.getByRole('button', { name: "Sign out" });
-  
-      await act(async () => {
-        fireEvent.click(signOutButton);
-      });
-  
-      expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/user/logout");
-    });
+
+    expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/user/logout");
+  });
 });

@@ -54,7 +54,7 @@ function ExpenseModal({ show, handleClose, onSave }: ExpenseModalProps) {
     function handleCategoryChange(value: string) {
         if (value === "custom") {
             setIsCustomCategory(true);
-            setExpenseCategory(''); 
+            setExpenseCategory('');
         } else {
             setIsCustomCategory(false);
             setExpenseCategory(value);

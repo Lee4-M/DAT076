@@ -150,7 +150,7 @@ describe("Budget Service", () => {
         });
     });
 
-    describe("Updating a budget row", () => { 
+    describe("Updating a budget row", () => {
         test("Updating a budget row should reflect in the budgetRows database table", async () => {
             const budget = await budgetService.addBudgetRow("User", "Clothes", 500);
 

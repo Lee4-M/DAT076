@@ -21,7 +21,7 @@ beforeEach(async () => {
 
 describe("Expense Service", () => {
     describe("Getting expenses", () => {
-        test("Getting expenses for a budget row should return an array of expenses", async () => { 
+        test("Getting expenses for a budget row should return an array of expenses", async () => {
             await expenseService.addExpense("User", "Clothes", 100, "Shirt");
             await expenseService.addExpense("User", "Clothes", 200, "Pants");
             expect(await expenseService.getExpenses(budget!.id)).toEqual(
@@ -35,7 +35,7 @@ describe("Expense Service", () => {
         test("Getting expenses for a non-existent budget row should return undefined", async () => {
             expect(await expenseService.getExpenses(999)).toBeUndefined();
         });
-        
+
         test("Getting expenses for a budget row with no expenses should return an empty array", async () => {
             expect(await expenseService.getExpenses(budget!.id)).toEqual([]);
         });

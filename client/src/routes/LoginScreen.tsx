@@ -34,10 +34,10 @@ const Login = () => {
                 <div className="col-md-6 d-none d-md-flex left-section">
                     <header className="text-center p-5">
                         <img
-                            src="/images/Budgie_Logo.svg" 
+                            src="/images/Budgie_Logo.svg"
                             alt="Budgie Logo"
-                            className="mb-4" 
-                            style={{ maxWidth: '150px' }} 
+                            className="mb-4"
+                            style={{ maxWidth: '150px' }}
                         />
                         <h1 className="display-4 fw-bold">Budgie</h1>
                         <p className="lead">
