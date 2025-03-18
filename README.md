@@ -6,7 +6,7 @@ Note: This is part of the coursework for DAT076 "Web Applications".
 
 ## Project Report
 
-The project report can be found here: 
+The project report can be found in the folder named project-report.
 
 ## Environment Variables
 
